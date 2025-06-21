@@ -1,0 +1,62 @@
+/* Root element transitions for smooth theme switching */
+:root {
+  /* Add a transition for all color properties to make theme switching smoother */
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme icon styles with improved transitions */
+.themeIconContainer {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightThemeIcon,
+.darkThemeIcon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Show sun icon in dark mode with animation */
+[data-mantine-color-scheme="dark"] .lightThemeIcon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Hide moon icon in dark mode with animation */
+[data-mantine-color-scheme="dark"] .darkThemeIcon {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+/* Hide sun icon in light mode with animation */
+[data-mantine-color-scheme="light"] .lightThemeIcon {
+  opacity: 0;
+  transform: scale(0.7);
+}
+
+/* Show moon icon in light mode with animation */
+[data-mantine-color-scheme="light"] .darkThemeIcon {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Add additional styling for themed elements */
+.themedPaper {
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+}
+
+/* Primary button styling with transition */
+.primaryFilledButton {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Theme toggle button styling */
+.themeToggleIcon {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}

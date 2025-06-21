@@ -1,0 +1,118 @@
+"use client";
+
+import Link from "next/link";
+import {
+  Box,
+  Container,
+  Group,
+  Burger,
+  Drawer,
+  Stack,
+  Text,
+  Button,
+  rem,
+  UnstyledButton,
+  Divider,
+  Image,
+} from "@mantine/core";
+import { logo } from "@/assets/images";
+
+// Import custom hook with header logic
+import { useHeader, navItems } from "./use-header";
+
+const HEADER_HEIGHT = rem(80);
+
+const Header = () => {
+  const { opened, toggle, close, activeItem, shouldShowHeader, navigateTo } = useHeader();
+
+  // Don't render header on certain paths
+  if (!shouldShowHeader) {
+    return null;
+  }
+
+  const items = navItems.map((item) => (
+    <UnstyledButton
+      key={item.label}
+      component={Link}
+      href={item.link}
+      onClick={close}
+      style={{
+        fontWeight: 500,
+        fontSize: rem(16),
+        color: activeItem === item.label ? "var(--mantine-color-red-6)" : undefined,
+        borderBottom: activeItem === item.label ? "2px solid var(--mantine-color-red-6)" : "none",
+        padding: `${rem(8)} ${rem(12)}`,
+        transition: "all 0.2s ease",
+        "&:hover": {
+          color: "var(--mantine-color-red-6)",
+        },
+      }}
+    >
+      {item.label}
+    </UnstyledButton>
+  ));
+
+  return (
+    <Box
+      style={{
+        height: HEADER_HEIGHT,
+        borderBottom: `1px solid var(--mantine-color-gray-2)`,
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        backgroundColor: "var(--mantine-color-white)",
+      }}
+    >
+      <Container size="lg" h="100%">
+        <Group justify="space-between" h="100%">
+          <Link href="/home" passHref>
+            <UnstyledButton>
+              <Image src={logo.src} alt="Arodos Academy" height={40} fit="contain" />
+            </UnstyledButton>
+          </Link>
+
+          <Group gap="lg" visibleFrom="md">
+            {items}
+          </Group>
+
+          <Group visibleFrom="md">
+            <Button variant="outline" onClick={() => navigateTo("/login")}>
+              Log In
+            </Button>
+            <Button onClick={() => navigateTo("/apply")}>Apply Now</Button>
+          </Group>
+
+          <Burger opened={opened} onClick={toggle} hiddenFrom="md" />
+        </Group>
+      </Container>
+
+      {/* Mobile drawer */}
+      <Drawer
+        opened={opened}
+        onClose={close}
+        size="100%"
+        padding="md"
+        title={
+          <Group>
+            <Image src={logo.src} alt="Arodos Academy" height={40} fit="contain" />
+          </Group>
+        }
+        hiddenFrom="md"
+        zIndex={1000}
+      >
+        <Stack>
+          {items}
+          <Divider my="sm" />
+          <Group grow>
+            <Button variant="outline" onClick={() => navigateTo("/login")}>
+              Log In
+            </Button>
+            <Button onClick={() => navigateTo("/apply")}>Apply Now</Button>
+          </Group>
+        </Stack>
+      </Drawer>
+    </Box>
+  );
+};
+
+export default Header;
