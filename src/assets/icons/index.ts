@@ -7,7 +7,11 @@ export {
   IconRocket,
   IconUsers,
   IconBriefcase,
-  // Add more icons as needed
+  IconClock,
+  IconCurrencyRupee,
+  IconBook,
+  IconAppWindow,
+  IconSeo,
 } from "@tabler/icons-react";
 
 // Re-export any custom icons here

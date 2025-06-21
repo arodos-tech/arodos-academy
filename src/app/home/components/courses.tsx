@@ -10,7 +10,10 @@ interface CourseSectionProps {
   error: string | null;
 }
 
-const Courses = ({ courses, error }: CourseSectionProps) => {
+const Courses = ({ 
+  courses, 
+  error 
+}: CourseSectionProps) => {
   return (
     <Box id="courses" py={120} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
       <Container size="lg">
@@ -41,19 +44,16 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
             </Text>
           </Stack>
         ) : (
-          <>
-            {/* Display all courses first */}
-            <Box mb={80}>
-              <Title order={3} mb={30} ta="center">
-                All Courses
-              </Title>
-              <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
-                {courses?.map?.((course, index) => (
-                  <CourseCard key={index} course={course} />
-                ))}
-              </SimpleGrid>
-            </Box>
-          </>
+          <Box mb={80}>
+            <Title order={3} mb={30} ta="center">
+              All Courses
+            </Title>
+            <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
+              {courses?.map?.((course, index) => (
+                <CourseCard key={index} course={course} />
+              ))}
+            </SimpleGrid>
+          </Box>
         )}
 
         <Box ta="center" mt={60}>

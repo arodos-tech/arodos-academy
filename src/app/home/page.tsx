@@ -4,38 +4,22 @@ import Courses from "@/app/home/components/courses";
 import CTA from "@/app/home/components/cta";
 import Features from "@/app/home/components/features";
 
-// Function to group courses by tags
-const groupCoursesByTags = (coursesList: any[]) => {
-  const groupedCourses: Record<string, any[]> = {};
-
-  coursesList?.forEach?.((course: any) => {
-    if (!course?.tags) return;
-
-    // Get only the first tag
-    const firstTag = course?.tags?.split?.(";")?.shift?.()?.split?.(",")?.shift?.()?.trim?.();
-
-    if (firstTag) {
-      // Initialize array if this tag doesn't exist yet
-      if (!groupedCourses?.[firstTag]) {
-        groupedCourses[firstTag] = [];
-      }
-
-      // Add course to the tag group
-      groupedCourses?.[firstTag]?.push?.(course);
-    }
-  });
-
-  return groupedCourses;
-};
-
-// Server component that fetches data
 export default async function Home() {
   // Fetch courses data from API
   const res = await Api.get("/courses", {
-    sort: "-created_at",
+    sort: "-priority",
   });
 
-  const courses = res?.result || [];
+  // Process the courses data
+  const coursesList = res?.result || [];
+
+  // Sort by priority if available
+  const courses = [...coursesList].sort((a, b) => {
+    const priorityA = Number(a?.priority) || 0;
+    const priorityB = Number(b?.priority) || 0;
+    return priorityB - priorityA; // Higher priority first
+  });
+
   const error = res?.err ? (typeof res?.err === "string" ? res?.err : "Error fetching courses") : null;
 
   return (

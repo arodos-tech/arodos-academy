@@ -1,40 +1,6 @@
 "use client";
 import { MantineThemeOverride } from "@mantine/core";
 
-// Define color constants for easy reference
-export const PRIMARY_COLOR = "#FF0000";
-
-export const COLORS = {
-  // Colors used throughout the app
-  background: {
-    light: "#FFFFFF",
-    dark: "#000000",
-  },
-  text: {
-    light: "#000000",
-    dark: "#FFFFFF",
-  },
-  primary: {
-    main: PRIMARY_COLOR,
-    light: "#FF3333",
-    dark: "#CC0000",
-  },
-  paper: {
-    light: "#FFFFFF",
-    dark: "#000000",
-  },
-  primaryArray: [
-    "#FFE5E5", // 0
-    "#FFCCCC", // 1
-    "#FF9999", // 2
-    "#FF6666", // 3
-    "#FF3333", // 4
-    "#FF0000", // 5 - Main primary color
-    "#CC0000", // 6
-    "#990000", // 7
-  ],
-};
-
 // Define the Mantine theme
 export const theme: MantineThemeOverride = {
   // Default color scheme set to light
@@ -48,12 +14,12 @@ export const theme: MantineThemeOverride = {
     primary: [
       "#FFE5E5", // 0
       "#FFCCCC", // 1
-      "#FFC0C4", // 2
-      "#FFABB0", // 3
-      "#FF969C", // 4
-      "#EF575D", // 5 - PRIMARY_COLOR
-      "#D64D52", // 6
-      "#BD4448", // 7
+      "#FF9999", // 2
+      "#FF6666", // 3
+      "#FF3333", // 4
+      "#FF0000", // 5 - Main primary color
+      "#CC0000", // 6
+      "#990000", // 7
       "#A43A3D", // 8
       "#8B3033", // 9
     ],
@@ -81,9 +47,9 @@ export const theme: MantineThemeOverride = {
       styles: () => ({
         root: {
           "&.primaryFilledButton": {
-            backgroundColor: PRIMARY_COLOR,
+            backgroundColor: "var(--mantine-color-primary-5)",
             "&:hover": {
-              backgroundColor: "#D64D52", // Slightly darker shade
+              backgroundColor: "var(--mantine-color-primary-6)",
             },
           },
         },
@@ -101,7 +67,6 @@ export const theme: MantineThemeOverride = {
       styles: () => ({
         root: {
           "&.themeToggleIcon": {
-            // Use CSS variables for theme compatibility
             color: "var(--mantine-color-primary-6)",
             backgroundColor: "var(--mantine-color-default)",
             "&:hover": {

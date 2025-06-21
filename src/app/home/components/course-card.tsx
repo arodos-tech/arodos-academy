@@ -1,8 +1,17 @@
 "use client";
 
-import { Card, Image, Text, Badge, Group, Button, Title, Stack } from "@mantine/core";
-import { useRouter } from "next/navigation";
+import { Card, Text, Badge, Group, Button, Title, Stack, Box, rem } from "@mantine/core";
 import Link from "next/link";
+import {
+  IconBook,
+  IconClock,
+  IconCurrencyRupee,
+  IconArrowRight,
+  IconCode,
+  IconAppWindow,
+  IconCertificate,
+  IconSeo,
+} from "@/assets/icons";
 
 interface CourseProps {
   course: {
@@ -12,68 +21,116 @@ interface CourseProps {
     duration: string;
     price: number;
     tags?: string;
-    [key: string]: any; // For any additional properties
+    [key: string]: any;
   };
 }
 
-// Course card component for displaying individual courses
 const CourseCard = ({ course }: CourseProps) => {
-  const router = useRouter();
+  // Select icon based on course name or id to ensure consistency
+  const getIcon = () => {
+    // Use the course id or name to determine which icon to show
+    const courseId = Number(course?.id) || 0;
+
+    switch (courseId % 3) {
+      case 0:
+        return <IconSeo size={48} color="var(--mantine-color-red-6)" />;
+      case 1:
+        return <IconCode size={48} color="var(--mantine-color-red-6)" />;
+      case 2:
+        return <IconCertificate size={48} color="var(--mantine-color-red-6)" />;
+      default:
+        return <IconBook size={48} color="var(--mantine-color-red-6)" />;
+    }
+  };
 
   return (
     <Card
       shadow="sm"
-      padding="lg"
+      p="lg"
       radius="md"
       withBorder
       style={{
-        transition: "all 0.3s ease",
         height: "100%",
         display: "flex",
         flexDirection: "column",
+        transition: "transform 150ms ease, box-shadow 150ms ease",
         "&:hover": {
-          transform: "translateY(-5px)",
-          boxShadow: "0 10px 20px rgba(0, 0, 0, 0.1)",
-          borderColor: "var(--mantine-color-red-3)",
+          transform: "translateY(-4px)",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.1)",
         },
       }}
     >
-      <Card.Section>
-        <Image
-          src={`https://source.unsplash.com/random/800x450?${encodeURIComponent(course.name)}`}
-          height={160}
-          alt={course.name}
-        />
-      </Card.Section>
+      <Group mb="md" align="center" wrap="nowrap">
+        <Box
+          p="md"
+          style={{
+            backgroundColor: "var(--mantine-color-red-0)",
+            borderRadius: "var(--mantine-radius-md)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            width: rem(80),
+            height: rem(80),
+            flexShrink: 0,
+          }}
+        >
+          {getIcon()}
+        </Box>
+        <Title order={4} lineClamp={2}>
+          {course.name}
+        </Title>
+      </Group>
 
-      <Stack style={{ flex: 1 }} mt="md" gap="xs">
-        <Group justify="space-between" align="center" wrap="nowrap">
-          <Title order={4} lineClamp={2} style={{ lineHeight: 1.3 }}>
-            {course.name}
-          </Title>
-        </Group>
-
-        <Text size="sm" c="dimmed" lineClamp={3} style={{ flex: 1 }}>
-          {course.description}
+      <Stack gap="sm" style={{ flex: 1 }}>
+        <Text size="sm" c="dimmed" lineClamp={3} style={{ minHeight: rem(60) }}>
+          {course.description || "No description available"}
         </Text>
 
-        <Group mt="auto" pt="sm">
-          <Badge color="red" variant="light">
-            {course.duration}
-          </Badge>
-          {course.tags?.split(",").map((tag, i) => (
-            <Badge key={i} color="gray" variant="outline">
-              {tag.trim()}
+        <Group gap="xs" mt="lg">
+          {course?.tags?.split(",").map((tag, i) => (
+            <Badge
+              key={i}
+              size="sm"
+              radius="sm"
+              style={{
+                textTransform: "none",
+                backgroundColor: "var(--mantine-color-red-0)",
+                color: "var(--mantine-color-red-6)",
+                fontWeight: 600,
+                padding: "4px 12px",
+              }}
+            >
+              {tag?.trim()}
             </Badge>
           ))}
         </Group>
 
-        <Group justify="space-between" align="center" mt="md">
-          <Text fw={700} size="lg">
-            ${course.price}
-          </Text>
-          <Button variant="light" color="red" component={Link} href={`/courses/${course.id}`}>
-            View Details
+        <Group justify="space-between" mt="md">
+          <Group gap="xs">
+            <Group gap={4}>
+              <IconClock size={16} />
+              <Text size="sm">{course?.duration || "N/A"}</Text>
+            </Group>
+            <Text size="sm">•</Text>
+            <Group gap={4}>
+              <IconCurrencyRupee size={16} />
+              <Text size="sm">
+                {typeof course?.price === "number" || !isNaN(Number(course?.price))
+                  ? Number(course?.price).toLocaleString("en-IN")
+                  : "Free"}
+              </Text>
+            </Group>
+          </Group>
+
+          <Button
+            variant="light"
+            color="red"
+            size="sm"
+            rightSection={<IconArrowRight size={16} />}
+            component={Link}
+            href={`/courses/${course?.id}`}
+          >
+            View
           </Button>
         </Group>
       </Stack>
