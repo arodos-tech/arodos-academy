@@ -78,7 +78,9 @@ const Header = () => {
 
           <Group visibleFrom="md">
             <ThemeToggle />
-            <Button onClick={() => navigateTo("/contact")}>Apply Now</Button>
+            <Button onClick={() => navigateTo("/contact#reg-form")} size="lg">
+              Apply Now
+            </Button>
           </Group>
 
           <Group hiddenFrom="md" gap="sm">
@@ -106,9 +108,9 @@ const Header = () => {
           {items}
           <Divider />
           <Group>
-            <Button fullWidth onClick={() => navigateTo("/apply")}>
+            {/* <Button fullWidth onClick={() => navigateTo("/contact#reg-form")}>
               Apply Now
-            </Button>
+            </Button> */}
           </Group>
         </Stack>
       </Drawer>

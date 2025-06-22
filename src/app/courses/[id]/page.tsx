@@ -4,7 +4,7 @@ import { Box, Container, Stack, Text, Title, Button } from "@mantine/core";
 import Link from "next/link";
 
 // Import components
-import CourseHero from "./components/course-hero";
+import CourseDetails from "./components/course-details";
 import CourseContent from "./components/course-content";
 import CourseCTA from "./components/course-cta";
 
@@ -49,9 +49,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
   return (
     <div>
-      <CourseHero course={course} />
+      <CourseDetails course={course} />
       <CourseContent course={course} />
-      {/* <CourseDetailsSidebar cour  `se={course} relatedCourses={courses} /> */}
       <CourseCTA courseName={course?.name} />
     </div>
   );

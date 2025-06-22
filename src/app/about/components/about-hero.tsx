@@ -3,6 +3,7 @@
 import { Box, Container, Text, Title, rem } from "@mantine/core";
 import { useIsMobile } from "@/hooks";
 import { aboutHero } from "@/assets/images";
+import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const AboutHero = () => {
   const isMobile = useIsMobile();
@@ -40,7 +41,7 @@ const AboutHero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: "linear-gradient(135deg, rgba(255, 0, 0, 0.36) 0%, rgba(180, 0, 0, 0.45) 100%)",
+          background: HERO_GRADIENT_OVERLAY,
           zIndex: 2,
         }}
       />

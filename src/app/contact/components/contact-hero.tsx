@@ -3,6 +3,7 @@
 import { Box, Container, Text, Title, Stack, rem } from "@mantine/core";
 import { useIsMobile } from "@/hooks";
 import { homeHero } from "@/assets/images";
+import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const ContactHero = () => {
   const isMobile = useIsMobile();
@@ -40,7 +41,7 @@ const ContactHero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: "linear-gradient(45deg, var(--mantine-color-primary-9) 0%, transparent 100%)",
+          background: HERO_GRADIENT_OVERLAY,
           opacity: 0.7,
           zIndex: 2,
         }}
@@ -77,7 +78,8 @@ const ContactHero = () => {
           </Title>
 
           <Text size={isMobile ? "lg" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
-            Have questions about our courses or need assistance? We're here to help you take the next step in your tech education journey.
+            Have questions about our courses or need assistance? We're here to help you take the next step in your tech
+            education journey.
           </Text>
         </Stack>
       </Container>

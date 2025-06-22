@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { z } from "zod";
 import {
   Box,
@@ -17,10 +17,14 @@ import {
   rem,
   ThemeIcon,
   Title,
+  MultiSelect,
+  Loader,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconUpload, IconCheck, IconX, IconPhoto } from "@/assets/icons";
 import { useIsMobile } from "@/hooks";
+import { getCourses } from "@/actions/courses";
+import { submitApplication } from "@/actions/applications";
 
 const educationalQualifications = [
   { value: "be-btech", label: "B.E/B.Tech" },
@@ -40,6 +44,8 @@ const semesters = [
   { value: "6", label: "6th Semester" },
   { value: "7", label: "7th Semester" },
   { value: "8", label: "8th Semester" },
+  { value: "graduate", label: "Graduate" },
+  { value: "pg", label: "Post Graduate" },
 ];
 
 const formSchema = z.object({
@@ -49,7 +55,8 @@ const formSchema = z.object({
   qualification: z.string().min(1, { message: "Please select your qualification" }),
   semester: z.string().min(1, { message: "Please select your semester" }),
   college: z.string().min(1, { message: "Please enter your college/university name" }),
-  receipt: z.any().nullable(),
+  courses: z.array(z.string()).min(1, { message: "Please select at least one course" }),
+  receipt: z.instanceof(File, { message: "Payment receipt is required" }).nullable(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -59,7 +66,34 @@ const ContactForm = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [filePreview, setFilePreview] = useState<string | null>(null);
   const [fileError, setFileError] = useState<string | null>(null);
+  const [availableCourses, setAvailableCourses] = useState<{ value: string; label: string }[]>([]);
+  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [submissionError, setSubmissionError] = useState<string | null>(null);
   const isMobile = useIsMobile();
+
+  // Fetch available courses
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const { courses, error } = await getCourses();
+        if (courses) {
+          const formattedCourses = courses.map((course) => ({
+            value: course.id.toString(),
+            label: course.name,
+          }));
+          setAvailableCourses(formattedCourses);
+        } else if (error) {
+          console.error("Error fetching courses:", error);
+        }
+      } catch (err) {
+        console.error("Failed to fetch courses:", err);
+      } finally {
+        setLoadingCourses(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const form = useForm<FormValues>({
     initialValues: {
@@ -69,6 +103,7 @@ const ContactForm = () => {
       qualification: "",
       semester: "",
       college: "",
+      courses: [],
       receipt: null,
     },
     validate: zodResolver(formSchema),
@@ -76,18 +111,51 @@ const ContactForm = () => {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
+    // Validate receipt is present
+    if (!values.receipt) {
+      setFileError("Payment receipt is required");
+      return;
+    }
+
     setIsSubmitting(true);
+    setSubmissionError(null);
     try {
-      // Here you would normally send the form data to your backend
-      console.log("Form submitted:", values);
+      // Get the selected qualification and semester labels
+      const qualificationItem = educationalQualifications.find((item) => item.value === values.qualification);
+      const semesterItem = semesters.find((item) => item.value === values.semester);
 
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Get the course names from the selected course IDs
+      const selectedCourseNames = values.courses.map((courseId) => {
+        const course = availableCourses.find((c) => c.value === courseId);
+        return course?.label || courseId;
+      });
 
-      setIsSubmitted(true);
-      form.reset();
+      // Submit the application using the API
+      const { success, error } = await submitApplication({
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        qualification: values.qualification,
+        semester: values.semester,
+        college: values.college,
+        courses: values.courses,
+        // Pass the labels and course names
+        qualificationLabel: qualificationItem?.label,
+        semesterLabel: semesterItem?.label,
+        courseNames: selectedCourseNames,
+        receipt: values.receipt,
+      });
+
+      if (success) {
+        setIsSubmitted(true);
+        form.reset();
+        setFilePreview(null);
+      } else {
+        setSubmissionError(error || "Failed to submit application. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
+      setSubmissionError("An unexpected error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -95,7 +163,7 @@ const ContactForm = () => {
 
   return (
     <Box py={rem(80)} style={{ backgroundColor: "white" }}>
-      <Container size="lg">
+      <Container size="lg" id="reg-form">
         <Box mb={rem(40)} ta="center">
           <Title
             order={2}
@@ -186,14 +254,14 @@ const ContactForm = () => {
                   Thank You!
                 </Text>
                 <Text>Your registration has been submitted successfully. Our team will contact you shortly.</Text>
-                <Button
+                {/* <Button
                   mt={rem(20)}
                   onClick={() => setIsSubmitted(false)}
                   variant="gradient"
                   gradient={{ from: "var(--mantine-color-primary-5)", to: "var(--mantine-color-primary-8)", deg: 45 }}
                 >
                   Submit Another Registration
-                </Button>
+                </Button> */}
               </Paper>
             ) : (
               <Paper
@@ -241,7 +309,7 @@ const ContactForm = () => {
                       placeholder="10-digit mobile number"
                       required
                       maxLength={10}
-                      onKeyPress={(e) => {
+                      onKeyUp={(e) => {
                         // Allow only digits
                         if (!/[0-9]/.test(e.key)) {
                           e.preventDefault();
@@ -301,9 +369,35 @@ const ContactForm = () => {
                       }}
                     />
 
+                    {loadingCourses ? (
+                      <Box py="md">
+                        <Text size="sm" fw={500} mb={5}>
+                          Loading Courses...
+                        </Text>
+                        <Loader size="sm" />
+                      </Box>
+                    ) : (
+                      <MultiSelect
+                        label="Courses Interested In"
+                        placeholder="Select one or more courses"
+                        data={availableCourses}
+                        required
+                        searchable
+                        nothingFoundMessage="No courses found"
+                        {...form.getInputProps("courses")}
+                        styles={{
+                          input: {
+                            "&:focus": {
+                              borderColor: "var(--mantine-color-primary-5)",
+                            },
+                          },
+                        }}
+                      />
+                    )}
+
                     <Box mb="md">
                       <Text fw={500} size="sm" mb={5}>
-                        Payment Receipt
+                        Payment Receipt <Text span c="red" component="span">*</Text>
                       </Text>
                       <Paper
                         withBorder
@@ -321,15 +415,21 @@ const ContactForm = () => {
                           leftSection={<IconUpload size="0.9rem" style={{ opacity: 0.7 }} />}
                           onChange={(file) => {
                             form.setFieldValue("receipt", file);
-                            setFileError(null);
+                            // Clear error if file is selected, otherwise set error
+                            if (file) {
+                              setFileError(null);
 
-                            if (file && file.type.startsWith("image/")) {
-                              const reader = new FileReader();
-                              reader.onload = (e) => {
-                                setFilePreview(e.target?.result as string);
-                              };
-                              reader.readAsDataURL(file);
+                              if (file && file.type.startsWith("image/")) {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                  setFilePreview(e.target?.result as string);
+                                };
+                                reader.readAsDataURL(file);
+                              } else {
+                                setFilePreview(null);
+                              }
                             } else {
+                              setFileError("Payment receipt is required");
                               setFilePreview(null);
                             }
                           }}
@@ -388,6 +488,11 @@ const ContactForm = () => {
                     </Box>
 
                     <Group justify="flex-end">
+                      {submissionError && (
+                        <Text c="red" size="sm" mt="xs">
+                          {submissionError}
+                        </Text>
+                      )}
                       <Button
                         type="submit"
                         loading={isSubmitting}
@@ -396,6 +501,7 @@ const ContactForm = () => {
                         mt="md"
                         radius="md"
                         color="primary"
+                        disabled={!form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0}
                         style={{
                           fontWeight: 600,
                         }}

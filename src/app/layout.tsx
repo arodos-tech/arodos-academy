@@ -15,6 +15,7 @@ import { ThemeProvider } from "@/theme/theme-provider";
 
 // Components
 import Header from "@/components/header";
+import Footer from "@/components/footer";
 
 // Metadata
 export const metadata = {
@@ -36,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <AppShell header={{ height: 80 }} padding="md">
                 <Header />
                 {children}
+                <Footer />
               </AppShell>
             </ThemeProvider>
           </ModalsProvider>

@@ -16,11 +16,11 @@ import {
 } from "@mantine/core";
 import { IconClock, IconCurrencyRupee, IconCheck, IconCertificate, IconArrowLeft } from "@/assets/icons";
 
-interface CourseHeroProps {
+interface CourseDetailsProps {
   course: any;
 }
 
-export default function CourseHero({ course }: CourseHeroProps) {
+export default function CourseDetails({ course }: CourseDetailsProps) {
   // Parse tags from course data
   const tags = course?.tags ? course.tags.split(",").map((tag: string) => tag.trim()) : [];
 

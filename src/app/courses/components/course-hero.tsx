@@ -4,6 +4,7 @@ import { Box, Container, Text, Title, rem, Stack, Flex, Group, ThemeIcon } from 
 import { useIsMobile } from "@/hooks";
 import { IconBook, IconCertificate, IconRocket } from "@/assets/icons";
 import { courseHero } from "@/assets/images";
+import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const CourseHero = () => {
   const isMobile = useIsMobile();
@@ -41,7 +42,7 @@ const CourseHero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          background: "linear-gradient(135deg, rgba(255, 0, 0, 0.36) 0%, rgba(180, 0, 0, 0.45) 100%)",
+          background: HERO_GRADIENT_OVERLAY,
           zIndex: 2,
         }}
       />

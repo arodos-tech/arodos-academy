@@ -42,9 +42,9 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
           </Stack>
         ) : (
           <Box mb={80}>
-            <Title order={3} mb={30} ta="center">
+            {/* <Title order={3} mb={30} ta="center">
               All Courses
-            </Title>
+            </Title> */}
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="xl">
               {courses?.map?.((course, index) => (
                 <CourseCard key={index} course={course} />

@@ -42,12 +42,12 @@ const CTA = () => {
               <Button
                 size="xl"
                 variant="white"
-                c="dark"
+                c="primary"
                 radius="xl"
                 px={40}
                 rightSection={<IconArrowRight size={20} />}
                 component={Link}
-                href="/apply"
+                href="/contact"
               >
                 Apply Now
               </Button>
