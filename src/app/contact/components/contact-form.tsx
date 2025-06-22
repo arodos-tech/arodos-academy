@@ -25,6 +25,8 @@ import { IconUpload, IconCheck, IconX, IconPhoto } from "@/assets/icons";
 import { useIsMobile } from "@/hooks";
 import { getCourses } from "@/actions/courses";
 import { submitApplication } from "@/actions/applications";
+import { getSettings } from "@/actions/settings";
+import { notifications } from "@mantine/notifications";
 
 const educationalQualifications = [
   { value: "be-btech", label: "B.E/B.Tech" },
@@ -69,21 +71,24 @@ const ContactForm = () => {
   const [availableCourses, setAvailableCourses] = useState<{ value: string; label: string }[]>([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
+  const [paymentSettings, setPaymentSettings] = useState({
+    upiId: "arodos@upi",
+    qrCodeUrl: "",
+  });
   const isMobile = useIsMobile();
 
   // Fetch available courses
   useEffect(() => {
+    // Fetch courses from API
     const fetchCourses = async () => {
       try {
-        const { courses, error } = await getCourses();
-        if (courses) {
+        const { courses } = await getCourses();
+        if (courses && courses.length > 0) {
           const formattedCourses = courses.map((course) => ({
-            value: course.id.toString(),
+            value: course.id.toString(), // Ensure value is a string
             label: course.name,
           }));
           setAvailableCourses(formattedCourses);
-        } else if (error) {
-          console.error("Error fetching courses:", error);
         }
       } catch (err) {
         console.error("Failed to fetch courses:", err);
@@ -92,7 +97,23 @@ const ContactForm = () => {
       }
     };
 
+    // Fetch payment settings
+    const fetchSettings = async () => {
+      try {
+        const { success, settings } = await getSettings();
+        if (success && settings?.payment) {
+          setPaymentSettings({
+            upiId: settings.payment.upiId || "arodos@upi",
+            qrCodeUrl: settings.payment.qrCodeUrl || "",
+          });
+        }
+      } catch (error) {
+        console.error("Failed to fetch payment settings:", error);
+      }
+    };
+
     fetchCourses();
+    fetchSettings();
   }, []);
 
   const form = useForm<FormValues>({
@@ -150,8 +171,28 @@ const ContactForm = () => {
         setIsSubmitted(true);
         form.reset();
         setFilePreview(null);
+        notifications.show({
+          title: "Application Submitted",
+          message: "Your application has been submitted successfully!",
+          color: "green",
+          icon: <IconCheck size="1.5rem" />,
+          position: "bottom-center",
+          autoClose: 3000,
+          radius: "md",
+          withBorder: true,
+        });
       } else {
         setSubmissionError(error || "Failed to submit application. Please try again.");
+        notifications.show({
+          title: "Submission Failed",
+          message: error || "Failed to submit application. Please try again.",
+          color: "red",
+          icon: <IconX size="1.5rem" />,
+          position: "bottom-center",
+          autoClose: 3000,
+          radius: "md",
+          withBorder: true,
+        });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -211,36 +252,45 @@ const ContactForm = () => {
                     margin: "0 auto",
                   }}
                 >
-                  {/* Replace with actual QR code image */}
-                  <Box
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundImage:
-                        "linear-gradient(45deg, var(--mantine-color-gray-1) 25%, transparent 25%, transparent 50%, var(--mantine-color-gray-1) 50%, var(--mantine-color-gray-1) 75%, transparent 75%, transparent)",
-                      backgroundSize: "20px 20px",
-                      opacity: 0.5,
-                    }}
-                  />
-                  <Box
-                    style={{
-                      position: "relative",
-                      zIndex: 1,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <IconPhoto size={120} style={{ opacity: 0.7, marginBottom: rem(10) }} />
-                    <Text>QR Code</Text>
-                  </Box>
+                  {paymentSettings.qrCodeUrl ? (
+                    <img
+                      src={paymentSettings.qrCodeUrl}
+                      alt="Payment QR Code"
+                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    />
+                  ) : (
+                    <>
+                      <Box
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          backgroundImage:
+                            "linear-gradient(45deg, var(--mantine-color-gray-1) 25%, transparent 25%, transparent 50%, var(--mantine-color-gray-1) 50%, var(--mantine-color-gray-1) 75%, transparent 75%, transparent)",
+                          backgroundSize: "20px 20px",
+                          opacity: 0.5,
+                        }}
+                      />
+                      <Box
+                        style={{
+                          position: "relative",
+                          zIndex: 1,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <IconPhoto size={120} style={{ opacity: 0.7, marginBottom: rem(10) }} />
+                        <Text>QR Code</Text>
+                      </Box>
+                    </>
+                  )}
                 </Box>
               </Box>
-              <Text mb={rem(5)}>UPI ID: arodos@upi</Text>
+              <Text mb={rem(5)}>UPI ID: {paymentSettings.upiId}</Text>
               <Text c="dimmed" fz="sm">
                 Please upload the payment receipt in the form after completing the payment.
               </Text>
@@ -254,14 +304,14 @@ const ContactForm = () => {
                   Thank You!
                 </Text>
                 <Text>Your registration has been submitted successfully. Our team will contact you shortly.</Text>
-                {/* <Button
+                <Button
                   mt={rem(20)}
                   onClick={() => setIsSubmitted(false)}
                   variant="gradient"
                   gradient={{ from: "var(--mantine-color-primary-5)", to: "var(--mantine-color-primary-8)", deg: 45 }}
                 >
                   Submit Another Registration
-                </Button> */}
+                </Button>
               </Paper>
             ) : (
               <Paper
@@ -397,7 +447,7 @@ const ContactForm = () => {
 
                     <Box mb="md">
                       <Text fw={500} size="sm" mb={5}>
-                        Payment Receipt <Text span c="red" component="span">*</Text>
+                        Payment Receipt
                       </Text>
                       <Paper
                         withBorder

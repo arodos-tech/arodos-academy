@@ -2,7 +2,7 @@
 
 import { Box, Container, Text, Title, Stack, rem } from "@mantine/core";
 import { useIsMobile } from "@/hooks";
-import { homeHero } from "@/assets/images";
+import { contactHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const ContactHero = () => {
@@ -25,7 +25,7 @@ const ContactHero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage: `url(${homeHero.src})`,
+          backgroundImage: `url(${contactHero.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "brightness(0.4)",

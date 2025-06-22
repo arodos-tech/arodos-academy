@@ -6,7 +6,7 @@ export const FQ_LOCAL_SERVER = "http://localhost:4466";
 // uploads
 export const IMAGE_URL = "https://uploads.backendservices.in/storage";
 export const IMAGE_UPLOAD_URL = "https://uploads.backendservices.in/api";
-export const UPLOAD_DIR = "arodos-academy";
+export const UPLOAD_DIR = "arodos_academy";
 export const UPLOAD_ID = "arodos";
 export const UPLOAD_PASS = "arodos";
 export const EMAIL_URL = "https://send-email-api.backendservices.in/";
