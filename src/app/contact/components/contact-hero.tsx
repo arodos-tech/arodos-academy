@@ -15,6 +15,9 @@ const ContactHero = () => {
         position: "relative",
         overflow: "hidden",
         height: rem(600),
+        maxWidth: "100%",
+        width: "100%",
+        overflowX: "hidden",
       }}
     >
       {/* Hero background image with overlay */}
@@ -51,11 +54,15 @@ const ContactHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          maxWidth: "100%",
+          width: "100%",
+          boxSizing: "border-box",
+          overflow: "hidden",
         }}
       >
         <Stack align="center" gap="xl">
@@ -66,7 +73,7 @@ const ContactHero = () => {
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(40) : rem(64),
+              fontSize: isMobile ? rem(32) : rem(64),
               lineHeight: 1.1,
               textAlign: "center",
               maxWidth: rem(900),
@@ -77,7 +84,7 @@ const ContactHero = () => {
             Contact Arodos Academy
           </Title>
 
-          <Text size={isMobile ? "lg" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
+          <Text size={isMobile ? "md" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
             Have questions about our courses or need assistance? We're here to help you take the next step in your tech
             education journey.
           </Text>

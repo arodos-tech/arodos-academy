@@ -8,15 +8,15 @@ const OurMission = () => {
   const isMobile = useIsMobile();
 
   return (
-    <Box py={120}>
-      <Container size="lg">
-        <Grid gutter={60} align="center">
+    <Box py={isMobile ? 60 : 120} style={{ width: "100%", maxWidth: "100%", overflowX: "hidden" }}>
+      <Container size="lg" style={{ width: "100%", maxWidth: "100%", boxSizing: "border-box" }}>
+        <Grid gutter={isMobile ? 30 : 60} align="center">
           <Grid.Col span={{ base: 12, md: 6 }}>
             <Box
               style={{
                 position: "relative",
                 height: "100%",
-                minHeight: rem(350),
+                minHeight: isMobile ? rem(300) : rem(350),
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -25,8 +25,10 @@ const OurMission = () => {
                 borderRadius: rem(12),
                 boxShadow: "0 20px 40px rgba(0, 0, 0, 0.05)",
                 border: "5px solid white",
-                padding: rem(20),
+                padding: isMobile ? rem(15) : rem(20),
                 overflow: "hidden",
+                maxWidth: "100%",
+                boxSizing: "border-box",
               }}
             >
               {/* Main icon */}
@@ -67,9 +69,14 @@ const OurMission = () => {
                   left: "10%",
                   opacity: 0.2,
                   transform: "rotate(-15deg)",
+                  maxWidth: "30%",
+                  maxHeight: "30%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <IconCode size={80} color="var(--mantine-color-primary-5)" />
+                <IconCode size={isMobile ? 60 : 80} color="var(--mantine-color-primary-5)" />
               </Box>
 
               <Box
@@ -79,9 +86,14 @@ const OurMission = () => {
                   right: "10%",
                   opacity: 0.2,
                   transform: "rotate(15deg)",
+                  maxWidth: "30%",
+                  maxHeight: "30%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <IconCertificate size={70} color="var(--mantine-color-primary-5)" />
+                <IconCertificate size={isMobile ? 50 : 70} color="var(--mantine-color-primary-5)" />
               </Box>
 
               <Box
@@ -90,9 +102,14 @@ const OurMission = () => {
                   bottom: "10%",
                   left: "15%",
                   opacity: 0.2,
+                  maxWidth: "25%",
+                  maxHeight: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <IconBulb size={60} color="var(--mantine-color-primary-5)" />
+                <IconBulb size={isMobile ? 40 : 60} color="var(--mantine-color-primary-5)" />
               </Box>
 
               <Box
@@ -101,9 +118,14 @@ const OurMission = () => {
                   top: "15%",
                   right: "15%",
                   opacity: 0.2,
+                  maxWidth: "25%",
+                  maxHeight: "25%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <IconSchool size={60} color="var(--mantine-color-primary-5)" />
+                <IconSchool size={isMobile ? 40 : 60} color="var(--mantine-color-primary-5)" />
               </Box>
             </Box>
           </Grid.Col>
@@ -115,18 +137,21 @@ const OurMission = () => {
               <Title
                 order={2}
                 style={{
-                  fontSize: isMobile ? rem(28) : rem(36),
+                  fontSize: isMobile ? rem(24) : rem(36),
                   lineHeight: 1.2,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  maxWidth: "100%",
                 }}
               >
                 Bridging the Gap Between Education and Industry
               </Title>
-              <Text size="lg" c="dimmed" lh={1.8} mt="md">
+              <Text size={isMobile ? "md" : "lg"} c="dimmed" lh={1.8} mt="md" style={{ maxWidth: "100%", overflowWrap: "break-word" }}>
                 At Arodos Academy, our mission is to transform tech education by providing hands-on, industry-relevant
                 training that prepares students for real-world challenges. We believe in learning by doing, guided by
                 industry experts who bring their practical experience to the classroom.
               </Text>
-              <Text size="lg" c="dimmed" lh={1.8} mt="xs">
+              <Text size={isMobile ? "md" : "lg"} c="dimmed" lh={1.8} mt="xs" style={{ maxWidth: "100%", overflowWrap: "break-word" }}>
                 As a specialized branch of{" "}
                 <Text
                   component="a"
@@ -149,12 +174,15 @@ const OurMission = () => {
               <Box
                 mt="xl"
                 style={{
-                  padding: "20px",
+                  padding: isMobile ? "15px" : "20px",
                   borderLeft: "4px solid var(--mantine-color-primary-5)",
                   backgroundColor: "var(--mantine-color-primary-0)",
+                  maxWidth: "100%",
+                  boxSizing: "border-box",
+                  overflowWrap: "break-word",
                 }}
               >
-                <Text size="lg" fw={500} fz="lg" fs="italic">
+                <Text size={isMobile ? "md" : "lg"} fw={500} fs="italic" style={{ maxWidth: "100%" }}>
                   "We don't just teach code; we build problem solvers who can adapt to the rapidly changing technology
                   landscape."
                 </Text>

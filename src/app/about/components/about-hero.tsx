@@ -15,6 +15,9 @@ const AboutHero = () => {
         position: "relative",
         overflow: "hidden",
         height: rem(600),
+        maxWidth: "100%",
+        width: "100%",
+        overflowX: "hidden",
       }}
     >
       {/* Hero background image with overlay */}
@@ -50,11 +53,15 @@ const AboutHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          maxWidth: "100%",
+          width: "100%",
+          boxSizing: "border-box",
+          overflow: "hidden",
         }}
       >
         <Text c="white" fw={600} size="lg" tt="uppercase" ta="center">
@@ -64,18 +71,20 @@ const AboutHero = () => {
         <Title
           order={1}
           style={{
-            fontSize: isMobile ? rem(40) : rem(64),
+            fontSize: isMobile ? rem(32) : rem(64),
             lineHeight: 1.1,
             textAlign: "center",
-            maxWidth: rem(900),
+            maxWidth: "100%",
             margin: "1rem auto 0",
             fontWeight: 800,
+            wordBreak: "break-word",
+            overflowWrap: "break-word",
           }}
         >
           Empowering the Next Generation of Tech Leaders
         </Title>
 
-        <Text size={isMobile ? "lg" : "xl"} ta="center" maw={800} mx="auto" mt="xl" style={{ opacity: 0.9 }}>
+        <Text size={isMobile ? "md" : "xl"} ta="center" maw={800} mx="auto" mt="xl" style={{ opacity: 0.9 }}>
           Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
           <Text
             component="a"

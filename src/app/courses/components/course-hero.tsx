@@ -16,6 +16,9 @@ const CourseHero = () => {
         position: "relative",
         overflow: "hidden",
         height: rem(600),
+        maxWidth: "100%",
+        width: "100%",
+        overflowX: "hidden",
       }}
     >
       {/* Hero background image with overlay */}
@@ -51,11 +54,15 @@ const CourseHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          maxWidth: "100%",
+          width: "100%",
+          boxSizing: "border-box",
+          overflow: "hidden",
         }}
       >
         <Flex direction={{ base: "column", md: "row" }} align="center" gap="xl">
@@ -80,7 +87,7 @@ const CourseHero = () => {
               <Title
                 order={1}
                 style={{
-                  fontSize: isMobile ? rem(40) : rem(64),
+                  fontSize: isMobile ? rem(32) : rem(64),
                   fontWeight: 800,
                   textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
                   lineHeight: 1.2,
@@ -89,7 +96,7 @@ const CourseHero = () => {
                 Explore All Our Courses
               </Title>
 
-              <Text size="xl" style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)" }}>
+              <Text size={isMobile ? "md" : "xl"} style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)" }}>
                 Find the perfect course to advance your career and skills in today's competitive job market.
               </Text>
 

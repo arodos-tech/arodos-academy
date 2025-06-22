@@ -106,11 +106,10 @@ const Header = () => {
       >
         <Stack gap="xl" style={{ flex: 1 }}>
           {items}
-          <Divider />
           <Group>
-            {/* <Button fullWidth onClick={() => navigateTo("/contact#reg-form")}>
+            <Button fullWidth size="lg" onClick={() => navigateTo("/contact#reg-form")}>
               Apply Now
-            </Button> */}
+            </Button>
           </Group>
         </Stack>
       </Drawer>

@@ -17,6 +17,8 @@ const HomeHero = () => {
         position: "relative",
         overflow: "hidden",
         height: rem(600),
+        maxWidth: "100%",
+        width: "100%",
       }}
     >
       {/* Hero background image with overlay */}
@@ -52,11 +54,14 @@ const HomeHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
+          maxWidth: "100%",
+          width: "100%",
+          boxSizing: "border-box",
         }}
       >
         <Stack align="center" gap="xl">
@@ -67,7 +72,7 @@ const HomeHero = () => {
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(40) : rem(64),
+              fontSize: isMobile ? rem(32) : rem(64),
               lineHeight: 1.1,
               textAlign: "center",
               maxWidth: rem(900),
@@ -78,25 +83,35 @@ const HomeHero = () => {
             Launch Your Tech Career with Arodos Academy
           </Title>
 
-          <Text size={isMobile ? "lg" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
+          <Text size={isMobile ? "md" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
             Join us in shaping a brighter future by nurturing potential, empowering minds, and fostering growth through
             education and collaboration.
           </Text>
 
-          <Group mt="xl" justify="center">
+          <Group mt="xl" justify="center" wrap="wrap" gap={isMobile ? "sm" : "xl"} w="100%">
             <Button
-              size="xl"
-              rightSection={<IconArrowRight size={20} />}
+              size={isMobile ? "md" : "xl"}
+              rightSection={<IconArrowRight size={isMobile ? 16 : 20} />}
               component={Link}
               href="/courses"
               radius="xl"
-              px={40}
+              px={isMobile ? 20 : 40}
               variant="white"
               c="var(--mantine-color-primary-5)"
+              style={{ maxWidth: isMobile ? "45%" : "auto" }}
             >
               Explore Courses
             </Button>
-            <Button variant="outline" size="xl" color="white" radius="xl" px={40} component="a" href="#why-us">
+            <Button 
+              variant="outline" 
+              size={isMobile ? "md" : "xl"} 
+              color="white" 
+              radius="xl" 
+              px={isMobile ? 20 : 40} 
+              component="a" 
+              href="#why-us"
+              style={{ maxWidth: isMobile ? "45%" : "auto" }}
+            >
               Learn More
             </Button>
           </Group>

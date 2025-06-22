@@ -19,8 +19,8 @@ import Footer from "@/components/footer";
 
 // Metadata
 export const metadata = {
-  title: "My Mantine app",
-  description: "I have followed setup instructions carefully",
+  title: "Arodos Academy",
+  description: "Launch Your Tech Career with Arodos Academy",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
