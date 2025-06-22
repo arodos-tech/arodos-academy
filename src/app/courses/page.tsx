@@ -1,5 +1,5 @@
 import CoursesList from "@/app/courses/components/courses-list";
-import Hero from "@/app/courses/components/hero";
+import CourseHero from "@/app/courses/components/course-hero";
 import { getCourses } from "@/actions/courses";
 
 export default async function CoursesPage() {
@@ -7,7 +7,7 @@ export default async function CoursesPage() {
 
   return (
     <>
-      <Hero />
+      <CourseHero />
       <CoursesList courses={courses} error={error} />
     </>
   );

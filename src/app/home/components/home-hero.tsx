@@ -4,8 +4,9 @@ import { Box, Container, Group, Stack, Text, Title, Button, rem } from "@mantine
 import { IconArrowRight, IconCode, IconRocket } from "@/assets/icons";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks";
+import { homeHero } from "@/assets/images";
 
-const Hero = () => {
+const HomeHero = () => {
   const isMobile = useIsMobile();
 
   return (
@@ -14,6 +15,7 @@ const Hero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
+        height: rem(600),
       }}
     >
       {/* Hero background image with overlay */}
@@ -24,8 +26,7 @@ const Hero = () => {
           left: 0,
           right: 0,
           bottom: 0,
-          backgroundImage:
-            "url(https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80)",
+          backgroundImage: `url(${homeHero.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           filter: "brightness(0.4)",
@@ -45,7 +46,18 @@ const Hero = () => {
           zIndex: 2,
         }}
       />
-      <Container size="lg" style={{ position: "relative", zIndex: 3, padding: `${rem(120)} 0 ${rem(80)}` }}>
+      <Container
+        size="lg"
+        style={{
+          position: "relative",
+          zIndex: 3,
+          padding: `${rem(120)} 0 ${rem(80)}`,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <Stack align="center" gap="xl">
           <Text c="white" fw={600} size="lg" tt="uppercase" ta="center">
             Building Futures Together By Empowering Minds
@@ -79,7 +91,7 @@ const Hero = () => {
               radius="xl"
               px={40}
               variant="white"
-              c="red"
+              c="var(--mantine-color-primary-5)"
             >
               Explore Courses
             </Button>
@@ -147,4 +159,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default HomeHero;

@@ -15,7 +15,7 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
     <Box id="courses" py={120} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
       <Container size="lg">
         <Stack align="center" gap="xl" mb={80}>
-          <Text c="red" fw={700} size="lg" tt="uppercase" ta="center">
+          <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
             BECOME IN DEMAND
           </Text>
           <Title
@@ -36,7 +36,7 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
 
         {error ? (
           <Stack align="center" py={40}>
-            <Text size="lg" c="red">
+            <Text size="lg" c="var(--mantine-color-primary-5)">
               {error}
             </Text>
           </Stack>

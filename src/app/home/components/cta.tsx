@@ -12,12 +12,13 @@ const CTA = () => {
     <Box py={120}>
       <Container size="lg">
         <Box
-          bg="red.6"
+          bg="primary.3"
           c="white"
           py={60}
           px={isMobile ? 30 : 60}
           style={{
-            background: "linear-gradient(135deg, var(--mantine-color-red-6) 0%, var(--mantine-color-red-8) 100%)",
+            background:
+              "linear-gradient(135deg, var(--mantine-color-primary-5) 0%, var(--mantine-color-primary-8) 100%)",
             borderRadius: "var(--mantine-radius-xl)",
             position: "relative",
             overflow: "hidden",
@@ -50,7 +51,7 @@ const CTA = () => {
               >
                 Apply Now
               </Button>
-              <Text size="sm" mt="xs" style={{ opacity: 0.8, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Text size="sm" mt="xs" style={{ opacity: 0.8, display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <IconRocket size={16} />
                 Hands-on learning for real-world success
               </Text>

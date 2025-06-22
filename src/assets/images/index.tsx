@@ -1,6 +1,8 @@
 import logoDark from "@/assets/images/logo-dark.png";
 import logoLight from "@/assets/images/logo-light.png";
 import logo from "@/assets/images/logo.png";
-import coursesHero from "@/assets/images/courses-hero.avif";
+import courseHero from "@/assets/images/course-hero.jpg";
+import aboutHero from "@/assets/images/about-hero.jpg";
+import homeHero from "@/assets/images/home-hero.jpg";
 
-export { logoDark, logoLight, logo, coursesHero };
+export { logoDark, logoLight, logo, courseHero, aboutHero, homeHero };

@@ -6,7 +6,6 @@ import Link from "next/link";
 // Import components
 import CourseHero from "./components/course-hero";
 import CourseContent from "./components/course-content";
-import CourseDetailsSidebar from "./components/course-details-sidebar";
 import CourseCTA from "./components/course-cta";
 
 interface CoursePageProps {
@@ -30,13 +29,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
       <Box py={80}>
         <Container size="lg">
           <Stack align="center">
-            <Title order={2} c="red.7">
+            <Title order={2} c="var(--mantine-color-primary-5)">
               Error
             </Title>
             <Text size="lg" mb="xl">
               {error}
             </Text>
-            <Button variant="filled" color="red" component={Link} href="/courses">
+            <Button variant="filled" color="primary" component={Link} href="/courses">
               Back to Courses
             </Button>
           </Stack>

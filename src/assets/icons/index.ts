@@ -28,6 +28,20 @@ export {
   IconBulb,
   IconDeviceLaptop,
   IconChartBar,
+  IconBrandLinkedin,
+  IconBrandTwitter,
+  IconHeartHandshake,
+  IconTargetArrow,
+  IconAward,
+  IconQuote,
+  IconMail,
+  IconPhone,
+  IconMapPin,
+  IconBrandInstagram,
+  IconBrandYoutube,
+  IconUpload,
+  IconX,
+  IconPhoto,
 } from "@tabler/icons-react";
 
 // Re-export any custom icons here

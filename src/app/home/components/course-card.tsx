@@ -32,13 +32,13 @@ const CourseCard = ({ course }: CourseProps) => {
 
     switch (courseId % 3) {
       case 0:
-        return <IconSeo size={48} color="var(--mantine-color-red-6)" />;
+        return <IconSeo size={48} color="var(--mantine-color-primary-5)" />;
       case 1:
-        return <IconCode size={48} color="var(--mantine-color-red-6)" />;
+        return <IconCode size={48} color="var(--mantine-color-primary-5)" />;
       case 2:
-        return <IconCertificate size={48} color="var(--mantine-color-red-6)" />;
+        return <IconCertificate size={48} color="var(--mantine-color-primary-5)" />;
       default:
-        return <IconBook size={48} color="var(--mantine-color-red-6)" />;
+        return <IconBook size={48} color="var(--mantine-color-primary-5)" />;
     }
   };
 
@@ -63,7 +63,7 @@ const CourseCard = ({ course }: CourseProps) => {
         <Box
           p="md"
           style={{
-            backgroundColor: "var(--mantine-color-red-0)",
+            backgroundColor: "var(--mantine-color-primary-0)",
             borderRadius: "var(--mantine-radius-md)",
             display: "flex",
             justifyContent: "center",
@@ -93,8 +93,8 @@ const CourseCard = ({ course }: CourseProps) => {
               radius="sm"
               style={{
                 textTransform: "none",
-                backgroundColor: "var(--mantine-color-red-0)",
-                color: "var(--mantine-color-red-6)",
+                backgroundColor: "var(--mantine-color-primary-0)",
+                color: "var(--mantine-color-primary-5)",
                 fontWeight: 600,
                 padding: "4px 12px",
               }}
@@ -123,7 +123,7 @@ const CourseCard = ({ course }: CourseProps) => {
 
           <Button
             variant="light"
-            color="red"
+            color="primary"
             size="md"
             rightSection={<IconArrowRight size={18} />}
             component={Link}

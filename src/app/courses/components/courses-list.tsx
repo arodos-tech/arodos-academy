@@ -42,7 +42,7 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
   });
 
   return (
-    <Box py={40} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
+    <Box py={100} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
       <Container size="lg">
         <Box mb={40}>
           <TextInput
@@ -64,7 +64,9 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
             </Stack>
           ) : sortedCourses.length === 0 ? (
             <Stack align="center" py={40}>
-              <Text size="xl" fw={500}>No courses found. Please try a different search term.</Text>
+              <Text size="xl" fw={500}>
+                No courses found. Please try a different search term.
+              </Text>
             </Stack>
           ) : (
             <>

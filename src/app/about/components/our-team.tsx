@@ -1,0 +1,127 @@
+"use client";
+
+import { Box, Container, SimpleGrid, Stack, Text, Title, rem, Card, Avatar, Group } from "@mantine/core";
+import { IconBrandLinkedin, IconBrandTwitter } from "@/assets/icons";
+import { useIsMobile } from "@/hooks";
+
+const teamMembers = [
+  {
+    name: "Dr. Arun Kumar",
+    position: "Founder & CEO",
+    image:
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80",
+    bio: "With over 15 years of experience in the tech industry, Dr. Kumar founded Arodos Academy with a vision to transform tech education.",
+  },
+  {
+    name: "Priya Sharma",
+    position: "Head of Curriculum",
+    image:
+      "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=776&q=80",
+    bio: "Priya brings her expertise in educational psychology and curriculum design to create engaging and effective learning experiences.",
+  },
+  {
+    name: "Rahul Mehta",
+    position: "Lead Instructor",
+    image:
+      "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+    bio: "A former senior developer at Google, Rahul specializes in full-stack development and has mentored hundreds of students.",
+  },
+  {
+    name: "Ananya Patel",
+    position: "Career Coach",
+    image:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80",
+    bio: "Ananya helps students navigate their career paths and prepare for the job market with her extensive industry connections.",
+  },
+];
+
+const OurTeam = () => {
+  const isMobile = useIsMobile();
+
+  return (
+    <Box py={100}>
+      <Container size="lg">
+        <Stack align="center" gap="xl" mb={60}>
+          <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
+            OUR TEAM
+          </Text>
+          <Title
+            order={2}
+            style={{
+              fontSize: isMobile ? rem(28) : rem(36),
+              textAlign: "center",
+              maxWidth: rem(700),
+              margin: "0 auto",
+            }}
+          >
+            Meet the Experts Behind Arodos Academy
+          </Title>
+          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto">
+            Our team consists of industry professionals, educators, and tech enthusiasts who are passionate about
+            sharing their knowledge and experience.
+          </Text>
+        </Stack>
+
+        <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="xl" mt={50}>
+          {teamMembers.map((member, index) => (
+            <Card
+              key={index}
+              shadow="md"
+              p="xl"
+              radius="lg"
+              withBorder
+              style={{
+                transition: "all 0.3s ease",
+                height: "100%",
+                "&:hover": {
+                  transform: "translateY(-8px)",
+                  boxShadow: "0 20px 30px rgba(0, 0, 0, 0.1)",
+                  borderColor: "var(--mantine-color-primary-3)",
+                },
+              }}
+            >
+              <Stack align="center">
+                <Avatar
+                  src={member.image}
+                  size={120}
+                  radius={120}
+                  mx="auto"
+                  style={{
+                    border: "4px solid var(--mantine-color-primary-1)",
+                  }}
+                />
+                <Title order={4} ta="center" mt="md">
+                  {member.name}
+                </Title>
+                <Text size="sm" c="var(--mantine-color-primary-5)" fw={600} ta="center" mt={-5}>
+                  {member.position}
+                </Text>
+                <Text size="sm" c="dimmed" ta="center" mt="xs">
+                  {member.bio}
+                </Text>
+                <Group gap="md" mt="md">
+                  <IconBrandLinkedin
+                    size={20}
+                    style={{
+                      color: "var(--mantine-color-primary-5)",
+                      cursor: "pointer",
+                    }}
+                  />
+                  <IconBrandTwitter
+                    size={20}
+                    style={{
+                      color: "var(--mantine-color-primary-5)",
+                      cursor: "pointer",
+                    }}
+                  />
+                </Group>
+              </Stack>
+            </Card>
+          ))}
+        </SimpleGrid>
+      </Container>
+    </Box>
+  );
+};
+
+export default OurTeam;

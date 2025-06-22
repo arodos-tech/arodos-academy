@@ -1,4 +1,4 @@
-import Hero from "@/app/home/components/hero";
+import HomeHero from "@/app/home/components/home-hero";
 import Courses from "@/app/home/components/courses";
 import CTA from "@/app/home/components/cta";
 import WhyUs from "@/app/home/components/why-us";
@@ -9,7 +9,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero />
+      <HomeHero />
       <WhyUs />
       <Courses courses={courses} error={error} />
       <CTA />

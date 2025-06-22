@@ -40,12 +40,12 @@ const Header = () => {
       style={{
         fontWeight: 500,
         fontSize: rem(16),
-        color: activeItem === item.label ? "var(--mantine-color-red-6)" : undefined,
-        borderBottom: activeItem === item.label ? "2px solid var(--mantine-color-red-6)" : "none",
+        color: activeItem === item.label ? "var(--mantine-color-primary-5)" : undefined,
+        borderBottom: activeItem === item.label ? "2px solid var(--mantine-color-primary-5)" : "none",
         padding: `${rem(8)} ${rem(12)}`,
         transition: "all 0.2s ease",
         "&:hover": {
-          color: "var(--mantine-color-red-6)",
+          color: "var(--mantine-color-primary-5)",
         },
       }}
     >
@@ -78,7 +78,7 @@ const Header = () => {
 
           <Group visibleFrom="md">
             <ThemeToggle />
-            <Button onClick={() => navigateTo("/apply")}>Apply Now</Button>
+            <Button onClick={() => navigateTo("/contact")}>Apply Now</Button>
           </Group>
 
           <Group hiddenFrom="md" gap="sm">

@@ -1,35 +1,62 @@
 "use client";
 
-import { Box, Container, Stack, Text, Title, Flex, rem, Group, ThemeIcon } from "@mantine/core";
-import { courseHero } from "@/assets/images";
+import { Box, Container, Text, Title, rem, Stack, Flex, Group, ThemeIcon } from "@mantine/core";
+import { useIsMobile } from "@/hooks";
 import { IconBook, IconCertificate, IconRocket } from "@/assets/icons";
+import { courseHero } from "@/assets/images";
 
-const Hero = () => {
+const CourseHero = () => {
+  const isMobile = useIsMobile();
+
   return (
     <Box
-      py={80}
+      c="white"
       style={{
         position: "relative",
         overflow: "hidden",
-        backgroundImage: `url(${courseHero.src})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
+        height: rem(600),
       }}
-      c="var(--mantine-color-white)"
     >
-      {/* Dark overlay */}
+      {/* Hero background image with overlay */}
       <Box
         style={{
           position: "absolute",
           top: 0,
+          left: 0,
           right: 0,
-          width: "100%",
-          height: "100%",
-          background: "linear-gradient(135deg, rgba(139, 48, 51, 0.85) 0%, rgba(204, 0, 0, 0.3) 100%)",
+          bottom: 0,
+          backgroundImage: `url(${courseHero.src})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "brightness(0.4)",
+          zIndex: 1,
         }}
       />
 
-      <Container size="lg" style={{ position: "relative", zIndex: 1 }}>
+      {/* Red gradient overlay */}
+      <Box
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "linear-gradient(135deg, rgba(255, 0, 0, 0.36) 0%, rgba(180, 0, 0, 0.45) 100%)",
+          zIndex: 2,
+        }}
+      />
+      <Container
+        size="lg"
+        style={{
+          position: "relative",
+          zIndex: 3,
+          padding: `${rem(120)} 0 ${rem(80)}`,
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+        }}
+      >
         <Flex direction={{ base: "column", md: "row" }} align="center" gap="xl">
           <Box style={{ flex: 1 }}>
             <Stack gap="md">
@@ -38,7 +65,7 @@ const Hero = () => {
                 size="lg"
                 tt="uppercase"
                 style={{
-                  background: "var(--mantine-color-primary-6)",
+                  background: "var(--mantine-color-primary-5)",
                   display: "inline-block",
                   width: "fit-content",
                   padding: "4px 16px",
@@ -52,7 +79,7 @@ const Hero = () => {
               <Title
                 order={1}
                 style={{
-                  fontSize: rem(48),
+                  fontSize: isMobile ? rem(40) : rem(64),
                   fontWeight: 800,
                   textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
                   lineHeight: 1.2,
@@ -73,7 +100,7 @@ const Hero = () => {
                   { icon: IconRocket, text: "Career Growth" },
                 ].map((feature, i) => (
                   <Group key={i} gap="xs" align="center">
-                    <ThemeIcon variant="filled" color="var(--mantine-color-primary-6)" size="md" radius="xl">
+                    <ThemeIcon variant="filled" color="var(--mantine-color-primary-5)" size="md" radius="xl">
                       <feature.icon size={16} />
                     </ThemeIcon>
                     <Text fw={600} c="white">
@@ -93,4 +120,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;
+export default CourseHero;
