@@ -10,10 +10,7 @@ interface CourseSectionProps {
   error: string | null;
 }
 
-const Courses = ({ 
-  courses, 
-  error 
-}: CourseSectionProps) => {
+const Courses = ({ courses, error }: CourseSectionProps) => {
   return (
     <Box id="courses" py={120} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
       <Container size="lg">
@@ -64,9 +61,9 @@ const Courses = ({
             px={40}
             rightSection={<IconArrowRight size={20} />}
             component={Link}
-            href="/programs"
+            href="/courses"
           >
-            View All Programs
+            View All Courses
           </Button>
         </Box>
       </Container>

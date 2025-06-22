@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Stack, Text, Title, Button, SimpleGrid, rem } from "@mantine/core";
-import { IconArrowRight, IconCode, IconCertificate } from "@/assets/icons";
+import { IconArrowRight, IconCode, IconCertificate, IconRocket } from "@/assets/icons";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks";
 
@@ -33,8 +33,7 @@ const CTA = () => {
                 Ready to Launch Your Tech Career?
               </Title>
               <Text size="lg" style={{ opacity: 0.9, lineHeight: 1.6 }}>
-                Join Arodos Academy today and take the first step towards a rewarding career in technology. Our
-                application process is simple and our admissions team is ready to help you.
+                Join Arodos Academy today and take the first step towards a rewarding career in technology.
               </Text>
             </Stack>
 
@@ -51,8 +50,9 @@ const CTA = () => {
               >
                 Apply Now
               </Button>
-              <Text size="sm" mt="xs" style={{ opacity: 0.8 }}>
-                Next cohort starts soon. Limited seats available.
+              <Text size="sm" mt="xs" style={{ opacity: 0.8, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <IconRocket size={16} />
+                Hands-on learning for real-world success
               </Text>
             </Stack>
           </SimpleGrid>

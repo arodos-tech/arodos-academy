@@ -75,16 +75,16 @@ const Hero = () => {
               size="xl"
               rightSection={<IconArrowRight size={20} />}
               component={Link}
-              href="/programs"
+              href="/courses"
               radius="xl"
               px={40}
               variant="white"
               c="red"
             >
-              Explore Programs
+              Explore Courses
             </Button>
-            <Button variant="outline" size="xl" color="white" radius="xl" px={40} component="a" href="#courses">
-              View Courses
+            <Button variant="outline" size="xl" color="white" radius="xl" px={40} component="a" href="#why-us">
+              Learn More
             </Button>
           </Group>
 

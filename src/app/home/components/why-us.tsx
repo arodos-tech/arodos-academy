@@ -1,7 +1,5 @@
-"use client";
-
 import { Box, Container, Stack, Text, Title, SimpleGrid, Card, rem } from "@mantine/core";
-import { IconBriefcase, IconCertificate, IconCode, IconRocket, IconUsers } from "@/assets/icons";
+import { IconCertificate, IconCode, IconRocket, IconUsers } from "@/assets/icons";
 
 // Define features array for the features section
 const features = [
@@ -27,9 +25,9 @@ const features = [
   },
 ];
 
-const Features = () => {
+const WhyUs = () => {
   return (
-    <Container size="lg" py={120}>
+    <Container size="lg" py={120} id="why-us">
       <Stack align="center" gap="xl" mb={60}>
         <Text c="red" fw={700} size="lg" tt="uppercase" ta="center">
           WHY CHOOSE US
@@ -96,4 +94,4 @@ const Features = () => {
   );
 };
 
-export default Features;
+export default WhyUs;

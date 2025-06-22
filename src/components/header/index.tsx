@@ -19,6 +19,7 @@ import { logo } from "@/assets/images";
 
 // Import custom hook with header logic
 import { useHeader, navItems } from "./use-header";
+import ThemeToggle from "@/theme/theme-toggle";
 
 const HEADER_HEIGHT = rem(80);
 
@@ -76,13 +77,14 @@ const Header = () => {
           </Group>
 
           <Group visibleFrom="md">
-            <Button variant="outline" onClick={() => navigateTo("/login")}>
-              Log In
-            </Button>
+            <ThemeToggle />
             <Button onClick={() => navigateTo("/apply")}>Apply Now</Button>
           </Group>
 
-          <Burger opened={opened} onClick={toggle} hiddenFrom="md" />
+          <Group hiddenFrom="md" gap="sm">
+            <ThemeToggle />
+            <Burger opened={opened} onClick={toggle} />
+          </Group>
         </Group>
       </Container>
 
@@ -100,14 +102,13 @@ const Header = () => {
         hiddenFrom="md"
         zIndex={1000}
       >
-        <Stack>
+        <Stack gap="xl" style={{ flex: 1 }}>
           {items}
-          <Divider my="sm" />
-          <Group grow>
-            <Button variant="outline" onClick={() => navigateTo("/login")}>
-              Log In
+          <Divider />
+          <Group>
+            <Button fullWidth onClick={() => navigateTo("/apply")}>
+              Apply Now
             </Button>
-            <Button onClick={() => navigateTo("/apply")}>Apply Now</Button>
           </Group>
         </Stack>
       </Drawer>

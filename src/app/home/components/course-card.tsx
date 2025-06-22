@@ -8,7 +8,6 @@ import {
   IconCurrencyRupee,
   IconArrowRight,
   IconCode,
-  IconAppWindow,
   IconCertificate,
   IconSeo,
 } from "@/assets/icons";
@@ -76,13 +75,13 @@ const CourseCard = ({ course }: CourseProps) => {
         >
           {getIcon()}
         </Box>
-        <Title order={4} lineClamp={2}>
+        <Title order={3} lineClamp={2} style={{ fontSize: rem(20) }}>
           {course.name}
         </Title>
       </Group>
 
       <Stack gap="sm" style={{ flex: 1 }}>
-        <Text size="sm" c="dimmed" lineClamp={3} style={{ minHeight: rem(60) }}>
+        <Text size="md" c="dimmed" lineClamp={3} style={{ minHeight: rem(70), fontSize: rem(15) }}>
           {course.description || "No description available"}
         </Text>
 
@@ -108,13 +107,13 @@ const CourseCard = ({ course }: CourseProps) => {
         <Group justify="space-between" mt="md">
           <Group gap="xs">
             <Group gap={4}>
-              <IconClock size={16} />
-              <Text size="sm">{course?.duration || "N/A"}</Text>
+              <IconClock size={18} />
+              <Text size="md">{course?.duration || "N/A"}</Text>
             </Group>
             <Text size="sm">•</Text>
             <Group gap={4}>
-              <IconCurrencyRupee size={16} />
-              <Text size="sm">
+              <IconCurrencyRupee size={18} />
+              <Text size="md">
                 {typeof course?.price === "number" || !isNaN(Number(course?.price))
                   ? Number(course?.price).toLocaleString("en-IN")
                   : "Free"}
@@ -125,8 +124,8 @@ const CourseCard = ({ course }: CourseProps) => {
           <Button
             variant="light"
             color="red"
-            size="sm"
-            rightSection={<IconArrowRight size={16} />}
+            size="md"
+            rightSection={<IconArrowRight size={18} />}
             component={Link}
             href={`/courses/${course?.id}`}
           >

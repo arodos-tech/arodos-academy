@@ -7,7 +7,7 @@ import { useDisclosure } from "@mantine/hooks";
 // Navigation items configuration
 export const navItems = [
   { label: "Home", link: "/home" },
-  { label: "Programs", link: "/programs" },
+  { label: "Courses", link: "/courses" },
   { label: "About", link: "/about" },
   { label: "Contact", link: "/contact" },
 ];
@@ -32,19 +32,19 @@ export function useHeader() {
     if (!pathname) return;
 
     // Find the matching nav item based on the current path
-    const matchingItem = navItems.find(item => {
+    const matchingItem = navItems.find((item) => {
       // Exact match
       if (item.link === pathname) return true;
-      
-      // Handle nested routes (e.g., /programs/123 should highlight Programs)
+
+      // Handle nested routes (e.g., /courses/123 should highlight Courses)
       if (pathname.startsWith(`${item.link}/`)) return true;
-      
+
       // Special case for home
       if (item.link === "/home" && pathname === "/") return true;
-      
+
       return false;
     });
-    
+
     setActiveItem(matchingItem?.label || null);
   }, [pathname]);
 
@@ -66,6 +66,6 @@ export function useHeader() {
     activeItem,
     mounted,
     shouldShowHeader,
-    navigateTo
+    navigateTo,
   };
 }

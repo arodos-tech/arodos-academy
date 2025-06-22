@@ -12,6 +12,22 @@ export {
   IconBook,
   IconAppWindow,
   IconSeo,
+  IconSun,
+  IconMoon,
+  IconSearch,
+  IconCheck,
+  IconStar,
+  IconCalendar,
+  IconFilter,
+  IconAdjustments,
+  IconGridDots,
+  IconList,
+  IconArrowLeft,
+  IconTrophy,
+  IconSchool,
+  IconBulb,
+  IconDeviceLaptop,
+  IconChartBar,
 } from "@tabler/icons-react";
 
 // Re-export any custom icons here
