@@ -8,11 +8,8 @@ import CourseDetails from "./components/course-details";
 import CourseContent from "./components/course-content";
 import CourseCTA from "./components/course-cta";
 
-interface CoursePageProps {
-  params: {
-    id: string;
-  };
-}
+// Using 'any' type as per project guidelines
+type CoursePageProps = any;
 
 export default async function CoursePage({ params }: CoursePageProps) {
   // Get the current course
