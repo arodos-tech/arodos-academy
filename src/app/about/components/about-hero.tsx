@@ -14,10 +14,11 @@ const AboutHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: rem(600),
+        height: isMobile ? rem(600) : rem(600),
         maxWidth: "100%",
         width: "100%",
         overflowX: "hidden",
+        marginTop: isMobile ? rem(20) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -49,56 +50,81 @@ const AboutHero = () => {
         }}
       />
       <Container
-        size="lg"
+        size="md"
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(60)} ${rem(20)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "100%",
-          width: "100%",
+          maxWidth: isMobile ? "85%" : "100%",
+          width: isMobile ? "85%" : "100%",
           boxSizing: "border-box",
           overflow: "hidden",
+          margin: "0 auto",
         }}
       >
-        <Text c="white" fw={600} size="lg" tt="uppercase" ta="center">
+        <Text c="white" fw={600} size={isMobile ? "xs" : "lg"} tt="uppercase" ta="center">
           ABOUT ARODOS ACADEMY
         </Text>
 
         <Title
           order={1}
           style={{
-            fontSize: isMobile ? rem(32) : rem(64),
-            lineHeight: 1.1,
+            fontSize: isMobile ? rem(18) : rem(64),
+            lineHeight: isMobile ? 1.3 : 1.2,
             textAlign: "center",
-            maxWidth: "100%",
-            margin: "1rem auto 0",
+            maxWidth: isMobile ? rem(260) : "100%",
+            margin: "0.5rem auto 0",
             fontWeight: 800,
             wordBreak: "break-word",
             overflowWrap: "break-word",
+            padding: 0,
           }}
         >
-          Empowering the Next Generation of Tech Leaders
+          Empowering Tech Leaders
         </Title>
 
-        <Text size={isMobile ? "md" : "xl"} ta="center" maw={800} mx="auto" mt="xl" style={{ opacity: 0.9 }}>
-          Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
-          <Text
-            component="a"
-            href="https://arodos.com/"
-            target="_blank"
-            rel="noopener noreferrer"
-            span
-            c="white"
-            fw={600}
-            style={{ textDecoration: "underline" }}
-          >
-            Arodos Technologies
-          </Text>
-          , bridges the gap between theoretical knowledge and practical industry skills.
+        <Text 
+          size={isMobile ? "xs" : "xl"} 
+          ta="center" 
+          maw={isMobile ? 280 : 800} 
+          mx="auto" 
+          mt={isMobile ? "sm" : "xl"} 
+          style={{ 
+            opacity: 0.9,
+            lineHeight: isMobile ? 1.3 : undefined,
+          }}
+        >
+          {isMobile ? (
+            <>A branch of <Text
+              component="a"
+              href="https://arodos.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              span
+              c="white"
+              fw={600}
+              style={{ textDecoration: "underline" }}
+            >Arodos Technologies</Text>, bridging theory and practice.</>
+          ) : (
+            <>Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
+            <Text
+              component="a"
+              href="https://arodos.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              span
+              c="white"
+              fw={600}
+              style={{ textDecoration: "underline" }}
+            >
+              Arodos Technologies
+            </Text>
+            , bridges the gap between theoretical knowledge and practical industry skills.</>
+          )}
         </Text>
       </Container>
     </Box>

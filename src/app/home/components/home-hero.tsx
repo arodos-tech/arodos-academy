@@ -16,9 +16,10 @@ const HomeHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: rem(600),
+        height: isMobile ? rem(600) : rem(600),
         maxWidth: "100%",
         width: "100%",
+        marginTop: isMobile ? rem(20) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -54,7 +55,7 @@ const HomeHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(60)} ${rem(10)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -62,55 +63,74 @@ const HomeHero = () => {
           maxWidth: "100%",
           width: "100%",
           boxSizing: "border-box",
+          overflow: "hidden",
         }}
       >
         <Stack align="center" gap="xl">
-          <Text c="white" fw={600} size="lg" tt="uppercase" ta="center">
-            Building Futures Together By Empowering Minds
+          <Text c="white" fw={600} size={isMobile ? "xs" : "lg"} tt="uppercase" ta="center" mt={isMobile ? rem(20) : 0}>
+            Building Futures
           </Text>
 
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(32) : rem(64),
-              lineHeight: 1.1,
+              fontSize: isMobile ? rem(16) : rem(64),
+              lineHeight: isMobile ? 1.3 : 1.1,
               textAlign: "center",
-              maxWidth: rem(900),
+              maxWidth: isMobile ? rem(260) : rem(900),
               margin: "0 auto",
               fontWeight: 800,
             }}
           >
-            Launch Your Tech Career with Arodos Academy
+            Launch Your Tech Career with Arodos
           </Title>
 
-          <Text size={isMobile ? "md" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
-            Join us in shaping a brighter future by nurturing potential, empowering minds, and fostering growth through
-            education and collaboration.
+          <Text
+            size={isMobile ? "xs" : "xl"}
+            ta="center"
+            maw={isMobile ? 260 : 700}
+            mx="auto"
+            style={{ opacity: 0.9, fontSize: isMobile ? rem(10) : undefined }}
+          >
+            Join us in shaping a brighter future.
           </Text>
 
-          <Group mt="xl" justify="center" wrap="wrap" gap={isMobile ? "sm" : "xl"} w="100%">
+          <Group mt={isMobile ? "md" : "xl"} justify="center" wrap="wrap" gap={isMobile ? 8 : "xl"} w="100%">
             <Button
-              size={isMobile ? "md" : "xl"}
-              rightSection={<IconArrowRight size={isMobile ? 16 : 20} />}
+              size="xs"
               component={Link}
               href="/courses"
               radius="xl"
-              px={isMobile ? 20 : 40}
+              px={12}
               variant="white"
               c="var(--mantine-color-primary-5)"
-              style={{ maxWidth: isMobile ? "45%" : "auto" }}
+              styles={{
+                root: {
+                  height: isMobile ? rem(28) : undefined,
+                  fontSize: isMobile ? rem(12) : undefined,
+                  minWidth: 0,
+                  padding: "0 12px",
+                },
+              }}
             >
               Explore Courses
             </Button>
-            <Button 
-              variant="outline" 
-              size={isMobile ? "md" : "xl"} 
-              color="white" 
-              radius="xl" 
-              px={isMobile ? 20 : 40} 
-              component="a" 
+            <Button
+              variant="outline"
+              size="xs"
+              color="white"
+              radius="xl"
+              px={12}
+              component="a"
               href="#why-us"
-              style={{ maxWidth: isMobile ? "45%" : "auto" }}
+              styles={{
+                root: {
+                  height: isMobile ? rem(28) : undefined,
+                  fontSize: isMobile ? rem(12) : undefined,
+                  minWidth: 0,
+                  padding: "0 12px",
+                },
+              }}
             >
               Learn More
             </Button>

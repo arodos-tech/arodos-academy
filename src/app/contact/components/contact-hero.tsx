@@ -14,10 +14,11 @@ const ContactHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: rem(600),
+        height: isMobile ? rem(600) : rem(600),
         maxWidth: "100%",
         width: "100%",
         overflowX: "hidden",
+        marginTop: isMobile ? rem(20) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -50,33 +51,34 @@ const ContactHero = () => {
         }}
       />
       <Container
-        size="lg"
+        size="md"
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(60)} ${rem(20)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "100%",
-          width: "100%",
+          maxWidth: isMobile ? "85%" : "100%",
+          width: isMobile ? "85%" : "100%",
           boxSizing: "border-box",
           overflow: "hidden",
+          margin: "0 auto",
         }}
       >
         <Stack align="center" gap="xl">
-          <Text c="white" fw={600} size="lg" tt="uppercase" ta="center">
+          <Text c="white" fw={600} size={isMobile ? "xs" : "lg"} tt="uppercase" ta="center">
             GET IN TOUCH
           </Text>
 
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(32) : rem(64),
-              lineHeight: 1.1,
+              fontSize: isMobile ? rem(18) : rem(64),
+              lineHeight: isMobile ? 1.3 : 1.1,
               textAlign: "center",
-              maxWidth: rem(900),
+              maxWidth: isMobile ? rem(260) : rem(900),
               margin: "0 auto",
               fontWeight: 800,
             }}
@@ -84,9 +86,8 @@ const ContactHero = () => {
             Contact Arodos Academy
           </Title>
 
-          <Text size={isMobile ? "md" : "xl"} ta="center" maw={700} mx="auto" style={{ opacity: 0.9 }}>
-            Have questions about our courses or need assistance? We're here to help you take the next step in your tech
-            education journey.
+          <Text size={isMobile ? "xs" : "xl"} ta="center" maw={isMobile ? 280 : 700} mx="auto" style={{ opacity: 0.9 }}>
+            {isMobile ? "We're here to help with your tech education journey." : "Have questions about our courses or need assistance? We're here to help you take the next step in your tech education journey."}
           </Text>
         </Stack>
       </Container>

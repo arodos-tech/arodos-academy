@@ -15,10 +15,11 @@ const CourseHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: rem(600),
+        height: isMobile ? rem(600) : rem(600),
         maxWidth: "100%",
         width: "100%",
         overflowX: "hidden",
+        marginTop: isMobile ? rem(20) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -50,35 +51,37 @@ const CourseHero = () => {
         }}
       />
       <Container
-        size="lg"
+        size="md"
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(80)} ${rem(10)} ${rem(40)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(60)} ${rem(20)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "100%",
-          width: "100%",
+          maxWidth: isMobile ? "85%" : "100%",
+          width: isMobile ? "85%" : "100%",
           boxSizing: "border-box",
           overflow: "hidden",
+          margin: "0 auto",
         }}
       >
         <Flex direction={{ base: "column", md: "row" }} align="center" gap="xl">
           <Box style={{ flex: 1 }}>
-            <Stack gap="md">
+            <Stack gap="md" style={{ width: isMobile ? "100%" : "auto" }}>
               <Text
                 fw={700}
-                size="lg"
+                size={isMobile ? "xs" : "lg"}
                 tt="uppercase"
                 style={{
                   background: "var(--mantine-color-primary-5)",
                   display: "inline-block",
                   width: "fit-content",
-                  padding: "4px 16px",
+                  padding: isMobile ? "3px 12px" : "4px 16px",
                   borderRadius: "20px",
                   color: "white",
+                  margin: "0 auto",
                 }}
               >
                 OUR COURSES
@@ -87,31 +90,66 @@ const CourseHero = () => {
               <Title
                 order={1}
                 style={{
-                  fontSize: isMobile ? rem(32) : rem(64),
+                  fontSize: isMobile ? rem(18) : rem(64),
                   fontWeight: 800,
                   textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                  lineHeight: 1.2,
+                  lineHeight: isMobile ? 1.3 : 1.2,
+                  maxWidth: isMobile ? rem(240) : "100%",
+                  paddingLeft: isMobile ? rem(10) : 0,
+                  paddingRight: isMobile ? rem(10) : 0,
                 }}
               >
-                Explore All Our Courses
+                Explore Our Courses
               </Title>
 
-              <Text size={isMobile ? "md" : "xl"} style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)" }}>
-                Find the perfect course to advance your career and skills in today's competitive job market.
+              <Text
+                size={isMobile ? "xs" : "xl"}
+                style={{
+                  textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)",
+                  maxWidth: isMobile ? rem(220) : "100%",
+                  paddingLeft: isMobile ? rem(15) : 0,
+                  paddingRight: isMobile ? rem(15) : 0,
+                  margin: "0 auto",
+                }}
+              >
+                {isMobile
+                  ? "Advance your career with our specialized courses."
+                  : "Find the perfect course to advance your career and skills in today's competitive job market."}
               </Text>
 
               {/* Feature highlights */}
-              <Group mt="md" gap="xl">
+              <Group
+                mt={isMobile ? "md" : "md"}
+                gap={isMobile ? "xl" : "xl"}
+                style={{
+                  justifyContent: isMobile ? "center" : "flex-start",
+                  flexWrap: "wrap",
+                  width: "100%",
+                }}
+              >
                 {[
                   { icon: IconBook, text: "Quality Learning" },
                   { icon: IconCertificate, text: "Certification" },
                   { icon: IconRocket, text: "Career Growth" },
                 ].map((feature, i) => (
-                  <Group key={i} gap="xs" align="center">
-                    <ThemeIcon variant="filled" color="var(--mantine-color-primary-5)" size="md" radius="xl">
-                      <feature.icon size={16} />
+                  <Group
+                    key={i}
+                    gap={isMobile ? "xs" : "sm"}
+                    align="center"
+                    style={{
+                      marginRight: isMobile ? 0 : rem(10),
+                      width: isMobile ? "auto" : "auto",
+                    }}
+                  >
+                    <ThemeIcon
+                      variant="filled"
+                      color="var(--mantine-color-primary-5)"
+                      size={isMobile ? "sm" : "md"}
+                      radius="xl"
+                    >
+                      <feature.icon size={isMobile ? 12 : 16} />
                     </ThemeIcon>
-                    <Text fw={600} c="white">
+                    <Text fw={600} c="white" size={isMobile ? "xs" : "md"}>
                       {feature.text}
                     </Text>
                   </Group>
