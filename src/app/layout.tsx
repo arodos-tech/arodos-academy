@@ -1,16 +1,17 @@
 import "@/assets/styles/globals.css";
+import "@/assets/styles/admin.css";
 
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
+import "mantine-datatable/styles.css";
 
 import { AppShell, ColorSchemeScript, MantineProvider, mantineHtmlProps } from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 import { ModalsProvider } from "@mantine/modals";
 
 // Theme
-import theme from "@/theme/theme";
-import "@/theme/theme-toggle.css";
+import { theme } from "@/theme/theme";
 import { ThemeProvider } from "@/theme/theme-provider";
 
 // Components
@@ -30,7 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ColorSchemeScript />
       </head>
       <body>
-        <MantineProvider theme={theme}>
+        <MantineProvider theme={theme} defaultColorScheme="light">
           <ModalsProvider>
             <Notifications position="top-right" />
             <ThemeProvider>

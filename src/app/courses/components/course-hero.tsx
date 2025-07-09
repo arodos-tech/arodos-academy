@@ -55,13 +55,13 @@ const CourseHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(60)} ${rem(20)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(60)} ${rem(30)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: isMobile ? "85%" : "100%",
-          width: isMobile ? "85%" : "100%",
+          maxWidth: "100%",
+          width: "100%",
           boxSizing: "border-box",
           overflow: "hidden",
           margin: "0 auto",
@@ -72,7 +72,7 @@ const CourseHero = () => {
             <Stack gap="md" style={{ width: isMobile ? "100%" : "auto" }}>
               <Text
                 fw={700}
-                size={isMobile ? "xs" : "lg"}
+                size={isMobile ? "10px" : "lg"}
                 tt="uppercase"
                 style={{
                   background: "var(--mantine-color-primary-5)",
@@ -90,26 +90,28 @@ const CourseHero = () => {
               <Title
                 order={1}
                 style={{
-                  fontSize: isMobile ? rem(18) : rem(64),
+                  fontSize: isMobile ? rem(10) : rem(64),
                   fontWeight: 800,
                   textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
                   lineHeight: isMobile ? 1.3 : 1.2,
-                  maxWidth: isMobile ? rem(240) : "100%",
-                  paddingLeft: isMobile ? rem(10) : 0,
-                  paddingRight: isMobile ? rem(10) : 0,
+                  maxWidth: isMobile ? "90%" : "100%",
+                  margin: isMobile ? "0 auto" : 0,
+                  wordBreak: "break-word",
+                  overflowWrap: "break-word",
+                  padding: isMobile ? "0 10px" : 0,
                 }}
               >
                 Explore Our Courses
               </Title>
 
               <Text
-                size={isMobile ? "xs" : "xl"}
                 style={{
-                  textShadow: "0 1px 2px rgba(0, 0, 0, 0.15)",
-                  maxWidth: isMobile ? rem(220) : "100%",
-                  paddingLeft: isMobile ? rem(15) : 0,
-                  paddingRight: isMobile ? rem(15) : 0,
-                  margin: "0 auto",
+                  fontSize: isMobile ? rem(8) : rem(18),
+                  lineHeight: 1.6,
+                  opacity: 0.9,
+                  maxWidth: isMobile ? "90%" : rem(600),
+                  margin: isMobile ? "0 auto" : 0,
+                  padding: isMobile ? "0 10px" : 0,
                 }}
               >
                 {isMobile

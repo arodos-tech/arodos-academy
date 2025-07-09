@@ -4,22 +4,24 @@ import { Box, Container, Group, Stack, Text, Title, Button, rem } from "@mantine
 import { IconArrowRight, IconCode, IconRocket } from "@/assets/icons";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
 import { homeHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const HomeHero = () => {
   const isMobile = useIsMobile();
+  const { colors, mantineTheme } = useTheme();
 
   return (
     <Box
-      c="white"
       style={{
+        color: mantineTheme.white,
         position: "relative",
         overflow: "hidden",
-        height: isMobile ? rem(600) : rem(600),
+        height: isMobile ? rem(650) : rem(600),
         maxWidth: "100%",
         width: "100%",
-        marginTop: isMobile ? rem(20) : 0,
+        marginTop: isMobile ? rem(40) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -55,7 +57,7 @@ const HomeHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(60)} ${rem(10)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(30)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -67,19 +69,22 @@ const HomeHero = () => {
         }}
       >
         <Stack align="center" gap="xl">
-          <Text c="white" fw={600} size={isMobile ? "xs" : "lg"} tt="uppercase" ta="center" mt={isMobile ? rem(20) : 0}>
+          <Text fw={600} size={isMobile ? "8px" : "lg"} tt="uppercase" ta="center" mt={isMobile ? 0 : 0} style={{ color: mantineTheme.white }}>
             Building Futures
           </Text>
 
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(16) : rem(64),
+              fontSize: isMobile ? rem(9) : rem(64),
               lineHeight: isMobile ? 1.3 : 1.1,
               textAlign: "center",
-              maxWidth: isMobile ? rem(260) : rem(900),
+              maxWidth: isMobile ? "90%" : rem(900),
               margin: "0 auto",
               fontWeight: 800,
+              wordBreak: "break-word",
+              overflowWrap: "break-word",
+              padding: isMobile ? "0 10px" : 0,
             }}
           >
             Launch Your Tech Career with Arodos
@@ -88,28 +93,28 @@ const HomeHero = () => {
           <Text
             size={isMobile ? "xs" : "xl"}
             ta="center"
-            maw={isMobile ? 260 : 700}
+            maw={isMobile ? "100%" : 700}
             mx="auto"
-            style={{ opacity: 0.9, fontSize: isMobile ? rem(10) : undefined }}
+            style={{ opacity: 0.9, fontSize: isMobile ? rem(9) : undefined }}
           >
             Join us in shaping a brighter future.
           </Text>
 
-          <Group mt={isMobile ? "md" : "xl"} justify="center" wrap="wrap" gap={isMobile ? 8 : "xl"} w="100%">
+          <Group mt={isMobile ? "md" : "xl"} justify="center" wrap="wrap" gap={isMobile ? 8 : "xl"} w="100%" mb={isMobile ? rem(20) : 0}>
             <Button
-              size="xs"
+              size={isMobile ? "xs" : "md"}
               component={Link}
               href="/courses"
               radius="xl"
-              px={12}
+              px={isMobile ? 8 : 24}
               variant="white"
-              c="var(--mantine-color-primary-5)"
+              c={colors.primary}
               styles={{
                 root: {
-                  height: isMobile ? rem(28) : undefined,
-                  fontSize: isMobile ? rem(12) : undefined,
-                  minWidth: 0,
-                  padding: "0 12px",
+                  height: isMobile ? rem(24) : rem(48),
+                  fontSize: isMobile ? rem(8) : rem(16),
+                  minWidth: isMobile ? 0 : rem(160),
+                  padding: isMobile ? "0 8px" : "0 24px",
                 },
               }}
             >
@@ -117,18 +122,18 @@ const HomeHero = () => {
             </Button>
             <Button
               variant="outline"
-              size="xs"
-              color="white"
+              size={isMobile ? "xs" : "md"}
+              color={mantineTheme.white}
               radius="xl"
-              px={12}
+              px={isMobile ? 8 : 24}
               component="a"
               href="#why-us"
               styles={{
                 root: {
-                  height: isMobile ? rem(28) : undefined,
-                  fontSize: isMobile ? rem(12) : undefined,
-                  minWidth: 0,
-                  padding: "0 12px",
+                  height: isMobile ? rem(24) : rem(48),
+                  fontSize: isMobile ? rem(8) : rem(16),
+                  minWidth: isMobile ? 0 : rem(160),
+                  padding: isMobile ? "0 8px" : "0 24px",
                 },
               }}
             >

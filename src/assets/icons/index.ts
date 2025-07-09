@@ -42,6 +42,10 @@ export {
   IconUpload,
   IconX,
   IconPhoto,
+  IconAlertCircle,
+  IconEye,
+  IconDashboard,
+  IconLogout,
 } from "@tabler/icons-react";
 
 // Re-export any custom icons here

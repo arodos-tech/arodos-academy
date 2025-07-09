@@ -15,24 +15,32 @@ import {
   Divider,
   Image,
 } from "@mantine/core";
-import { logo } from "@/assets/images";
+import { logoLight, logoDark } from "@/assets/images";
 
 // Import custom hook with header logic
 import { useHeader, navItems } from "./use-header";
-import ThemeToggle from "@/theme/theme-toggle";
 import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
+import ThemeToggle from "@/theme/theme-toggle";
 
 const HEADER_HEIGHT = rem(80);
 const MOBILE_HEADER_HEIGHT = rem(60);
 
 const Header = () => {
   const { opened, toggle, close, activeItem, shouldShowHeader, navigateTo } = useHeader();
+  const { toggleTheme, themeMode, colors } = useTheme();
   const isMobile = useIsMobile();
 
   // Don't render header on certain paths
   if (!shouldShowHeader) {
     return null;
   }
+
+  const headerStyles = {
+    backgroundColor: colors.background,
+    borderBottom: `1px solid ${colors.border}`,
+    color: colors.textPrimary,
+  };
 
   const items = navItems.map((item) => (
     <UnstyledButton
@@ -43,12 +51,12 @@ const Header = () => {
       style={{
         fontWeight: 500,
         fontSize: rem(16),
-        color: activeItem === item.label ? "var(--mantine-color-primary-5)" : undefined,
-        borderBottom: activeItem === item.label ? "2px solid var(--mantine-color-primary-5)" : "none",
+        color: activeItem === item.label ? colors.primary : colors.textPrimary,
+        borderBottom: activeItem === item.label ? `2px solid ${colors.primary}` : "none",
         padding: `${rem(8)} ${rem(12)}`,
         transition: "all 0.2s ease",
         "&:hover": {
-          color: "var(--mantine-color-primary-5)",
+          color: colors.primaryHover,
         },
       }}
     >
@@ -60,18 +68,24 @@ const Header = () => {
     <Box
       style={{
         height: isMobile ? MOBILE_HEADER_HEIGHT : HEADER_HEIGHT,
-        borderBottom: `1px solid var(--mantine-color-gray-2)`,
+        borderBottom: `1px solid ${colors.border}`,
         position: "sticky",
         top: 0,
         zIndex: 1000,
-        backgroundColor: "var(--mantine-color-white)",
+        backgroundColor: colors.background,
       }}
     >
-      <Container size="lg" h="100%">
-        <Group justify="space-between" h="100%">
+      <Container size="lg" h="100%" px={isMobile ? "xs" : "md"}>
+        <Group justify="space-between" h="100%" wrap="nowrap">
           <Link href="/home" passHref>
             <UnstyledButton>
-              <Image src={logo.src} alt="Arodos Academy" height={isMobile ? 25 : 35} width="auto" fit="contain" />
+              <Image 
+                src={themeMode === 'dark' ? logoLight.src : logoDark.src} 
+                alt="Arodos Academy" 
+                height={isMobile ? 25 : 35} 
+                width="auto" 
+                fit="contain" 
+              />
             </UnstyledButton>
           </Link>
 
@@ -80,14 +94,14 @@ const Header = () => {
           </Group>
 
           <Group visibleFrom="md">
-            {/* <ThemeToggle /> */}
+            <ThemeToggle />
             <Button onClick={() => navigateTo("/contact#reg-form")} size={isMobile ? "sm" : "md"}>
               Apply Now
             </Button>
           </Group>
 
-          <Group hiddenFrom="md" gap={4}>
-            {/* <ThemeToggle /> */}
+          <Group hiddenFrom="md" gap={4} wrap="nowrap">
+            <ThemeToggle />
             <Burger opened={opened} onClick={toggle} size="sm" />
           </Group>
         </Group>
@@ -100,8 +114,9 @@ const Header = () => {
         size="100%"
         padding="md"
         title={
-          <Group>
-            <Image src={logo.src} alt="Arodos Academy" height={25} fit="contain" />
+          <Group justify="space-between" style={{ width: "100%" }}>
+            <Image src={themeMode === 'dark' ? logoLight.src : logoDark.src} alt="Arodos Academy" height={25} fit="contain" />
+            <Burger opened={opened} onClick={close} size="sm" aria-label="Close menu" />
           </Group>
         }
         hiddenFrom="md"

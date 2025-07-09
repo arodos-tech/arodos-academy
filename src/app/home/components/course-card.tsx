@@ -2,6 +2,7 @@
 
 import { Card, Text, Badge, Group, Button, Title, Stack, Box, rem } from "@mantine/core";
 import Link from "next/link";
+import { useTheme } from "@/theme/use-theme";
 import {
   IconBook,
   IconClock,
@@ -25,6 +26,8 @@ interface CourseProps {
 }
 
 const CourseCard = ({ course }: CourseProps) => {
+  const { colors, themeMode, mantineTheme } = useTheme();
+
   // Select icon based on course name or id to ensure consistency
   const getIcon = () => {
     // Use the course id or name to determine which icon to show
@@ -32,13 +35,13 @@ const CourseCard = ({ course }: CourseProps) => {
 
     switch (courseId % 3) {
       case 0:
-        return <IconSeo size={48} color="var(--mantine-color-primary-5)" />;
+        return <IconSeo size={48} color={colors.primary} />;
       case 1:
-        return <IconCode size={48} color="var(--mantine-color-primary-5)" />;
+        return <IconCode size={48} color={colors.primary} />;
       case 2:
-        return <IconCertificate size={48} color="var(--mantine-color-primary-5)" />;
+        return <IconCertificate size={48} color={colors.primary} />;
       default:
-        return <IconBook size={48} color="var(--mantine-color-primary-5)" />;
+        return <IconBook size={48} color={colors.primary} />;
     }
   };
 
@@ -63,8 +66,8 @@ const CourseCard = ({ course }: CourseProps) => {
         <Box
           p="md"
           style={{
-            backgroundColor: "var(--mantine-color-primary-0)",
-            borderRadius: "var(--mantine-radius-md)",
+            backgroundColor: colors.primaryLight,
+            borderRadius: mantineTheme.radius.md,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -81,7 +84,7 @@ const CourseCard = ({ course }: CourseProps) => {
       </Group>
 
       <Stack gap="sm" style={{ flex: 1 }}>
-        <Text size="md" c="dimmed" lineClamp={3} style={{ minHeight: rem(70), fontSize: rem(15) }}>
+        <Text size="md" lineClamp={3} style={{ minHeight: rem(70), fontSize: rem(15), color: colors.textSecondary }}>
           {course.description || "No description available"}
         </Text>
 
@@ -93,8 +96,8 @@ const CourseCard = ({ course }: CourseProps) => {
               radius="sm"
               style={{
                 textTransform: "none",
-                backgroundColor: "var(--mantine-color-primary-0)",
-                color: "var(--mantine-color-primary-5)",
+                backgroundColor: colors.primaryLight,
+                color: colors.primary,
                 fontWeight: 600,
                 padding: "4px 12px",
               }}
@@ -123,11 +126,16 @@ const CourseCard = ({ course }: CourseProps) => {
 
           <Button
             variant="light"
-            color="primary"
+            color={colors.primary}
             size="md"
-            rightSection={<IconArrowRight size={18} />}
+            rightSection={<IconArrowRight size={18} style={{ color: themeMode === 'dark' ? colors.textPrimary : undefined }} />}
             component={Link}
             href={`/courses/${course?.id}`}
+            styles={(theme) => ({
+              root: {
+                color: themeMode === 'dark' ? colors.textPrimary : undefined,
+              }
+            })}
           >
             View
           </Button>

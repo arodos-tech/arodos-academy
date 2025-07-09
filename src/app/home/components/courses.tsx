@@ -4,6 +4,7 @@ import { Box, Container, Stack, Text, Title, Button, SimpleGrid, rem } from "@ma
 import { IconArrowRight } from "@/assets/icons";
 import Link from "next/link";
 import CourseCard from "./course-card";
+import { useTheme } from "@/theme/use-theme";
 
 interface CourseSectionProps {
   courses: any[];
@@ -11,11 +12,13 @@ interface CourseSectionProps {
 }
 
 const Courses = ({ courses, error }: CourseSectionProps) => {
+  const { colors, themeMode, mantineTheme } = useTheme();
+
   return (
-    <Box id="courses" py={120} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
+    <Box id="courses" py={120} style={{ backgroundColor: colors.backgroundAlt, color: colors.textPrimary }}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={80}>
-          <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
+          <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
             BECOME IN DEMAND
           </Text>
           <Title
@@ -29,14 +32,14 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
           >
             Master Skills That Matter in Today's Job Market
           </Title>
-          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto">
+          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto" style={{ color: mantineTheme.colors.gray[6] }}>
             Choose from our range of programs designed to take you from beginner to job-ready professional.
           </Text>
         </Stack>
 
         {error ? (
           <Stack align="center" py={40}>
-            <Text size="lg" c="var(--mantine-color-primary-5)">
+            <Text size="lg" c={colors.primary}>
               {error}
             </Text>
           </Stack>
@@ -59,9 +62,22 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
             size="xl"
             radius="xl"
             px={40}
-            rightSection={<IconArrowRight size={20} />}
+            rightSection={
+              <IconArrowRight size={20} style={{ color: themeMode === "dark" ? colors.textPrimary : colors.primary }} />
+            }
             component={Link}
             href="/courses"
+            color={colors.primary}
+            styles={(theme) => ({
+              root: {
+                borderColor: themeMode === "dark" ? colors.textPrimary : colors.primary,
+                color: themeMode === "dark" ? colors.textPrimary : colors.primary,
+                "&:hover": {
+                  backgroundColor: themeMode === "dark" ? colors.surfaceHover : colors.primaryLight,
+                  color: themeMode === "dark" ? colors.textPrimary : colors.primaryDark,
+                },
+              },
+            })}
           >
             View All Courses
           </Button>

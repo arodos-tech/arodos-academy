@@ -1,10 +1,12 @@
 import axios, { type AxiosRequestConfig } from "axios";
 import tokens from "./tokens.json";
-import { _DATABASE, _FQ_BASE_URL, _FQ_LOCAL_SERVER } from "@/lib/constants";
+import { DATABASE, FQ_BASE_URL, FQ_LOCAL_SERVER } from "@/lib/constants";
 
 interface Tokens {
   [key: string]: string | false;
 }
+
+const FQ_TOKEN_PATH = "./tokens.json";
 
 // Base64 encoding characters
 const base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
@@ -19,19 +21,19 @@ function toBase64(num: number): string {
   return result;
 }
 
-const database = _DATABASE;
-
-const baseUrl = _FQ_BASE_URL;
-const localServer = _FQ_LOCAL_SERVER;
-
 type HttpMethod = "get" | "post" | "put" | "delete" | "sql";
+
+type SQLBody = {
+  sql: "string";
+  params: [{ [key: string]: string | number }];
+};
+type AnyBody = {
+  [key: string]: any;
+};
 
 type RequestOptions = {
   loading?: boolean;
-  body?: {
-    sql: "string";
-    params: [{ [key: string]: string | number }];
-  };
+  body?: SQLBody | SQLBody[] | AnyBody | AnyBody[];
   key?: string;
   page?: string;
   sort?: string;
@@ -58,10 +60,13 @@ function uniqueKey(input: string) {
 }
 
 function getKey(method: HttpMethod, url: string, options: RequestOptions) {
-  if (!localServer) throw new Error("localServer is not defined");
-  const _url = localServer + url;
+  if (!FQ_LOCAL_SERVER) {
+    throw new Error("localServer is not defined");
+  }
+
+  const _url = FQ_LOCAL_SERVER + url;
   const parsed_url = new URL(_url);
-  const pathname = parsed_url.pathname;
+  const pathname = "/" + parsed_url.pathname.split("/")[1];
 
   const request: any = {
     fields: options?.fields,
@@ -77,8 +82,8 @@ function getKey(method: HttpMethod, url: string, options: RequestOptions) {
 
   let tokenStr = pathname;
   for (const key in request) {
-    if (request[key as keyof typeof request]) {
-      tokenStr += key + ":" + request[key as keyof typeof request];
+    if (request[key]) {
+      tokenStr += key + ":" + request[key];
     }
   }
   const key = method + ":" + pathname + ">" + uniqueKey(tokenStr);
@@ -118,6 +123,7 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
 
   if (!token) {
     headers["key"] = key;
+    headers["token-path"] = FQ_TOKEN_PATH;
   } else {
     headers.token = token;
   }
@@ -130,12 +136,12 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
 
   try {
     if (loading) {
-      console.log("Loading started...");
+      // console.log("Loading started...");
     }
 
     const axiosInstance = axios.create({
-      baseURL: token ? baseUrl : localServer,
-      headers: { app: database },
+      baseURL: token ? FQ_BASE_URL : FQ_LOCAL_SERVER,
+      headers: { app: DATABASE },
     });
 
     const requestConfig: AxiosRequestConfig = {
@@ -153,7 +159,7 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
     throw error;
   } finally {
     if (loading) {
-      console.log("Loading completed.");
+      // console.log("Loading completed.");
     }
   }
 };

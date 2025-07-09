@@ -21,12 +21,13 @@ import {
   Loader,
 } from "@mantine/core";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconUpload, IconCheck, IconX, IconPhoto } from "@/assets/icons";
+import { IconUpload, IconCheck, IconX, IconPhoto, IconPhone } from "@/assets/icons";
 import { useIsMobile } from "@/hooks";
 import { getCourses } from "@/actions/courses";
 import { submitApplication } from "@/actions/applications";
-import { getSettings } from "@/actions/settings";
+import { getSettings, Setting } from "@/actions/settings";
 import { notifications } from "@mantine/notifications";
+import { IMAGE_URL } from "@/lib/constants";
 
 const educationalQualifications = [
   { value: "be-btech", label: "B.E/B.Tech" },
@@ -72,9 +73,10 @@ const ContactForm = () => {
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [submissionError, setSubmissionError] = useState<string | null>(null);
   const [paymentSettings, setPaymentSettings] = useState({
-    upiId: "arodos@upi",
-    qrCodeUrl: "",
+    upi_id: "",
+    qr_code_url: "",
   });
+  const [loadingPaymentSettings, setLoadingPaymentSettings] = useState(true);
   const isMobile = useIsMobile();
 
   // Fetch available courses
@@ -99,16 +101,27 @@ const ContactForm = () => {
 
     // Fetch payment settings
     const fetchSettings = async () => {
+      setLoadingPaymentSettings(true);
       try {
         const { success, settings } = await getSettings();
-        if (success && settings?.payment) {
-          setPaymentSettings({
-            upiId: settings.payment.upiId || "arodos@upi",
-            qrCodeUrl: settings.payment.qrCodeUrl || "",
-          });
+        if (success && settings && settings.length > 0) {
+          const paymentSetting = settings.find((s: Setting) => s.setting_key === "payment");
+
+          if (paymentSetting && paymentSetting.value) {
+            setPaymentSettings({
+              upi_id: paymentSetting.value.upi_id,
+              qr_code_url: paymentSetting.value.qr_code_url,
+            });
+          } else {
+            console.warn("Payment setting not found or invalid format");
+          }
+        } else {
+          console.warn("No settings returned from API");
         }
       } catch (error) {
         console.error("Failed to fetch payment settings:", error);
+      } finally {
+        setLoadingPaymentSettings(false);
       }
     };
 
@@ -252,12 +265,46 @@ const ContactForm = () => {
                     margin: "0 auto",
                   }}
                 >
-                  {paymentSettings.qrCodeUrl ? (
-                    <img
-                      src={paymentSettings.qrCodeUrl}
-                      alt="Payment QR Code"
-                      style={{ width: "100%", height: "100%", objectFit: "contain" }}
-                    />
+                  {loadingPaymentSettings ? (
+                    <Box
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: "100%",
+                      }}
+                    >
+                      <Loader size="lg" />
+                      <Text mt="md" size="sm" c="dimmed">
+                        Loading payment details...
+                      </Text>
+                    </Box>
+                  ) : paymentSettings.qr_code_url ? (
+                    <Box style={{ position: "relative", width: "100%", height: "100%" }}>
+                      <img
+                        src={`${IMAGE_URL}/${paymentSettings.qr_code_url}`}
+                        alt="Payment QR Code"
+                        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                      />
+                      {!isMobile && (
+                        <Box
+                          style={{
+                            position: "absolute",
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            background: "rgba(0,0,0,0.6)",
+                            padding: rem(5),
+                            textAlign: "center",
+                          }}
+                        >
+                          <Text size="xs" c="white">
+                            Scan with your UPI app
+                          </Text>
+                        </Box>
+                      )}
+                    </Box>
                   ) : (
                     <>
                       <Box
@@ -284,13 +331,92 @@ const ContactForm = () => {
                         }}
                       >
                         <IconPhoto size={120} style={{ opacity: 0.7, marginBottom: rem(10) }} />
-                        <Text>QR Code</Text>
+                        <Text>QR Code Not Available</Text>
                       </Box>
                     </>
                   )}
                 </Box>
               </Box>
-              <Text mb={rem(5)}>UPI ID: {paymentSettings.upiId}</Text>
+              <Group mb={rem(5)} align="center" gap="xs">
+                <Text>UPI ID:</Text>
+                {loadingPaymentSettings ? (
+                  <Loader size="xs" />
+                ) : (
+                  <>
+                    <Text 
+                      span 
+                      fw={600} 
+                      style={{ 
+                        cursor: paymentSettings.upi_id ? "pointer" : "default",
+                        color: paymentSettings.upi_id ? "var(--mantine-color-primary-6)" : "inherit"
+                      }}
+                      onClick={() => {
+                        if (!paymentSettings.upi_id) return;
+                        
+                        if (isMobile) {
+                          // Open UPI app on mobile
+                          window.location.href = `upi://pay?pa=${paymentSettings.upi_id}`;
+                        } else {
+                          // Copy to clipboard on desktop
+                          navigator.clipboard.writeText(paymentSettings.upi_id);
+                          notifications.show({
+                            title: "UPI ID Copied",
+                            message: "UPI ID has been copied to clipboard.",
+                            color: "green",
+                            icon: <IconCheck size="1.5rem" />,
+                            position: "bottom-center",
+                            autoClose: 3000,
+                            radius: "md",
+                            withBorder: true,
+                          });
+                        }
+                      }}
+                    >
+                      {paymentSettings.upi_id || "Not available"}
+                    </Text>
+                    {paymentSettings.upi_id && (
+                      <Group gap="xs">
+                        {isMobile ? (
+                          <Button 
+                            variant="subtle" 
+                            size="compact-xs" 
+                            leftSection={<IconPhone size="1rem" />}
+                            onClick={() => {
+                              window.location.href = `upi://pay?pa=${paymentSettings.upi_id}`;
+                            }}
+                          >
+                            Pay
+                          </Button>
+                        ) : (
+                          <Button 
+                            variant="subtle" 
+                            size="compact-xs" 
+                            leftSection={<IconCheck size="1rem" />}
+                            onClick={() => {
+                              navigator.clipboard.writeText(paymentSettings.upi_id);
+                              notifications.show({
+                                title: "UPI ID Copied",
+                                message: "UPI ID has been copied to clipboard.",
+                                color: "green",
+                                icon: <IconCheck size="1.5rem" />,
+                                position: "bottom-center",
+                                autoClose: 3000,
+                                radius: "md",
+                                withBorder: true,
+                              });
+                            }}
+                          >
+                            Copy
+                          </Button>
+                        )}
+                      </Group>
+                    )}
+                  </>
+                )}
+              </Group>
+              <Text size="xs" c="dimmed" mb={rem(10)}>
+                {paymentSettings.upi_id && isMobile ? "Click to pay via UPI app" : paymentSettings.upi_id ? "Click to copy UPI ID" : ""}
+              </Text>
               <Text c="dimmed" fz="sm">
                 Please upload the payment receipt in the form after completing the payment.
               </Text>

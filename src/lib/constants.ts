@@ -1,7 +1,9 @@
 // frontql
-export const DATABASE = "s4_arodos_academy";
-export const FQ_BASE_URL = "https://v5.frontql.dev";
-export const FQ_LOCAL_SERVER = "http://localhost:4466";
+export const _DATABASE = "s4_arodos_academy";
+export const _FQ_BASE_URL = "https://v5.frontql.dev";
+export const _FQ_LOCAL_SERVER = "http://localhost:4466";
+export const _PORT = "4466";
+export const _AUTH_TOKEN = "YXJvZG9zOkFyMGQwc0AyMDI0";
 
 // uploads
 export const IMAGE_URL = "https://uploads.backendservices.in/storage";

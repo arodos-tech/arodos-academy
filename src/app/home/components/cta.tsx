@@ -4,22 +4,23 @@ import { Box, Container, Stack, Text, Title, Button, SimpleGrid, rem } from "@ma
 import { IconArrowRight, IconCode, IconCertificate, IconRocket } from "@/assets/icons";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
 
 const CTA = () => {
   const isMobile = useIsMobile();
+  const { colors, mantineTheme } = useTheme();
 
   return (
     <Box py={120}>
       <Container size="lg">
         <Box
-          bg="primary.3"
-          c="white"
           py={60}
           px={isMobile ? 30 : 60}
           style={{
+            color: mantineTheme.white,
             background:
-              "linear-gradient(135deg, var(--mantine-color-primary-5) 0%, var(--mantine-color-primary-8) 100%)",
-            borderRadius: "var(--mantine-radius-xl)",
+              `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryHover} 100%)`,
+            borderRadius: mantineTheme.radius.xl,
             position: "relative",
             overflow: "hidden",
             boxShadow: "0 30px 60px rgba(0, 0, 0, 0.15)",
@@ -42,7 +43,7 @@ const CTA = () => {
               <Button
                 size="xl"
                 variant="white"
-                c="primary"
+                c={colors.primary}
                 radius="xl"
                 px={40}
                 rightSection={<IconArrowRight size={20} />}

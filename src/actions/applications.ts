@@ -66,7 +66,7 @@ export async function getApplications() {
 
     const applications = res?.result || [];
     const error = res?.err && typeof res.err === "string" ? res.err : res?.err ? "Error fetching applications" : null;
-
+    console.log("applications", applications);
     return { applications, error };
   } catch (err) {
     return { applications: [], error: "Failed to fetch applications" };

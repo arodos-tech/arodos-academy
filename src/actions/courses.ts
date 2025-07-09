@@ -22,7 +22,6 @@ export async function getCourseById(id: string) {
 
     const course = res?.result[0] || null;
     const error = res?.err && typeof res.err === "string" ? res.err : res?.err ? "Error fetching course details" : null;
-    console.log("Course details:", course);
     return { course, error };
   } catch (err) {
     return { course: null, error: "Failed to fetch course details" };

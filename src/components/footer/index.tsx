@@ -2,7 +2,8 @@
 
 import { Box, Container, Text, Anchor, rem, Image, UnstyledButton, Flex, Stack } from "@mantine/core";
 import Link from "next/link";
-import { logo } from "@/assets/images";
+import { logoLight, logoDark } from "@/assets/images";
+import { useTheme } from "@/theme/use-theme";
 
 const links = [
   { link: "/", label: "Home" },
@@ -12,8 +13,10 @@ const links = [
 ];
 
 export default function Footer() {
+  const { colors, themeMode } = useTheme();
+  
   return (
-    <Box component="footer" py="xl" style={{ borderTop: "1px solid var(--mantine-color-gray-3)" }}>
+    <Box component="footer" py="xl" style={{ borderTop: `1px solid ${colors.border}` }}>
       <Container size="lg">
         {/* Top section with logo and navigation */}
         <Flex
@@ -28,7 +31,12 @@ export default function Footer() {
           <Box style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
             <Link href="/home" passHref>
               <UnstyledButton>
-                <Image src={logo.src} alt="Arodos Academy" height={40} fit="contain" />
+                <Image 
+                  src={themeMode === 'dark' ? logoLight.src : logoDark.src} 
+                  alt="Arodos Academy" 
+                  height={40} 
+                  fit="contain" 
+                />
               </UnstyledButton>
             </Link>
             <Text c="dimmed" size="sm">
@@ -54,7 +62,7 @@ export default function Footer() {
                   style={{
                     textDecoration: "none",
                     fontWeight: 500,
-                    "&:hover": { color: "var(--mantine-color-primary-5)" },
+                    "&:hover": { color: colors.primary },
                   }}
                 >
                   {link.label}
@@ -65,7 +73,7 @@ export default function Footer() {
         </Flex>
 
         {/* Copyright at the bottom */}
-        <Box ta="center" pt={rem(20)} style={{ borderTop: "1px solid var(--mantine-color-gray-2)" }}>
+        <Box ta="center" pt={rem(20)} style={{ borderTop: `1px solid ${colors.border}` }}>
           <Text c="dimmed" size="sm">
             © 2025 Arodos Academy. All rights reserved.
           </Text>

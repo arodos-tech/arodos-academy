@@ -1,8 +1,12 @@
 import { serve, file, write } from "bun";
+import { _PORT, _FQ_BASE_URL, _AUTH_TOKEN } from "@/lib/constants";
 
-const port = 4466;
-const hostname = "v5.frontql.dev";
-const basicAuth = "Basic YXJvZG9zOkFyMGQwc0AyMDI0";
+const port = _PORT;
+const baseUrl = _FQ_BASE_URL;
+const hostname = baseUrl.split("://")[1];
+const basicAuth = "Basic " + _AUTH_TOKEN;
+
+const tokensPath = "./tokens.json";
 
 const CORS_HEADERS = {
   headers: {
@@ -22,11 +26,9 @@ serve({
     const url = new URL(req.url);
     const method = req.method;
     const bodyText = await req.text();
-    const key = req.headers.get("key");
-    const tokensPath = req.headers.get("token-path");
-
     const tokensFile = file(tokensPath);
     const tokens = await tokensFile.json();
+    const key = req.headers.get("key");
 
     url.port = 443;
     url.protocol = "https:";
@@ -49,4 +51,4 @@ serve({
   },
 });
 
-console.log("frontql dev server is running on http://localhost:4466");
+console.log(`FrontQL dev server is running on http://localhost:${port}`);

@@ -14,11 +14,11 @@ const AboutHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: isMobile ? rem(600) : rem(600),
+        height: isMobile ? rem(650) : rem(600),
         maxWidth: "100%",
         width: "100%",
         overflowX: "hidden",
-        marginTop: isMobile ? rem(20) : 0,
+        marginTop: isMobile ? rem(40) : 0,
       }}
     >
       {/* Hero background image with overlay */}
@@ -54,34 +54,34 @@ const AboutHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(60)} ${rem(20)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: isMobile ? `${rem(80)} ${rem(30)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: isMobile ? "85%" : "100%",
-          width: isMobile ? "85%" : "100%",
+          maxWidth: "100%",
+          width: "100%",
           boxSizing: "border-box",
           overflow: "hidden",
           margin: "0 auto",
         }}
       >
-        <Text c="white" fw={600} size={isMobile ? "xs" : "lg"} tt="uppercase" ta="center">
+        <Text c="white" fw={600} size={isMobile ? "8px" : "lg"} tt="uppercase" ta="center">
           ABOUT ARODOS ACADEMY
         </Text>
 
         <Title
           order={1}
           style={{
-            fontSize: isMobile ? rem(18) : rem(64),
+            fontSize: isMobile ? rem(9) : rem(64),
             lineHeight: isMobile ? 1.3 : 1.2,
             textAlign: "center",
-            maxWidth: isMobile ? rem(260) : "100%",
+            maxWidth: isMobile ? "90%" : "100%",
             margin: "0.5rem auto 0",
             fontWeight: 800,
             wordBreak: "break-word",
             overflowWrap: "break-word",
-            padding: 0,
+            padding: isMobile ? "0 10px" : 0,
           }}
         >
           Empowering Tech Leaders

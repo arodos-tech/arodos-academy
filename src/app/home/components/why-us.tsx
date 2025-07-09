@@ -1,5 +1,8 @@
+"use client";
+
 import { Box, Container, Stack, Text, Title, SimpleGrid, Card, rem } from "@mantine/core";
 import { IconCertificate, IconCode, IconRocket, IconUsers } from "@/assets/icons";
+import { useTheme } from "@/theme/use-theme";
 
 // Define features array for the features section
 const features = [
@@ -26,10 +29,12 @@ const features = [
 ];
 
 const WhyUs = () => {
+  const { colors, mantineTheme } = useTheme();
+  
   return (
     <Container size="lg" py={120} id="why-us">
       <Stack align="center" gap="xl" mb={60}>
-        <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
+        <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
           WHY CHOOSE US
         </Text>
         <Title
@@ -63,7 +68,7 @@ const WhyUs = () => {
               "&:hover": {
                 transform: "translateY(-8px)",
                 boxShadow: "0 20px 30px rgba(0, 0, 0, 0.1)",
-                borderColor: "var(--mantine-color-primary-5)",
+                borderColor: colors.primary,
               },
             }}
           >
@@ -72,14 +77,14 @@ const WhyUs = () => {
                 width: 60,
                 height: 60,
                 borderRadius: "50%",
-                backgroundColor: "var(--mantine-color-primary-0)",
+                backgroundColor: colors.primaryLight,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 marginBottom: rem(20),
               }}
             >
-              <feature.icon size={30} color="var(--mantine-color-primary-5)" />
+              <feature.icon size={30} color={colors.primary} />
             </Box>
             <Title order={4} mb="sm">
               {feature.title}

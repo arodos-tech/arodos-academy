@@ -1,12 +1,14 @@
 import Api from "@/services/frontql/Api";
 
-export interface PaymentSettings {
-  upiId?: string;
-  qrCodeUrl?: string;
+export interface PaymentValue {
+  upi_id: string;
+  qr_code_url: string;
 }
 
-export interface Settings {
-  payment?: PaymentSettings;
+export interface Setting {
+  id: number;
+  setting_key: string;
+  value: PaymentValue;
 }
 
 /**
@@ -14,17 +16,22 @@ export interface Settings {
  */
 export async function getSettings(): Promise<{
   success: boolean;
-  settings?: Settings;
+  settings?: Setting[];
   error?: string;
 }> {
   try {
     // Fetch settings from API
     const response = await Api.get("/settings");
-
-    return {
-      success: true,
-      settings: response.data,
-    };
+    // Check if response has the expected structure
+    if (response && response.result && Array.isArray(response.result)) {
+      return {
+        success: true,
+        settings: response.result,
+      };
+    } else {
+      console.warn("Unexpected API response format:", response);
+      // throw new Error("Invalid API response format");
+    }
   } catch (error: any) {
     console.error("Failed to fetch settings:", error);
 
@@ -32,12 +39,6 @@ export async function getSettings(): Promise<{
     return {
       success: false,
       error: error.message || "Failed to fetch settings",
-      settings: {
-        payment: {
-          upiId: "arodos@upi",
-          qrCodeUrl: "/images/payment-qr.png",
-        },
-      },
     };
   }
 }

@@ -1,0 +1,17 @@
+/* Admin styles */
+
+/* Hide main site header and footer on admin pages */
+body.admin-page header,
+body.admin-page footer {
+  display: none !important;
+}
+
+/* Adjust padding for admin pages */
+body.admin-page {
+  padding: 0 !important;
+}
+
+/* Remove any extra padding on login page */
+body.admin-login-page {
+  padding: 0 !important;
+}
