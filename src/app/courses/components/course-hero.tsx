@@ -1,13 +1,25 @@
 "use client";
 
-import { Box, Container, Text, Title, rem, Stack, Flex, Group, ThemeIcon } from "@mantine/core";
-import { useIsMobile } from "@/hooks";
+import { Box, Container, Group, rem, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+
 import { IconBook, IconCertificate, IconRocket } from "@/assets/icons";
 import { courseHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
+import { useTheme } from "@/theme/use-theme";
 
 const CourseHero = () => {
-  const isMobile = useIsMobile();
+  const { mantineTheme } = useTheme();
+  const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
+  const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
+  const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
+
+  const getResponsiveValue = (xs, sm, md, lg) => {
+    if (isXs) return xs;
+    if (isSmOrSmaller) return sm;
+    if (isMdOrSmaller) return md;
+    return lg;
+  };
 
   return (
     <Box
@@ -15,14 +27,12 @@ const CourseHero = () => {
       style={{
         position: "relative",
         overflow: "hidden",
-        height: isMobile ? rem(600) : rem(600),
-        maxWidth: "100%",
+        height: "auto",
+        minHeight: getResponsiveValue(rem(450), rem(500), rem(550), rem(550)),
         width: "100%",
-        overflowX: "hidden",
-        marginTop: isMobile ? rem(20) : 0,
       }}
     >
-      {/* Hero background image with overlay */}
+      {/* Background Image */}
       <Box
         style={{
           position: "absolute",
@@ -38,7 +48,7 @@ const CourseHero = () => {
         }}
       />
 
-      {/* Red gradient overlay */}
+      {/* Gradient Overlay */}
       <Box
         style={{
           position: "absolute",
@@ -50,119 +60,97 @@ const CourseHero = () => {
           zIndex: 2,
         }}
       />
+
       <Container
-        size="md"
+        size="lg"
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(60)} ${rem(30)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: getResponsiveValue(
+            `${rem(40)} ${rem(20)}`,
+            `${rem(50)} ${rem(25)}`,
+            rem(60),
+            rem(80)
+          ),
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "100%",
-          width: "100%",
-          boxSizing: "border-box",
-          overflow: "hidden",
-          margin: "0 auto",
+          alignItems: isMdOrSmaller ? "center" : "flex-start",
+          textAlign: isMdOrSmaller ? "center" : "left",
         }}
       >
-        <Flex direction={{ base: "column", md: "row" }} align="center" gap="xl">
-          <Box style={{ flex: 1 }}>
-            <Stack gap="md" style={{ width: isMobile ? "100%" : "auto" }}>
-              <Text
-                fw={700}
-                size={isMobile ? "10px" : "lg"}
-                tt="uppercase"
-                style={{
-                  background: "var(--mantine-color-primary-5)",
-                  display: "inline-block",
-                  width: "fit-content",
-                  padding: isMobile ? "3px 12px" : "4px 16px",
-                  borderRadius: "20px",
-                  color: "white",
-                  margin: "0 auto",
-                }}
-              >
-                OUR COURSES
-              </Text>
+        <Stack
+          gap="md"
+          style={{ maxWidth: rem(700) }}
+          align={isMdOrSmaller ? "center" : "flex-start"}
+        >
+          <Text
+            fw={700}
+            tt="uppercase"
+            style={{
+              background: mantineTheme.colors.primary[5],
+              display: "inline-block",
+              width: "fit-content",
+              padding: `${rem(4)} ${rem(12)}`,
+              borderRadius: rem(20),
+              fontSize: getResponsiveValue(rem(12), rem(13), rem(14), rem(14)),
+            }}
+          >
+            OUR COURSES
+          </Text>
 
-              <Title
-                order={1}
-                style={{
-                  fontSize: isMobile ? rem(10) : rem(64),
-                  fontWeight: 800,
-                  textShadow: "0 1px 3px rgba(0, 0, 0, 0.2)",
-                  lineHeight: isMobile ? 1.3 : 1.2,
-                  maxWidth: isMobile ? "90%" : "100%",
-                  margin: isMobile ? "0 auto" : 0,
-                  wordBreak: "break-word",
-                  overflowWrap: "break-word",
-                  padding: isMobile ? "0 10px" : 0,
-                }}
-              >
-                Explore Our Courses
-              </Title>
+          <Title
+            order={1}
+            style={{
+              fontSize: getResponsiveValue(rem(28), rem(36), rem(44), rem(52)),
+              fontWeight: 800,
+              lineHeight: 1.2,
+            }}
+          >
+            Explore Our Courses
+          </Title>
 
-              <Text
-                style={{
-                  fontSize: isMobile ? rem(8) : rem(18),
-                  lineHeight: 1.6,
-                  opacity: 0.9,
-                  maxWidth: isMobile ? "90%" : rem(600),
-                  margin: isMobile ? "0 auto" : 0,
-                  padding: isMobile ? "0 10px" : 0,
-                }}
-              >
-                {isMobile
-                  ? "Advance your career with our specialized courses."
-                  : "Find the perfect course to advance your career and skills in today's competitive job market."}
-              </Text>
+          <Text
+            style={{
+              fontSize: getResponsiveValue(rem(16), rem(17), rem(18), rem(18)),
+              lineHeight: 1.6,
+              opacity: 0.9,
+              maxWidth: rem(600),
+            }}
+          >
+            Find the perfect course to advance your career and skills in today's
+            competitive job market.
+          </Text>
 
-              {/* Feature highlights */}
-              <Group
-                mt={isMobile ? "md" : "md"}
-                gap={isMobile ? "xl" : "xl"}
-                style={{
-                  justifyContent: isMobile ? "center" : "flex-start",
-                  flexWrap: "wrap",
-                  width: "100%",
-                }}
-              >
-                {[
-                  { icon: IconBook, text: "Quality Learning" },
-                  { icon: IconCertificate, text: "Certification" },
-                  { icon: IconRocket, text: "Career Growth" },
-                ].map((feature, i) => (
-                  <Group
-                    key={i}
-                    gap={isMobile ? "xs" : "sm"}
-                    align="center"
-                    style={{
-                      marginRight: isMobile ? 0 : rem(10),
-                      width: isMobile ? "auto" : "auto",
-                    }}
-                  >
-                    <ThemeIcon
-                      variant="filled"
-                      color="var(--mantine-color-primary-5)"
-                      size={isMobile ? "sm" : "md"}
-                      radius="xl"
-                    >
-                      <feature.icon size={isMobile ? 12 : 16} />
-                    </ThemeIcon>
-                    <Text fw={600} c="white" size={isMobile ? "xs" : "md"}>
-                      {feature.text}
-                    </Text>
-                  </Group>
-                ))}
+          <Group
+            mt="md"
+            gap="xl"
+            style={{ justifyContent: isMdOrSmaller ? "center" : "flex-start" }}
+          >
+            {[
+              { icon: IconBook, text: "Quality Learning" },
+              { icon: IconCertificate, text: "Certification" },
+              { icon: IconRocket, text: "Career Growth" },
+            ].map((feature, i) => (
+              <Group key={i} gap="sm" align="center">
+                <ThemeIcon
+                  variant="filled"
+                  color={mantineTheme.colors.primary[5]}
+                  size={getResponsiveValue("md", "md", "lg", "lg")}
+                  radius="xl"
+                >
+                  <feature.icon
+                    size={getResponsiveValue(14, 16, 18, 18)}
+                  />
+                </ThemeIcon>
+                <Text fw={600} c="white" size={getResponsiveValue("sm", "md", "md", "md")}>
+                  {feature.text}
+                </Text>
               </Group>
-            </Stack>
-          </Box>
-
-          {/* Empty right column for layout balance */}
-          <Box style={{ flex: 1 }} />
-        </Flex>
+            ))}
+          </Group>
+        </Stack>
       </Container>
     </Box>
   );

@@ -1,8 +1,10 @@
 "use client";
 
-import { Box, Container, SimpleGrid, Stack, Text, Title, rem, Card, Avatar, Group } from "@mantine/core";
+import { Avatar, Box, Card, Container, Group, rem, SimpleGrid, Stack, Text, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+
 import { IconBrandLinkedin, IconBrandTwitter } from "@/assets/icons";
-import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
 
 const teamMembers = [
   {
@@ -36,19 +38,29 @@ const teamMembers = [
 ];
 
 const OurTeam = () => {
-  const isMobile = useIsMobile();
+  const { colors, mantineTheme } = useTheme();
+  const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
+  const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
+  const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
+
+  const getResponsiveValue = (xs, sm, md, lg) => {
+    if (isXs) return xs;
+    if (isSmOrSmaller) return sm;
+    if (isMdOrSmaller) return md;
+    return lg;
+  };
 
   return (
     <Box py={100}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
+          <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
             OUR TEAM
           </Text>
           <Title
             order={2}
             style={{
-              fontSize: isMobile ? rem(28) : rem(36),
+              fontSize: getResponsiveValue(rem(28), rem(32), rem(36), rem(36)),
               textAlign: "center",
               maxWidth: rem(700),
               margin: "0 auto",
@@ -71,13 +83,7 @@ const OurTeam = () => {
               radius="lg"
               withBorder
               style={{
-                transition: "all 0.3s ease",
                 height: "100%",
-                "&:hover": {
-                  transform: "translateY(-8px)",
-                  boxShadow: "0 20px 30px rgba(0, 0, 0, 0.1)",
-                  borderColor: "var(--mantine-color-primary-3)",
-                },
               }}
             >
               <Stack align="center">
@@ -87,13 +93,13 @@ const OurTeam = () => {
                   radius={120}
                   mx="auto"
                   style={{
-                    border: "4px solid var(--mantine-color-primary-1)",
+                    border: `4px solid ${mantineTheme.colors.primary[2]}`,
                   }}
                 />
                 <Title order={4} ta="center" mt="md">
                   {member.name}
                 </Title>
-                <Text size="sm" c="var(--mantine-color-primary-5)" fw={600} ta="center" mt={-5}>
+                <Text size="sm" c={colors.primary} fw={600} ta="center" mt={-5}>
                   {member.position}
                 </Text>
                 <Text size="sm" c="dimmed" ta="center" mt="xs">
@@ -103,14 +109,14 @@ const OurTeam = () => {
                   <IconBrandLinkedin
                     size={20}
                     style={{
-                      color: "var(--mantine-color-primary-5)",
+                      color: colors.primary,
                       cursor: "pointer",
                     }}
                   />
                   <IconBrandTwitter
                     size={20}
                     style={{
-                      color: "var(--mantine-color-primary-5)",
+                      color: colors.primary,
                       cursor: "pointer",
                     }}
                   />

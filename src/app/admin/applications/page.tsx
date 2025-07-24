@@ -20,7 +20,8 @@ import {
   ScrollArea,
   rem,
 } from "@mantine/core";
-import { DataTable } from "mantine-datatable";
+import { DataTable, type DataTableSortStatus } from "mantine-datatable";
+import sortBy from "lodash/sortBy";
 import { IconAlertCircle, IconSearch, IconEye } from "@/assets/icons";
 import { getApplications } from "@/actions/applications";
 import { IMAGE_URL } from "@/lib/constants";
@@ -40,6 +41,9 @@ interface Application {
 }
 
 const ApplicationsPage = () => {
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<Application>>({ columnAccessor: "id", direction: "asc" });
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 10;
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -86,6 +90,13 @@ const ApplicationsPage = () => {
 
     return matchesSearch && matchesCourse;
   });
+
+  // Sort applications
+  const sortedApplications = sortBy(filteredApplications, sortStatus.columnAccessor) as Application[];
+  if (sortStatus.direction === "desc") sortedApplications.reverse();
+
+  // Paginate applications
+  const paginatedApplications = sortedApplications.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   const handleViewDetails = (application: Application) => {
     setSelectedApplication(application);
@@ -144,13 +155,13 @@ const ApplicationsPage = () => {
             <DataTable
               minHeight={300}
               columns={[
-                { accessor: 'id', title: 'ID', sortable: true, width: 60 },
-                { accessor: 'name', title: 'Name', sortable: true },
-                { accessor: 'email', title: 'Email', sortable: true },
-                { accessor: 'phone', title: 'Phone' },
+                { accessor: "id", title: "ID", sortable: true, width: 60 },
+                { accessor: "name", title: "Name", sortable: true },
+                { accessor: "email", title: "Email", sortable: true },
+                { accessor: "phone", title: "Phone" },
                 {
-                  accessor: 'courses',
-                  title: 'Course(s)',
+                  accessor: "courses",
+                  title: "Course(s)",
                   render: (application) => (
                     <Group gap={4}>
                       {application.courses?.map((course: string) => (
@@ -162,15 +173,15 @@ const ApplicationsPage = () => {
                   ),
                 },
                 {
-                  accessor: 'created_at',
-                  title: 'Date',
+                  accessor: "created_at",
+                  title: "Date",
                   sortable: true,
                   render: (application) => new Date(application.created_at).toLocaleDateString(),
                 },
                 {
-                  accessor: 'actions',
-                  title: 'Actions',
-                  textAlign: 'center',
+                  accessor: "actions",
+                  title: "Actions",
+                  textAlign: "center",
                   render: (application) => (
                     <Button
                       variant="light"
@@ -183,14 +194,19 @@ const ApplicationsPage = () => {
                   ),
                 },
               ]}
-              records={filteredApplications || []}
+              records={paginatedApplications}
+              totalRecords={sortedApplications.length}
+              recordsPerPage={PAGE_SIZE}
+              page={page}
+              onPageChange={setPage}
               withTableBorder
               borderRadius="sm"
               striped
               highlightOnHover
               noRecordsText="No applications found"
               loadingText="Loading applications..."
-              initialSorting={[{ accessor: 'id', direction: 'asc' }]}
+              sortStatus={sortStatus}
+              // onSortStatusChange={setSortStatus}
             />
           </ScrollArea>
         </Paper>

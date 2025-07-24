@@ -1,8 +1,10 @@
 "use client";
 
-import { Box, Container, Stack, Text, Title, rem, Card, Avatar, Group, Flex } from "@mantine/core";
+import { Avatar, Box, Card, Container, Flex, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
+
 import { IconQuote, IconStar } from "@/assets/icons";
-import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
 
 const testimonials = [
   {
@@ -29,19 +31,29 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
-  const isMobile = useIsMobile();
+  const { colors, mantineTheme } = useTheme();
+  const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
+  const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
+  const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
+
+  const getResponsiveValue = (xs, sm, md, lg) => {
+    if (isXs) return xs;
+    if (isSmOrSmaller) return sm;
+    if (isMdOrSmaller) return md;
+    return lg;
+  };
 
   return (
-    <Box py={100} style={{ backgroundColor: "var(--mantine-color-gray-0)" }}>
+    <Box py={100} bg={mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text c="var(--mantine-color-primary-5)" fw={700} size="lg" tt="uppercase" ta="center">
+          <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
             TESTIMONIALS
           </Text>
           <Title
             order={2}
             style={{
-              fontSize: isMobile ? rem(28) : rem(36),
+              fontSize: getResponsiveValue(rem(28), rem(32), rem(36), rem(36)),
               textAlign: "center",
               maxWidth: rem(700),
               margin: "0 auto",
@@ -69,19 +81,13 @@ const Testimonials = () => {
               radius="lg"
               withBorder
               style={{
-                transition: "all 0.3s ease",
                 flex: 1,
-                "&:hover": {
-                  transform: "translateY(-8px)",
-                  boxShadow: "0 20px 30px rgba(0, 0, 0, 0.1)",
-                  borderColor: "var(--mantine-color-primary-3)",
-                },
               }}
             >
               <IconQuote 
                 size={40} 
                 style={{ 
-                  color: "var(--mantine-color-primary-1)",
+                  color: mantineTheme.colors.primary[2],
                   marginBottom: rem(20),
                 }} 
               />
@@ -100,8 +106,8 @@ const Testimonials = () => {
                   <IconStar 
                     key={i} 
                     size={16} 
-                    fill="var(--mantine-color-primary-5)" 
-                    color="var(--mantine-color-primary-5)" 
+                    fill={colors.primary} 
+                    color={colors.primary} 
                   />
                 ))}
               </Group>

@@ -26,7 +26,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
       <Box py={80}>
         <Container size="lg">
           <Stack align="center">
-            <Title order={2} c="var(--mantine-color-primary-5)">
+            <Title order={2} c="primary">
               Error
             </Title>
             <Text size="lg" mb="xl">

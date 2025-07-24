@@ -1,16 +1,22 @@
 "use client";
 
-import { Box, Container, Title, Text, Group, Button, Paper, ThemeIcon, Stack, Flex } from "@mantine/core";
-import { IconArrowRight, IconCertificate, IconStar, IconSchool } from "@/assets/icons";
+import { Box, Button, Container, Flex, Group, Paper, Stack, Text, ThemeIcon, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
 import Link from "next/link";
+
+import { IconArrowRight, IconCertificate, IconSchool, IconStar } from "@/assets/icons";
 
 interface CourseCTAProps {
   courseName?: string;
 }
 
 export default function CourseCTA({ courseName }: CourseCTAProps) {
+  const mantineTheme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
+  const paperBg = colorScheme === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white;
+
   return (
-    <Box pb={60} pt={20} bg="var(--mantine-color-gray-0)">
+    <Box pb={60} pt={20} bg={colorScheme === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Paper
           radius="md"
@@ -20,7 +26,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
           style={{
             position: "relative",
             overflow: "hidden",
-            background: "linear-gradient(135deg, var(--mantine-color-gray-1) 0%, var(--mantine-color-gray-0) 100%)",
+            background: `linear-gradient(135deg, ${mantineTheme.colors.gray[1]} 0%, ${mantineTheme.colors.gray[0]} 100%)`,
           }}
         >
           {/* Decorative elements */}
@@ -32,7 +38,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
               width: 180,
               height: 180,
               borderRadius: "50%",
-              background: "radial-gradient(circle, var(--mantine-color-primary-1) 0%, transparent 70%)",
+              background: `radial-gradient(circle, ${mantineTheme.colors.primary[1]} 0%, transparent 70%)`,
               opacity: 0.6,
               zIndex: 0,
             }}
@@ -45,7 +51,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
               width: 200,
               height: 200,
               borderRadius: "50%",
-              background: "radial-gradient(circle, var(--mantine-color-primary-2) 0%, transparent 70%)",
+              background: `radial-gradient(circle, ${mantineTheme.colors.primary[2]} 0%, transparent 70%)`,
               opacity: 0.5,
               zIndex: 0,
             }}
@@ -63,10 +69,10 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
                   <IconSchool size={30} />
                 </ThemeIcon>
                 <div>
-                  <Title order={2} c="var(--mantine-color-dark-7)">
+                  <Title order={2}>
                     Ready to Start Your Learning Journey?
                   </Title>
-                  <Text size="lg" c="var(--mantine-color-gray-7)">
+                  <Text size="lg" c="dimmed">
                     {courseName
                       ? `Enroll in ${courseName} today and take the first step towards advancing your career.`
                       : "Enroll in this course today and take the first step towards advancing your career."}
@@ -95,7 +101,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
 
           {/* Achievement icons */}
           <Group mt="xl" justify="center" style={{ position: "relative", zIndex: 1 }}>
-            <Paper p="md" radius="md" withBorder style={{ background: "rgba(255,255,255,0.7)" }}>
+            <Paper p="md" radius="md" withBorder style={{ background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.7)' }}>
               <Group gap="xs">
                 <ThemeIcon size="md" color="primary" variant="light" radius="xl">
                   <IconCertificate size={16} />
@@ -105,7 +111,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
                 </Text>
               </Group>
             </Paper>
-            <Paper p="md" radius="md" withBorder style={{ background: "rgba(255,255,255,0.7)" }}>
+            <Paper p="md" radius="md" withBorder style={{ background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.7)' }}>
               <Group gap="xs">
                 <ThemeIcon size="md" color="primary" variant="light" radius="xl">
                   <IconStar size={16} />

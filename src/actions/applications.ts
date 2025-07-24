@@ -1,21 +1,21 @@
 import Api from "@/services/frontql/Api";
 import { uploadMedia } from "@/lib/uploads";
 
-export interface ApplicationData {
-  name: string;
-  email: string;
-  phone: string;
-  qualification: string;
-  semester: string;
-  college: string;
-  courses: string[];
-  courseNames?: string[];
-  qualificationLabel?: string;
-  semesterLabel?: string;
-  receipt?: File | null;
-}
+// export interface ApplicationData {
+//   name: string;
+//   email: string;
+//   phone: string;
+//   qualification: string;
+//   semester: string;
+//   college: string;
+//   courses: string[];
+//   courseNames?: string[];
+//   qualificationLabel?: string;
+//   semesterLabel?: string;
+//   receipt?: File | null;
+// }
 
-export async function submitApplication(data: ApplicationData) {
+export async function submitApplication(data: any) {
   try {
     // First handle the receipt upload if present
     let receiptUrl = "";

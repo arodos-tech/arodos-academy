@@ -1,16 +1,26 @@
 "use client";
 
-import { Box, Container, Group, Stack, Text, Title, Button, rem } from "@mantine/core";
-import { IconArrowRight, IconCode, IconRocket } from "@/assets/icons";
+import { Box, Button, Container, Group, rem, Stack, Text, Title } from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import Link from "next/link";
-import { useIsMobile } from "@/hooks";
-import { useTheme } from "@/theme/use-theme";
+
+import { IconCode, IconRocket } from "@/assets/icons";
 import { homeHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
+import { useTheme } from "@/theme/use-theme";
 
 const HomeHero = () => {
-  const isMobile = useIsMobile();
   const { colors, mantineTheme } = useTheme();
+  const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`); // md breakpoint
+  const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`); // sm breakpoint
+  const isXs = useMediaQuery(`(max-width: ${rem(576)})`); // xs breakpoint
+
+  const getResponsiveValue = (xs, sm, md, lg) => {
+    if (isXs) return xs;
+    if (isSmOrSmaller) return sm;
+    if (isMdOrSmaller) return md;
+    return lg;
+  };
 
   return (
     <Box
@@ -18,13 +28,12 @@ const HomeHero = () => {
         color: mantineTheme.white,
         position: "relative",
         overflow: "hidden",
-        height: isMobile ? rem(650) : rem(600),
-        maxWidth: "100%",
+        height: "auto",
+        minHeight: getResponsiveValue(rem(500), rem(550), rem(600), rem(600)),
         width: "100%",
-        marginTop: isMobile ? rem(40) : 0,
       }}
     >
-      {/* Hero background image with overlay */}
+      {/* Background Image */}
       <Box
         style={{
           position: "absolute",
@@ -35,12 +44,11 @@ const HomeHero = () => {
           backgroundImage: `url(${homeHero.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.4)",
           zIndex: 1,
         }}
       />
 
-      {/* Red gradient overlay */}
+      {/* Gradient Overlay */}
       <Box
         style={{
           position: "absolute",
@@ -52,149 +60,151 @@ const HomeHero = () => {
           zIndex: 2,
         }}
       />
+
       <Container
         size="lg"
         style={{
           position: "relative",
           zIndex: 3,
-          padding: isMobile ? `${rem(80)} ${rem(30)} ${rem(60)}` : `${rem(120)} 0 ${rem(80)}`,
+          padding: getResponsiveValue(
+            `${rem(40)} ${rem(20)}`,
+            `${rem(50)} ${rem(25)}`,
+            rem(60),
+            rem(80)
+          ),
           height: "100%",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          maxWidth: "100%",
-          width: "100%",
-          boxSizing: "border-box",
-          overflow: "hidden",
+          alignItems: "center",
+          textAlign: "center",
         }}
       >
-        <Stack align="center" gap="xl">
-          <Text fw={600} size={isMobile ? "8px" : "lg"} tt="uppercase" ta="center" mt={isMobile ? 0 : 0} style={{ color: mantineTheme.white }}>
+        <Stack
+          align="center"
+          justify="center"
+          gap="md"
+          w="100%"
+          style={{ maxWidth: rem(900) }}
+        >
+          <Text
+            fw={600}
+            tt="uppercase"
+            style={{
+              fontSize: getResponsiveValue(rem(14), rem(15), rem(16), rem(18)),
+            }}
+          >
             Building Futures
           </Text>
 
           <Title
             order={1}
             style={{
-              fontSize: isMobile ? rem(9) : rem(64),
-              lineHeight: isMobile ? 1.3 : 1.1,
-              textAlign: "center",
-              maxWidth: isMobile ? "90%" : rem(900),
-              margin: "0 auto",
+              fontSize: getResponsiveValue(rem(32), rem(40), rem(50), rem(64)),
+              lineHeight: 1.1,
               fontWeight: 800,
-              wordBreak: "break-word",
-              overflowWrap: "break-word",
-              padding: isMobile ? "0 10px" : 0,
             }}
           >
             Launch Your Tech Career with Arodos
           </Title>
 
           <Text
-            size={isMobile ? "xs" : "xl"}
-            ta="center"
-            maw={isMobile ? "100%" : 700}
-            mx="auto"
-            style={{ opacity: 0.9, fontSize: isMobile ? rem(9) : undefined }}
+            size={getResponsiveValue("md", "lg", "lg", "xl")}
+            style={{
+              opacity: 0.9,
+              maxWidth: rem(650),
+              margin: `${rem(10)} auto 0`,
+              lineHeight: 1.5,
+            }}
           >
-            Join us in shaping a brighter future.
+            High-quality, affordable courses designed to get you job-ready. Join
+            us and start building your future in tech today.
           </Text>
 
-          <Group mt={isMobile ? "md" : "xl"} justify="center" wrap="wrap" gap={isMobile ? 8 : "xl"} w="100%" mb={isMobile ? rem(20) : 0}>
-            <Button
-              size={isMobile ? "xs" : "md"}
-              component={Link}
-              href="/courses"
-              radius="xl"
-              px={isMobile ? 8 : 24}
-              variant="white"
-              c={colors.primary}
-              styles={{
-                root: {
-                  height: isMobile ? rem(24) : rem(48),
-                  fontSize: isMobile ? rem(8) : rem(16),
-                  minWidth: isMobile ? 0 : rem(160),
-                  padding: isMobile ? "0 8px" : "0 24px",
-                },
-              }}
+          {isMdOrSmaller ? (
+            <Stack
+              mt="xl"
+              gap="sm"
+              style={{ width: "100%", maxWidth: rem(320) }}
             >
-              Explore Courses
-            </Button>
-            <Button
-              variant="outline"
-              size={isMobile ? "xs" : "md"}
-              color={mantineTheme.white}
-              radius="xl"
-              px={isMobile ? 8 : 24}
-              component="a"
-              href="#why-us"
-              styles={{
-                root: {
-                  height: isMobile ? rem(24) : rem(48),
-                  fontSize: isMobile ? rem(8) : rem(16),
-                  minWidth: isMobile ? 0 : rem(160),
-                  padding: isMobile ? "0 8px" : "0 24px",
-                },
-              }}
-            >
-              Learn More
-            </Button>
-          </Group>
-
-          {/* Decorative elements */}
-          <Box
-            style={{
-              position: "absolute",
-              right: "-5%",
-              bottom: "-10%",
-              opacity: 0.1,
-              transform: "rotate(-15deg)",
-              zIndex: -1,
-            }}
-          >
-            <IconCode size={300} stroke={1.5} />
-          </Box>
-
-          <Box
-            style={{
-              position: "absolute",
-              left: "-5%",
-              top: "10%",
-              opacity: 0.1,
-              transform: "rotate(15deg)",
-              zIndex: -1,
-            }}
-          >
-            <IconRocket size={200} stroke={1.5} />
-          </Box>
+              <Button
+                component={Link}
+                href="/courses"
+                radius="xl"
+                variant="white"
+                c={colors.primary}
+                fullWidth
+                size={getResponsiveValue("sm", "md", "md", "lg")}
+              >
+                Explore Courses
+              </Button>
+              <Button
+                variant="outline"
+                color="white"
+                radius="xl"
+                component="a"
+                href="#why-us"
+                fullWidth
+                size={getResponsiveValue("sm", "md", "md", "lg")}
+              >
+                Learn More
+              </Button>
+            </Stack>
+          ) : (
+            <Group mt="xl" gap="md" justify="center">
+              <Button
+                component={Link}
+                href="/courses"
+                radius="xl"
+                variant="white"
+                c={colors.primary}
+                size="lg"
+                styles={{ root: { height: rem(54), paddingLeft: rem(35), paddingRight: rem(35) } }}
+              >
+                Explore Courses
+              </Button>
+              <Button
+                variant="outline"
+                color="white"
+                radius="xl"
+                component="a"
+                href="#why-us"
+                size="lg"
+                styles={{ root: { height: rem(54), paddingLeft: rem(35), paddingRight: rem(35) } }}
+              >
+                Learn More
+              </Button>
+            </Group>
+          )}
         </Stack>
 
-        {/* Decorative elements */}
-        <Box
-          style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            opacity: 0.05,
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        >
-          <IconCode size={400} />
-        </Box>
-
-        <Box
-          style={{
-            position: "absolute",
-            left: 0,
-            bottom: 0,
-            opacity: 0.05,
-            pointerEvents: "none",
-            zIndex: 1,
-          }}
-        >
-          <IconRocket size={300} />
-        </Box>
+        {/* Decorative Icons (Hidden on Mobile) */}
+        {!isMdOrSmaller && (
+          <>
+            <Box
+              style={{
+                position: "absolute",
+                right: "-5%",
+                bottom: "-10%",
+                opacity: 0.08,
+                transform: "rotate(-15deg)",
+              }}
+            >
+              <IconCode size={300} stroke={1} />
+            </Box>
+            <Box
+              style={{
+                position: "absolute",
+                left: "-5%",
+                top: "10%",
+                opacity: 0.08,
+                transform: "rotate(15deg)",
+              }}
+            >
+              <IconRocket size={200} stroke={1} />
+            </Box>
+          </>
+        )}
       </Container>
     </Box>
   );

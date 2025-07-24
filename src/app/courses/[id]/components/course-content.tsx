@@ -1,28 +1,34 @@
 "use client";
 
 import {
-  Box,
-  Container,
-  SimpleGrid,
-  Tabs,
-  Title,
-  Text,
-  Paper,
-  Group,
-  ThemeIcon,
-  List,
-  Card,
-  Badge,
   Avatar,
+  Badge,
+  Box,
+  Card,
+  Container,
+  Group,
+  List,
+  Paper,
+  SimpleGrid,
   Stack,
+  Tabs,
+  Text,
+  ThemeIcon,
+  Title,
+  useMantineColorScheme,
+  useMantineTheme,
 } from "@mantine/core";
-import { IconCheck, IconCertificate } from "@/assets/icons";
+
+import { IconCheck } from "@/assets/icons";
 
 interface CourseContentProps {
   course: any;
 }
 
 export default function CourseContent({ course }: CourseContentProps) {
+  const mantineTheme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
   // Learning objectives from course data
   const objectives = course?.objectives ? course.objectives.split(",").map((obj: string) => obj.trim()) : [];
 
@@ -30,7 +36,7 @@ export default function CourseContent({ course }: CourseContentProps) {
   const requirements = course?.requirements ? course.requirements.split(",").map((req: string) => req.trim()) : [];
 
   return (
-    <Box pb={40} bg="var(--mantine-color-gray-0)">
+    <Box pb={40} bg={colorScheme === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Tabs defaultValue="overview" radius="md" color="primary">
           <Tabs.List mb="xl">
@@ -49,17 +55,17 @@ export default function CourseContent({ course }: CourseContentProps) {
 
           <Tabs.Panel value="overview">
             <Paper withBorder p="xl" radius="md" shadow="sm">
-              <Title order={2} mb="xl" c="var(--mantine-color-dark-7)">
+              <Title order={2} mb="xl">
                 About This Course
               </Title>
 
-              <Text size="md" mb="xl" style={{ lineHeight: 1.7 }} c="var(--mantine-color-gray-7)">
+              <Text size="md" mb="xl" style={{ lineHeight: 1.7 }} c="dimmed">
                 {course?.description}
               </Text>
 
               {objectives.length > 0 && (
                 <>
-                  <Title order={3} mb="md" c="var(--mantine-color-dark-7)">
+                  <Title order={3} mb="md">
                     What You'll Learn
                   </Title>
                   <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl">
@@ -77,7 +83,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
               {requirements.length > 0 && (
                 <>
-                  <Title order={3} mb="md" c="var(--mantine-color-dark-7)">
+                  <Title order={3} mb="md">
                     Requirements
                   </Title>
                   <List withPadding>
@@ -92,7 +98,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
           <Tabs.Panel value="curriculum">
             <Paper withBorder p="xl" radius="md" shadow="sm">
-              <Title order={2} mb="xl" c="var(--mantine-color-dark-7)">
+              <Title order={2} mb="xl">
                 Course Curriculum
               </Title>
 
@@ -111,13 +117,13 @@ export default function CourseContent({ course }: CourseContentProps) {
                           {module.duration}
                         </Badge>
                       </Group>
-                      <Text c="var(--mantine-color-gray-6)" ml={56}>
+                      <Text c="dimmed" ml={56}>
                         {module.description}
                       </Text>
                     </Card>
                   ))}
                 {!course?.modules && (
-                  <Text c="var(--mantine-color-gray-6)" ta="center" py="xl">
+                  <Text c="dimmed" ta="center" py="xl">
                     Curriculum details will be available soon.
                   </Text>
                 )}
@@ -128,7 +134,7 @@ export default function CourseContent({ course }: CourseContentProps) {
           {course?.instructor && (
             <Tabs.Panel value="instructor">
               <Paper withBorder p="xl" radius="md" shadow="sm">
-                <Title order={2} mb="xl" c="var(--mantine-color-dark-7)">
+                <Title order={2} mb="xl">
                   Meet Your Instructor
                 </Title>
 
@@ -139,10 +145,10 @@ export default function CourseContent({ course }: CourseContentProps) {
 
                   <div>
                     <Title order={3}>{course.instructor.name}</Title>
-                    <Text c="var(--mantine-color-gray-6)" mb="md">
+                    <Text c="dimmed" mb="md">
                       {course.instructor.title}
                     </Text>
-                    <Text style={{ lineHeight: 1.7 }} c="var(--mantine-color-gray-7)">
+                    <Text style={{ lineHeight: 1.7 }} c="dimmed">
                       {course.instructor.bio}
                     </Text>
                   </div>

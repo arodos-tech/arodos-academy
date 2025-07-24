@@ -28,10 +28,7 @@ type HttpMethod = "get" | "post" | "put" | "delete" | "sql";
 
 type RequestOptions = {
   loading?: boolean;
-  body?: {
-    sql: "string";
-    params: [{ [key: string]: string | number }];
-  };
+  body?: Record<string, any>;
   key?: string;
   page?: string;
   sort?: string;
