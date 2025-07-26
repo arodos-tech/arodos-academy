@@ -24,6 +24,10 @@ const database = _DATABASE;
 const baseUrl = _FQ_BASE_URL;
 const localServer = _FQ_LOCAL_SERVER;
 
+// Cache for API responses
+const apiCache = new Map<string, { data: any; timestamp: number }>();
+const CACHE_TTL = 60000; // 1 minute cache TTL
+
 type HttpMethod = "get" | "post" | "put" | "delete" | "sql";
 
 type RequestOptions = {
@@ -41,6 +45,7 @@ type RequestOptions = {
   session?: string;
   validation?: string;
   permissions?: string;
+  useCache?: boolean; // New option to control caching
 };
 
 function uniqueKey(input: string) {
@@ -82,6 +87,11 @@ function getKey(method: HttpMethod, url: string, options: RequestOptions) {
   return key;
 }
 
+// Generate a cache key for the request
+function getCacheKey(method: HttpMethod, endpoint: string, options: RequestOptions): string {
+  return `${method}:${endpoint}:${JSON.stringify(options)}`;
+}
+
 const makeRequest = async (method: HttpMethod, endpoint: string, options: RequestOptions = {}): Promise<unknown> => {
   const {
     body,
@@ -97,7 +107,18 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
     validation,
     permissions,
     loading = true,
+    useCache = true, // Default to using cache for GET requests
   } = options;
+
+  // Check cache for GET requests if caching is enabled
+  if (method === "get" && useCache) {
+    const cacheKey = getCacheKey(method, endpoint, options);
+    const cachedResponse = apiCache.get(cacheKey);
+
+    if (cachedResponse && Date.now() - cachedResponse.timestamp < CACHE_TTL) {
+      return cachedResponse.data;
+    }
+  }
 
   const headers: any = {};
 
@@ -133,6 +154,7 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
     const axiosInstance = axios.create({
       baseURL: token ? baseUrl : localServer,
       headers: { app: database },
+      timeout: 10000, // 10 second timeout
     });
 
     const requestConfig: AxiosRequestConfig = {
@@ -144,6 +166,16 @@ const makeRequest = async (method: HttpMethod, endpoint: string, options: Reques
     };
 
     const response = await axiosInstance(requestConfig);
+
+    // Cache the response for GET requests
+    if (method === "get" && useCache) {
+      const cacheKey = getCacheKey(method, endpoint, options);
+      apiCache.set(cacheKey, {
+        data: response.data,
+        timestamp: Date.now(),
+      });
+    }
+
     return response.data;
   } catch (error: any) {
     console.error(`${method.toUpperCase()} Error:`, error.message);
@@ -162,6 +194,9 @@ const Api = {
   delete: async (endpoint: string, options?: RequestOptions): Promise<any> => makeRequest("delete", endpoint, options),
   sql: async (endpoint: string, options?: RequestOptions): Promise<any> =>
     makeRequest("post", `/sql-${endpoint.replace("/", "")}`, options),
+  clearCache: (): void => {
+    apiCache.clear();
+  },
 };
 
 export default Api;

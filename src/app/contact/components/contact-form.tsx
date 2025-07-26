@@ -1,34 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { z } from "zod";
 import {
   Box,
-  TextInput,
-  Select,
   Button,
-  Group,
-  Text,
-  Paper,
-  FileInput,
-  Stack,
   Container,
+  FileInput,
+  Group,
+  Loader,
+  MultiSelect,
+  Paper,
+  Select,
   SimpleGrid,
-  rem,
+  Stack,
+  Text,
+  TextInput,
   ThemeIcon,
   Title,
-  MultiSelect,
-  Loader,
+  rem,
 } from "@mantine/core";
-import { useTheme } from "@/theme/use-theme";
+import { IconCheck, IconPhone, IconPhoto, IconUpload, IconX } from "@/assets/icons";
+import { Setting, getSettings } from "@/actions/settings";
+import { useEffect, useState } from "react";
 import { useForm, zodResolver } from "@mantine/form";
-import { IconUpload, IconCheck, IconX, IconPhoto, IconPhone } from "@/assets/icons";
-import { useIsMobile } from "@/hooks";
-import { getCourses } from "@/actions/courses";
-import { submitApplication } from "@/actions/applications";
-import { getSettings, Setting } from "@/actions/settings";
-import { notifications } from "@mantine/notifications";
+
 import { IMAGE_URL } from "@/lib/constants";
+import { getCourses } from "@/actions/courses";
+import { notifications } from "@mantine/notifications";
+import { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { submitApplication } from "@/actions/applications";
+import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
+import { z } from "zod";
 
 const educationalQualifications = [
   { value: "be-btech", label: "B.E/B.Tech" },
@@ -80,6 +82,12 @@ const ContactForm = () => {
   });
   const [loadingPaymentSettings, setLoadingPaymentSettings] = useState(true);
   const isMobile = useIsMobile();
+
+  // Hide loading overlay when component mounts
+  useEffect(() => {
+    // Hide any active loading overlay
+    showLoadingOverlay(false);
+  }, []);
 
   // Fetch available courses
   useEffect(() => {
@@ -218,7 +226,10 @@ const ContactForm = () => {
   };
 
   return (
-    <Box py={rem(80)} style={{ backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white }}>
+    <Box
+      py={rem(80)}
+      style={{ backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white }}
+    >
       <Container size="lg" id="reg-form">
         <Box mb={rem(40)} ta="center">
           <Title
@@ -345,16 +356,16 @@ const ContactForm = () => {
                   <Loader size="xs" />
                 ) : (
                   <>
-                    <Text 
-                      span 
-                      fw={600} 
-                      style={{ 
+                    <Text
+                      span
+                      fw={600}
+                      style={{
                         cursor: paymentSettings.upi_id ? "pointer" : "default",
-                        color: paymentSettings.upi_id ? "var(--mantine-color-primary-6)" : "inherit"
+                        color: paymentSettings.upi_id ? "var(--mantine-color-primary-6)" : "inherit",
                       }}
                       onClick={() => {
                         if (!paymentSettings.upi_id) return;
-                        
+
                         if (isMobile) {
                           // Open UPI app on mobile
                           window.location.href = `upi://pay?pa=${paymentSettings.upi_id}`;
@@ -379,9 +390,9 @@ const ContactForm = () => {
                     {paymentSettings.upi_id && (
                       <Group gap="xs">
                         {isMobile ? (
-                          <Button 
-                            variant="subtle" 
-                            size="compact-xs" 
+                          <Button
+                            variant="subtle"
+                            size="compact-xs"
                             leftSection={<IconPhone size="1rem" />}
                             onClick={() => {
                               window.location.href = `upi://pay?pa=${paymentSettings.upi_id}`;
@@ -390,9 +401,9 @@ const ContactForm = () => {
                             Pay
                           </Button>
                         ) : (
-                          <Button 
-                            variant="subtle" 
-                            size="compact-xs" 
+                          <Button
+                            variant="subtle"
+                            size="compact-xs"
                             leftSection={<IconCheck size="1rem" />}
                             onClick={() => {
                               navigator.clipboard.writeText(paymentSettings.upi_id);
@@ -417,7 +428,11 @@ const ContactForm = () => {
                 )}
               </Group>
               <Text size="xs" c="dimmed" mb={rem(10)}>
-                {paymentSettings.upi_id && isMobile ? "Click to pay via UPI app" : paymentSettings.upi_id ? "Click to copy UPI ID" : ""}
+                {paymentSettings.upi_id && isMobile
+                  ? "Click to pay via UPI app"
+                  : paymentSettings.upi_id
+                  ? "Click to copy UPI ID"
+                  : ""}
               </Text>
               <Text c="dimmed" fz="sm">
                 Please upload the payment receipt in the form after completing the payment.
@@ -580,7 +595,9 @@ const ContactForm = () => {
                         radius="md"
                         style={{
                           backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white,
-                          border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]}`,
+                          border: `1px solid ${
+                            themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]
+                          }`,
                         }}
                       >
                         <FileInput
@@ -615,11 +632,13 @@ const ContactForm = () => {
                               width: "100%",
                             },
                             input: {
-                              border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]}`,
+                              border: `1px solid ${
+                                themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]
+                              }`,
                               backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white,
                               color: themeMode === "dark" ? mantineTheme.colors.gray[1] : mantineTheme.colors.gray[7],
-                              transition: 'border-color 0.2s',
-                              '&:focus': {
+                              transition: "border-color 0.2s",
+                              "&:focus": {
                                 borderColor: mantineTheme.colors.primary[5],
                               },
                             },
@@ -653,7 +672,9 @@ const ContactForm = () => {
                                 backgroundSize: "contain",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
-                                border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[3]}`,
+                                border: `1px solid ${
+                                  themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[3]
+                                }`,
                                 borderRadius: mantineTheme.radius.md,
                               }}
                             />
@@ -684,15 +705,15 @@ const ContactForm = () => {
                           fontWeight: 600,
                           backgroundColor:
                             !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
-                              ? (themeMode === "dark"
-                                  ? mantineTheme.colors.dark[4]
-                                  : mantineTheme.colors.gray[2])
+                              ? themeMode === "dark"
+                                ? mantineTheme.colors.dark[4]
+                                : mantineTheme.colors.gray[2]
                               : undefined,
                           color:
                             !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
-                              ? (themeMode === "dark"
-                                  ? mantineTheme.colors.gray[2]
-                                  : mantineTheme.colors.gray[5])
+                              ? themeMode === "dark"
+                                ? mantineTheme.colors.gray[2]
+                                : mantineTheme.colors.gray[5]
                               : undefined,
                           cursor:
                             !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0

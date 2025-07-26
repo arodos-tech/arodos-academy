@@ -1,10 +1,12 @@
 "use client";
 
 import { Box, Button, Container, Flex, Group, Paper, Stack, Text, ThemeIcon, Title } from "@mantine/core";
-import { useTheme } from "@/theme/use-theme";
-import Link from "next/link";
-
 import { IconArrowRight, IconCertificate, IconSchool, IconStar } from "@/assets/icons";
+
+import Link from "next/link";
+import { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { useRouter } from "next/navigation";
+import { useTheme } from "@/theme/use-theme";
 
 interface CourseCTAProps {
   courseName?: string;
@@ -12,8 +14,13 @@ interface CourseCTAProps {
 
 export default function CourseCTA({ courseName }: CourseCTAProps) {
   const { colors, mantineTheme, themeMode } = useTheme();
-
+  const router = useRouter();
   const paperBg = themeMode === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white;
+
+  const handleEnrollClick = () => {
+    showLoadingOverlay(true);
+    router.push("/contact#reg-form");
+  };
 
   return (
     <Box pb={60} pt={20} bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
@@ -82,7 +89,7 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
             </Stack>
 
             <Group justify="center" gap="md">
-              <Button variant="filled" color="primary" size="lg" radius="md">
+              <Button variant="filled" color="primary" size="lg" radius="md" onClick={handleEnrollClick}>
                 Enroll Now
               </Button>
               <Button

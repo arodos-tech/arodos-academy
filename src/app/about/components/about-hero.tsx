@@ -1,13 +1,14 @@
 "use client";
 
 import { Box, Container, Stack, Text, Title, rem } from "@mantine/core";
+
+import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
+import { aboutHero } from "@/assets/images";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTheme } from "@/theme/use-theme";
-import { aboutHero } from "@/assets/images";
-import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const AboutHero = () => {
-  const { colors, mantineTheme } = useTheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -79,6 +80,7 @@ const AboutHero = () => {
             style={{
               fontSize: getResponsiveValue(rem(14), rem(15), rem(16), rem(18)),
               textAlign: "center",
+              color: mantineTheme.white,
             }}
           >
             ABOUT ARODOS ACADEMY
@@ -91,6 +93,7 @@ const AboutHero = () => {
               fontWeight: 800,
               textAlign: "center",
               maxWidth: rem(900),
+              color: mantineTheme.white,
             }}
           >
             Welcome to Arodos Academy
@@ -104,6 +107,7 @@ const AboutHero = () => {
             style={{
               opacity: 0.9,
               lineHeight: getResponsiveValue(1.3, 1.4, 1.5, 1.6),
+              color: mantineTheme.white,
             }}
           >
             {getResponsiveValue(

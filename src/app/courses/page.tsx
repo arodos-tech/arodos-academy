@@ -1,14 +1,21 @@
-import CoursesList from "@/app/courses/components/courses-list";
 import CourseHero from "@/app/courses/components/course-hero";
+import CoursesList from "@/app/courses/components/courses-list";
+import { Suspense } from "react";
 import { getCourses } from "@/actions/courses";
 
-export default async function CoursesPage() {
+// Component to fetch and display courses
+async function CoursesListSection() {
   const { courses, error } = await getCourses();
+  return <CoursesList courses={courses} error={error} />;
+}
 
+export default function CoursesPage() {
   return (
     <>
       <CourseHero />
-      <CoursesList courses={courses} error={error} />
+      <Suspense fallback={<div />}>
+        <CoursesListSection />
+      </Suspense>
     </>
   );
 }

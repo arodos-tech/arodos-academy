@@ -1,16 +1,25 @@
 "use client";
 
 import { Box, Container, Stack, Text, Title, rem } from "@mantine/core";
+
+import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
+import { contactHero } from "@/assets/images";
+import { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { useEffect } from "react";
 import { useMediaQuery } from "@mantine/hooks";
 import { useTheme } from "@/theme/use-theme";
-import { contactHero } from "@/assets/images";
-import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const ContactHero = () => {
   const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
+
+  // Hide loading overlay when component mounts
+  useEffect(() => {
+    // Hide any active loading overlay
+    showLoadingOverlay(false);
+  }, []);
 
   const getResponsiveValue = (xs: any, sm: any, md: any, lg: any) => {
     if (isXs) return xs;
@@ -81,6 +90,7 @@ const ContactHero = () => {
             style={{
               fontSize: getResponsiveValue(rem(14), rem(15), rem(16), rem(18)),
               textAlign: "center",
+              color: mantineTheme.white,
             }}
           >
             GET IN TOUCH
@@ -93,6 +103,7 @@ const ContactHero = () => {
               fontWeight: 800,
               textAlign: "center",
               maxWidth: rem(900),
+              color: mantineTheme.white,
             }}
           >
             Contact Us
@@ -103,7 +114,7 @@ const ContactHero = () => {
             maw={getResponsiveValue(280, 400, 500, 700)}
             mx="auto"
             mt={getResponsiveValue("sm", "md", "lg", "xl")}
-            style={{ opacity: 0.9, lineHeight: getResponsiveValue(1.3, 1.4, 1.5, 1.6) }}
+            style={{ opacity: 0.9, lineHeight: getResponsiveValue(1.3, 1.4, 1.5, 1.6), color: mantineTheme.white }}
           >
             {getResponsiveValue(
               "We're here to help with your tech education journey.",

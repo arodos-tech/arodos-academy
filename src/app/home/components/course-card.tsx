@@ -12,6 +12,8 @@ import {
 } from "@/assets/icons";
 
 import Link from "next/link";
+import { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { useRouter } from "next/navigation";
 import { useTheme } from "@/theme/use-theme";
 
 interface CourseProps {
@@ -28,6 +30,7 @@ interface CourseProps {
 
 const CourseCard = ({ course }: CourseProps) => {
   const { colors, themeMode, mantineTheme } = useTheme();
+  const router = useRouter();
 
   // Select icon based on course name or id to ensure consistency
   const getIcon = () => {
@@ -44,6 +47,12 @@ const CourseCard = ({ course }: CourseProps) => {
       default:
         return <IconBook size={48} color={colors.primary} />;
     }
+  };
+
+  const handleViewCourse = (e: React.MouseEvent) => {
+    e.preventDefault();
+    showLoadingOverlay(true);
+    router.push(`/courses/${course?.id}`);
   };
 
   return (
@@ -137,8 +146,7 @@ const CourseCard = ({ course }: CourseProps) => {
             rightSection={
               <IconArrowRight size={18} style={{ color: themeMode === "dark" ? colors.textPrimary : undefined }} />
             }
-            component={Link}
-            href={`/courses/${course?.id}`}
+            onClick={handleViewCourse}
             styles={(theme) => ({
               root: {
                 color: themeMode === "dark" ? colors.textPrimary : undefined,

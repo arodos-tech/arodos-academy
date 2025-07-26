@@ -1,19 +1,20 @@
-import { getCourseById, getCourses } from "@/actions/courses";
-import { notFound } from "next/navigation";
-import { Box, Container, Stack, Text, Title, Button } from "@mantine/core";
-import Link from "next/link";
+import { Box, Button, Container, Stack, Text, Title } from "@mantine/core";
 
+import CourseCTA from "./components/course-cta";
+import CourseContent from "./components/course-content";
 // Import components
 import CourseDetails from "./components/course-details";
-import CourseContent from "./components/course-content";
-import CourseCTA from "./components/course-cta";
+import Link from "next/link";
+import { Suspense } from "react";
+import { getCourseById } from "@/actions/courses";
+import { notFound } from "next/navigation";
 
 // Using 'any' type as per project guidelines
 type CoursePageProps = any;
 
-export default async function CoursePage({ params }: CoursePageProps) {
-  // Get the current course
-  const { course, error } = await getCourseById(params.id);
+// Component to fetch and display course details
+async function CourseDetailsSection({ courseId }: { courseId: string }) {
+  const { course, error } = await getCourseById(courseId);
 
   // If course doesn't exist, return 404
   if (!course && !error) {
@@ -41,14 +42,21 @@ export default async function CoursePage({ params }: CoursePageProps) {
     );
   }
 
-  // Get all courses for related courses section
-  const { courses } = await getCourses();
-
   return (
-    <div>
+    <>
       <CourseDetails course={course} />
       {/* <CourseContent course={course} /> */}
       {/* <CourseCTA courseName={course?.name} /> */}
+    </>
+  );
+}
+
+export default function CoursePage({ params }: CoursePageProps) {
+  return (
+    <div>
+      <Suspense fallback={<div />}>
+        <CourseDetailsSection courseId={params.id} />
+      </Suspense>
     </div>
   );
 }

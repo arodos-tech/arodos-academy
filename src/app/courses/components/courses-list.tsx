@@ -1,9 +1,11 @@
 "use client";
 
-import { Box, Container, Stack, Text, Title, Grid, rem, TextInput, Select, Group } from "@mantine/core";
-import { useState } from "react";
-import { IconSearch } from "@/assets/icons";
+import { Box, Container, Grid, Group, Select, Stack, Text, TextInput, Title, rem } from "@mantine/core";
+
+import { CardSkeletonLoader } from "@/components/shared/skeleton-loader";
 import CourseCard from "@/app/home/components/course-card";
+import { IconSearch } from "@/assets/icons";
+import { useState } from "react";
 import { useTheme } from "@/theme/use-theme";
 
 interface CoursesListProps {
@@ -15,6 +17,7 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string | null>("priority");
   const { mantineTheme, themeMode, colors } = useTheme();
+  const [isLoading, setIsLoading] = useState(false);
 
   // Filter courses based on search query
   const filteredCourses =
@@ -43,6 +46,16 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
     return 0;
   });
 
+  // Handle search with loading state
+  const handleSearch = (value: string) => {
+    setIsLoading(true);
+    setSearchQuery(value);
+    // Simulate a small delay to show the loading state
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+  };
+
   return (
     <Box
       py={100}
@@ -54,7 +67,7 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
           <TextInput
             placeholder="Search courses..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             leftSection={<IconSearch size={20} />}
             size="lg"
             radius="md"
@@ -70,10 +83,12 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
 
           {error ? (
             <Stack align="center" py={40}>
-              <Text size="lg" c={mantineTheme.colors.error?.[6] || 'red'}>
+              <Text size="lg" c={mantineTheme.colors.error?.[6] || "red"}>
                 {error}
               </Text>
             </Stack>
+          ) : isLoading ? (
+            <CardSkeletonLoader count={6} />
           ) : sortedCourses.length === 0 ? (
             <Stack align="center" py={40}>
               <Text size="xl" fw={500}>

@@ -1,6 +1,8 @@
 "use client";
 
 import { AppShell, MantineProvider } from "@mantine/core";
+import LoadingOverlay, { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { usePathname, useRouter } from "next/navigation";
 
 import Footer from "@/components/footer";
 // Components
@@ -12,10 +14,10 @@ import { isAdminPath } from "@/components/header/use-header";
 // Theme
 import { theme } from "@/theme/theme";
 import { useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 export default function RootLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const router = useRouter();
   const isAdmin = isAdminPath(pathname || "");
 
   // Add theme transition class to body
@@ -44,6 +46,43 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
     };
   }, []);
 
+  // Handle navigation events
+  useEffect(() => {
+    // Create event listeners for navigation
+    const handleRouteChangeStart = () => {
+      showLoadingOverlay(true);
+    };
+
+    const handleRouteChangeComplete = () => {
+      // Add a small delay to ensure content is loaded
+      setTimeout(() => {
+        showLoadingOverlay(false);
+      }, 300);
+    };
+
+    // Use a MutationObserver to detect navigation changes
+    // This is a workaround since Next.js App Router doesn't expose navigation events directly
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type === "childList" && mutation.addedNodes.length > 0) {
+          // Check if the URL has changed
+          const currentPath = window.location.pathname;
+          if (currentPath !== pathname) {
+            handleRouteChangeComplete();
+          }
+        }
+      }
+    });
+
+    // Start observing changes to the body element
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Clean up
+    return () => {
+      observer.disconnect();
+    };
+  }, [pathname]);
+
   return (
     <MantineProvider theme={theme} defaultColorScheme="light">
       <ModalsProvider>
@@ -57,15 +96,21 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
                 ? {
                     main: {
                       paddingTop: 80, // Match header height exactly with no gap
+                      minHeight: "calc(100vh - 80px)", // Ensure main content takes at least full viewport height minus header
                     },
                   }
-                : undefined
+                : {
+                    main: {
+                      minHeight: "calc(100vh - 80px)", // Ensure main content takes at least full viewport height minus header
+                    },
+                  }
             }
           >
             <Header isAdmin={isAdmin} />
             {children}
             {!isAdmin && <Footer />}
           </AppShell>
+          <LoadingOverlay />
         </ThemeProvider>
       </ModalsProvider>
     </MantineProvider>

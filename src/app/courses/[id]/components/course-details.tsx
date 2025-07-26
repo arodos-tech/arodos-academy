@@ -16,6 +16,8 @@ import {
 } from "@mantine/core";
 import { IconArrowLeft, IconCertificate, IconCheck, IconClock, IconCurrencyRupee } from "@/assets/icons";
 
+import { showLoadingOverlay } from "@/components/shared/loading-overlay";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "@/theme/use-theme";
 
@@ -23,17 +25,33 @@ interface CourseDetailsProps {
   course: any;
 }
 
-
 export default function CourseDetails({ course }: CourseDetailsProps) {
   const { colors, mantineTheme, themeMode } = useTheme();
   const router = useRouter();
+
+  // Hide loading overlay when component mounts
+  useEffect(() => {
+    // Small delay to ensure content is rendered before hiding the overlay
+    const timer = setTimeout(() => {
+      showLoadingOverlay(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   // Parse tags from course data
   const tags = course?.tags ? course.tags.split(",").map((tag: string) => tag.trim()) : [];
 
   const handleEnrollClick = () => {
     // Navigate to the contact page's registration form section
+    showLoadingOverlay(true);
     router.push("/contact#reg-form");
+  };
+
+  const handleBackToCourses = (e: React.MouseEvent) => {
+    e.preventDefault();
+    showLoadingOverlay(true);
+    router.push("/courses");
   };
 
   return (
@@ -41,8 +59,7 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
       <Container size="lg">
         <Group mb="md">
           <Button
-            component="a"
-            href="/courses"
+            onClick={handleBackToCourses}
             leftSection={<IconArrowLeft size={16} />}
             variant="subtle"
             color="primary"
