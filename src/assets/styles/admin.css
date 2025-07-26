@@ -15,3 +15,106 @@ body.admin-page {
 body.admin-login-page {
   padding: 0 !important;
 }
+
+/* Fix spacing between header and content */
+.mantine-AppShell-main {
+  padding-top: 0 !important;
+}
+
+/* Remove any default margins from Title */
+h1.mantine-Title-root {
+  margin-top: 0;
+  color: var(--mantine-color-text);
+}
+
+/* Ensure proper alignment between sidebar and content */
+body.admin-page .mantine-AppShell-navbar {
+  top: 80px;
+  height: calc(100vh - 80px);
+  border-right-color: var(--mantine-color-default-border);
+}
+
+/* Fix main content area to align with sidebar */
+body.admin-page .mantine-AppShell-main {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Admin content container */
+.admin-content {
+  padding: 0 1rem;
+  padding-top: 1rem; /* Add consistent padding at the top */
+}
+
+/* Admin page title */
+.admin-page-title {
+  margin: 0;
+  padding: 0;
+  font-size: 1.75rem;
+  line-height: 1.2;
+  margin-bottom: 1.5rem; /* Increase space below the title */
+  color: var(--mantine-color-text);
+}
+
+/* Admin page content */
+.admin-page-content {
+  /* Add any specific styling for content area */
+  color: var(--mantine-color-text);
+}
+
+/* Adjust specific page elements */
+.admin-page-content .mantine-TextInput-root,
+.admin-page-content .mantine-Select-root {
+  margin-bottom: 1rem;
+}
+
+/* Ensure consistent spacing in the applications page */
+.admin-page-content .mantine-Group-root {
+  margin-bottom: 1rem;
+}
+
+/* Search filters container */
+.search-filters {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Dashboard stats container */
+.dashboard-stats {
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Ensure text consistency in all admin components */
+.admin-page-content .mantine-Text-root,
+.admin-page-content .mantine-Title-root,
+.mantine-Modal-title,
+.mantine-Modal-content .mantine-Text-root {
+  color: var(--mantine-color-text);
+}
+
+/* Style for logout icon to match theme toggle */
+.logoutIcon {
+  color: var(--mantine-color-red-6);
+}
+
+.logoutIcon:hover {
+  background-color: var(--mantine-color-red-0);
+  color: var(--mantine-color-red-7);
+}
+
+/* Dark mode styling for logout icon */
+[data-mantine-color-scheme="dark"] .logoutIcon {
+  color: var(--mantine-color-red-4);
+}
+
+[data-mantine-color-scheme="dark"] .logoutIcon:hover {
+  background-color: rgba(255, 59, 48, 0.15);
+  color: var(--mantine-color-red-3);
+}
+
+/* Ensure table text is consistent */
+.mantine-DataTable-root th,
+.mantine-DataTable-root td {
+  color: var(--mantine-color-text);
+}

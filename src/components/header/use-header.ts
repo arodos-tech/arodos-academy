@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+
 import { useDisclosure } from "@mantine/hooks";
 
 // Navigation items configuration
@@ -14,6 +15,11 @@ export const navItems = [
 
 // Paths where header should not be shown
 export const noHeaderPaths = ["/login", "/signup", "/404"];
+
+// Check if a path is an admin path
+export const isAdminPath = (path: string) => {
+  return path.startsWith("/admin");
+};
 
 export function useHeader() {
   const router = useRouter();
@@ -57,6 +63,9 @@ export function useHeader() {
   // Check if header should be shown
   const shouldShowHeader = mounted && !noHeaderPaths.includes(pathname || "");
 
+  // Check if current path is an admin path
+  const isAdmin = mounted && isAdminPath(pathname || "");
+
   return {
     router,
     pathname,
@@ -67,5 +76,6 @@ export function useHeader() {
     mounted,
     shouldShowHeader,
     navigateTo,
+    isAdmin,
   };
 }

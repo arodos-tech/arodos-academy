@@ -1,23 +1,37 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Container, Title, Text, Card, Group, SimpleGrid, Paper, Loader, Box } from "@mantine/core";
-import { IconUsers, IconSchool } from "@/assets/icons";
+import { Box, Card, Container, Group, Loader, Paper, SimpleGrid, Text, useMantineTheme } from "@mantine/core";
+import { IconSchool, IconUsers } from "@/assets/icons";
+import { useEffect, useState } from "react";
+
 import { getApplications } from "@/actions/applications";
+import { getCourses } from "@/actions/courses";
+import { useTheme } from "@/theme/use-theme";
 
 const AdminDashboardPage = () => {
   const [applications, setApplications] = useState<any[]>([]);
+  const [courses, setCourses] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const theme = useMantineTheme();
+  const { colors } = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const { applications: appData, error } = await getApplications();
-        if (error) {
-          console.error("Error fetching applications:", error);
+        // Fetch applications
+        const { applications: appData, error: appError } = await getApplications();
+
+        // Fetch courses
+        const { courses: coursesData, error: coursesError } = await getCourses();
+
+        if (appError) {
+          console.error("Error fetching applications:", appError);
+        } else if (coursesError) {
+          console.error("Error fetching courses:", coursesError);
         } else {
           setApplications(appData || []);
+          setCourses(coursesData || []);
         }
       } catch (err) {
         console.error("Error in fetch operation:", err);
@@ -31,21 +45,17 @@ const AdminDashboardPage = () => {
 
   // Calculate stats
   const totalApplications = applications?.length || 0;
-  const uniqueCourses = new Set(applications?.flatMap((app) => app.courses || [])).size;
+  const totalCourses = courses?.length || 0;
 
   return (
-    <Box py="xl">
-      <Container size="lg">
-        <Title order={1} mb="lg">
-          Admin Dashboard
-        </Title>
-
-        {loading ? (
-          <Group justify="center" py="xl">
-            <Loader size="lg" />
-          </Group>
-        ) : (
-          <>
+    <>
+      {loading ? (
+        <Group justify="center" py="xl">
+          <Loader size="lg" />
+        </Group>
+      ) : (
+        <>
+          <Box className="dashboard-stats" mb="md">
             <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="lg">
               <Card shadow="sm" p="lg" radius="md" withBorder>
                 <Group justify="space-between">
@@ -65,30 +75,30 @@ const AdminDashboardPage = () => {
                 <Group justify="space-between">
                   <div>
                     <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-                      Unique Courses
+                      Available Courses
                     </Text>
                     <Text size="xl" fw={700}>
-                      {uniqueCourses}
+                      {totalCourses}
                     </Text>
                   </div>
                   <IconSchool size={32} stroke={1.5} />
                 </Group>
               </Card>
             </SimpleGrid>
+          </Box>
 
-            <Paper shadow="xs" p="md" withBorder mt="xl">
-              <Title order={2} mb="md">
-                Recent Activity
-              </Title>
-              <Text c="dimmed">
-                Welcome to the Arodos Academy Admin Dashboard. Use the navigation menu to manage applications and other
-                administrative tasks.
-              </Text>
-            </Paper>
-          </>
-        )}
-      </Container>
-    </Box>
+          <Paper shadow="xs" p="md" withBorder mt="xl">
+            <Text size="lg" fw={700} mb="md">
+              Recent Activity
+            </Text>
+            <Text c="dimmed">
+              Welcome to the Arodos Academy Admin Dashboard. Use the navigation menu to manage applications and other
+              administrative tasks.
+            </Text>
+          </Paper>
+        </>
+      )}
+    </>
   );
 };
 

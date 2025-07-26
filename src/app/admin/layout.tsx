@@ -1,25 +1,49 @@
 "use client";
 
+import {
+  ActionIcon,
+  AppShell,
+  Box,
+  Burger,
+  Button,
+  Divider,
+  Group,
+  Stack,
+  Text,
+  Title,
+  useMantineTheme,
+} from "@mantine/core";
+import { IconDashboard, IconLogout, IconUsers, IconX } from "@/assets/icons";
 import { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { AppShell, Text, Group, Button, Divider, Stack, Burger } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
-import { IconDashboard, IconUsers, IconLogout } from "@/assets/icons";
-import { store } from "@/services/store";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+
 import AdminLayoutWrapper from "./components/admin-layout-wrapper";
+import Link from "next/link";
+import { store } from "@/services/store";
+import { useDisclosure } from "@mantine/hooks";
+import { useTheme } from "@/theme/use-theme";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
+  const theme = useMantineTheme();
+  const { colors } = useTheme();
+
   // Use the store directly - this will automatically subscribe to changes
   const auth = store.auth();
-  
+
   // Mobile navbar state
   const [mobileOpened, { toggle: toggleMobile, close: closeMobile }] = useDisclosure(false);
-  
+
   // Check if current path is login page
   const isLoginPage = pathname === "/admin/login";
+
+  // Get page title based on pathname
+  const getPageTitle = () => {
+    if (pathname === "/admin") return "Admin Dashboard";
+    if (pathname === "/admin/applications") return "Applications";
+    return "Admin Panel";
+  };
 
   // Check if user is logged in and is admin
   useEffect(() => {
@@ -47,58 +71,79 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {isLoginPage ? (
         // For login page, just render the children without admin layout
         <>{children}</>
-      ) : !auth?.isLoggedIn || !auth?.isAdmin ? (
-        // If not logged in, don't render anything until redirect happens
-        null
-      ) : (
-        // Admin layout with header and navbar
+      ) : !auth?.isLoggedIn || !auth?.isAdmin ? null : ( // If not logged in, don't render anything until redirect happens
+        // Admin layout with navbar only (header is handled by the main layout)
         <AppShell
-          padding="md"
-          header={{ height: 60 }}
+          padding={0}
           navbar={{
             width: 250,
             breakpoint: "sm",
             collapsed: { mobile: !mobileOpened },
           }}
+          styles={{
+            main: {
+              paddingTop: 0,
+              paddingBottom: 0,
+            },
+          }}
         >
-          <AppShell.Header p="xs">
-            <Group justify="space-between" style={{ height: "100%" }}>
-              <Group>
-                <Burger opened={mobileOpened} onClick={toggleMobile} hiddenFrom="sm" size="sm" />
-                <Text size="xl" fw={700}>
-                  Admin Dashboard
-                </Text>
-              </Group>
-              <Button variant="subtle" color="red" leftSection={<IconLogout size={16} />} onClick={handleLogout}>
-                Logout
-              </Button>
-            </Group>
-          </AppShell.Header>
+          {/* Burger menu for mobile view */}
+          <Group p="xs" hiddenFrom="sm">
+            <Burger opened={mobileOpened} onClick={toggleMobile} size="sm" />
+          </Group>
 
-          <AppShell.Navbar p="md" onClick={closeMobile}>
+          <AppShell.Navbar p="md">
             <AppShell.Section>
+              <Group justify="space-between" mb="md">
+                <Text size="xl" fw={700}>
+                  Admin Panel
+                </Text>
+                {/* Close button for mobile view */}
+                <ActionIcon
+                  variant="subtle"
+                  radius="xl"
+                  onClick={closeMobile}
+                  hiddenFrom="sm"
+                  aria-label="Close sidebar"
+                >
+                  <IconX size={18} />
+                </ActionIcon>
+              </Group>
               <Stack gap="xs">
                 <Link href="/admin" style={{ textDecoration: "none" }}>
-                  <Button variant="subtle" fullWidth leftSection={<IconDashboard size={16} />} justify="left">
+                  <Button
+                    variant="subtle"
+                    fullWidth
+                    leftSection={<IconDashboard size={16} />}
+                    justify="left"
+                    onClick={closeMobile}
+                  >
                     Dashboard
                   </Button>
                 </Link>
                 <Link href="/admin/applications" style={{ textDecoration: "none" }}>
-                  <Button variant="subtle" fullWidth leftSection={<IconUsers size={16} />} justify="left">
+                  <Button
+                    variant="subtle"
+                    fullWidth
+                    leftSection={<IconUsers size={16} />}
+                    justify="left"
+                    onClick={closeMobile}
+                  >
                     Applications
                   </Button>
                 </Link>
               </Stack>
             </AppShell.Section>
-            <Divider my="sm" />
-            <AppShell.Section>
-              <Text size="xs" c="dimmed">
-                Admin Panel v1.0
-              </Text>
-            </AppShell.Section>
           </AppShell.Navbar>
 
-          <AppShell.Main>{children}</AppShell.Main>
+          <AppShell.Main>
+            <Box className="admin-content">
+              <Title order={1} className="admin-page-title">
+                {getPageTitle()}
+              </Title>
+              <div className="admin-page-content">{children}</div>
+            </Box>
+          </AppShell.Main>
         </AppShell>
       )}
     </AdminLayoutWrapper>

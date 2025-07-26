@@ -21,3 +21,32 @@ p {
   white-space: nowrap;
   border-width: 0;
 }
+
+/* Add transition for theme changes to prevent flickering */
+:root {
+  --theme-transition-duration: 200ms;
+}
+
+body.theme-transition,
+body.theme-transition *,
+body.theme-transition *:before,
+body.theme-transition *:after {
+  transition: background-color var(--theme-transition-duration) ease-out,
+    color var(--theme-transition-duration) ease-out, border-color var(--theme-transition-duration) ease-out,
+    box-shadow var(--theme-transition-duration) ease-out !important;
+  transition-delay: 0 !important;
+}
+
+/* Prevent FOUC (Flash of Unstyled Content) during theme changes */
+html.theme-change-active {
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 100ms ease;
+}
+
+/* Ensure content is visible after theme is fully applied */
+html.theme-change-complete {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 100ms ease;
+}

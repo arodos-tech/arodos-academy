@@ -1,25 +1,56 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useMantineColorScheme, useMantineTheme } from "@mantine/core";
+
 import { store } from "@/services/store";
 
 // Type for theme mode
 export type ThemeMode = "light" | "dark";
+
+// Prevent multiple theme changes in quick succession
+let isChangingTheme = false;
 
 /**
  * Toggle the theme between light and dark mode
  * This function can be imported and used by any component
  */
 export function toggleTheme() {
+  // Prevent multiple theme changes in quick succession
+  if (isChangingTheme) return;
+
+  isChangingTheme = true;
+
+  // Add class to hide content during theme change
+  document.documentElement.classList.add("theme-change-active");
+  document.documentElement.classList.remove("theme-change-complete");
+
   // Get current mode from store using get() method
   const currentMode = store.theme.get().mode;
   // Toggle the mode
   const newMode = currentMode === "light" ? "dark" : "light";
+
+  // Dispatch custom event to notify about theme change
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("themechange", { detail: { mode: newMode } }));
+  }
+
   // Update store using set() method - this will automatically persist via the store adapter
   store.theme.set({ mode: newMode });
-  // Update HTML attribute for CSS variables
+
+  // Update HTML attribute for CSS variables in a single operation
   document.documentElement.setAttribute("data-mantine-color-scheme", newMode);
+
+  // Show content after theme change is complete
+  setTimeout(() => {
+    document.documentElement.classList.remove("theme-change-active");
+    document.documentElement.classList.add("theme-change-complete");
+
+    // Reset the flag after a short delay to allow animations to complete
+    setTimeout(() => {
+      isChangingTheme = false;
+    }, 100);
+  }, 100);
 }
 
 /**
@@ -38,23 +69,30 @@ export function useTheme() {
   // Use the store directly - this will automatically subscribe to changes
   // and re-render the component when the theme changes
   const themeMode = store.theme()?.mode as ThemeMode;
-  
+
   // Get Mantine's color scheme controller
   const { setColorScheme } = useMantineColorScheme();
-  
+
   // Get access to the theme object
   const mantineTheme = useMantineTheme();
 
+  // Track previous theme to prevent unnecessary updates
+  const prevThemeRef = useRef(themeMode);
+
   // Sync document's color scheme with global store whenever themeMode changes
   useEffect(() => {
-    document.documentElement.setAttribute("data-mantine-color-scheme", themeMode);
-    // Also update Mantine's color scheme
-    setColorScheme(themeMode);
+    // Only update if the theme has actually changed
+    if (prevThemeRef.current !== themeMode) {
+      document.documentElement.setAttribute("data-mantine-color-scheme", themeMode);
+      // Also update Mantine's color scheme
+      setColorScheme(themeMode);
+      prevThemeRef.current = themeMode;
+    }
   }, [themeMode, setColorScheme]);
 
   // Get semantic colors based on current theme
   const getSemanticColor = (colorName: string) => {
-    const colorSet = themeMode === 'dark' ? mantineTheme.other.darkColors : mantineTheme.other.lightColors;
+    const colorSet = themeMode === "dark" ? mantineTheme.other.darkColors : mantineTheme.other.lightColors;
     return colorSet[colorName as keyof typeof colorSet];
   };
 
@@ -68,48 +106,48 @@ export function useTheme() {
       primary: mantineTheme.colors.primary[6],
       primaryHover: mantineTheme.colors.primary[7],
       primaryLight: mantineTheme.colors.primary[1], // Much lighter shade
-      primarySoft: mantineTheme.colors.primary[2],  // Soft background
+      primarySoft: mantineTheme.colors.primary[2], // Soft background
       primaryMuted: mantineTheme.colors.primary[3], // Muted version
       primaryMedium: mantineTheme.colors.primary[4],
-      primaryBold: mantineTheme.colors.primary[8],  // Bolder version
-      primaryDark: mantineTheme.colors.primary[9],  // Darkest shade
-      
+      primaryBold: mantineTheme.colors.primary[8], // Bolder version
+      primaryDark: mantineTheme.colors.primary[9], // Darkest shade
+
       // Semantic colors based on theme
-      background: getSemanticColor('background'),
-      backgroundAlt: getSemanticColor('backgroundAlt'),
-      surface: getSemanticColor('surface'),
-      surfaceHover: getSemanticColor('surface'), // Fallback to surface if not defined
-      
+      background: getSemanticColor("background"),
+      backgroundAlt: getSemanticColor("backgroundAlt"),
+      surface: getSemanticColor("surface"),
+      surfaceHover: getSemanticColor("surface"), // Fallback to surface if not defined
+
       // Text colors
-      textPrimary: getSemanticColor('textPrimary'),
-      textSecondary: getSemanticColor('textSecondary'),
-      textTertiary: getSemanticColor('textTertiary'),
-      
+      textPrimary: getSemanticColor("textPrimary"),
+      textSecondary: getSemanticColor("textSecondary"),
+      textTertiary: getSemanticColor("textTertiary"),
+
       // Status colors with variations
       success: mantineTheme.colors.success[5],
       successLight: mantineTheme.colors.success[1],
       successBg: mantineTheme.colors.success[0],
-      
+
       warning: mantineTheme.colors.warning[5],
       warningLight: mantineTheme.colors.warning[1],
       warningBg: mantineTheme.colors.warning[0],
-      
+
       error: mantineTheme.colors.error[8],
       errorLight: mantineTheme.colors.error[1],
       errorBg: mantineTheme.colors.error[0],
-      
+
       info: mantineTheme.colors.info[5],
       infoLight: mantineTheme.colors.info[1],
       infoBg: mantineTheme.colors.info[0],
-      
+
       // Border colors
-      border: getSemanticColor('border'),
-      borderFocus: getSemanticColor('borderFocus'),
-      borderLight: getSemanticColor('border'), // Fallback to border if not defined
-      
+      border: getSemanticColor("border"),
+      borderFocus: getSemanticColor("borderFocus"),
+      borderLight: getSemanticColor("border"), // Fallback to border if not defined
+
       // Disabled state
-      disabledBg: getSemanticColor('disabledBg'),
-      disabledText: getSemanticColor('disabledText'),
+      disabledBg: getSemanticColor("disabledBg"),
+      disabledText: getSemanticColor("disabledText"),
     },
     // Provide access to the full Mantine theme
     mantineTheme,

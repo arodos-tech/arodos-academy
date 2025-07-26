@@ -1,7 +1,8 @@
 "use client";
 
-import { Box, Container, Stack, Text, Title, Button, SimpleGrid, rem } from "@mantine/core";
-import { IconArrowRight, IconCode, IconCertificate, IconRocket } from "@/assets/icons";
+import { Box, Button, Container, SimpleGrid, Stack, Text, Title, rem } from "@mantine/core";
+import { IconArrowRight, IconCertificate, IconCode, IconRocket } from "@/assets/icons";
+
 import Link from "next/link";
 import { useIsMobile } from "@/hooks";
 import { useTheme } from "@/theme/use-theme";
@@ -18,8 +19,7 @@ const CTA = () => {
           px={isMobile ? 30 : 60}
           style={{
             color: mantineTheme.white,
-            background:
-              `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryHover} 100%)`,
+            background: `linear-gradient(135deg, ${colors.primary} 0%, ${colors.primaryHover} 100%)`,
             borderRadius: mantineTheme.radius.xl,
             position: "relative",
             overflow: "hidden",
@@ -48,7 +48,7 @@ const CTA = () => {
                 px={40}
                 rightSection={<IconArrowRight size={20} />}
                 component={Link}
-                href="/contact"
+                href="/contact#reg-form"
               >
                 Apply Now
               </Button>

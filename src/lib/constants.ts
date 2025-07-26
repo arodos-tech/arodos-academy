@@ -15,3 +15,7 @@ export const EMAIL_URL = "https://send-email-api.backendservices.in/";
 
 // Hero section gradient overlay
 export const HERO_GRADIENT_OVERLAY = "linear-gradient(135deg, rgba(255, 0, 0, 0.36) 0%, rgba(180, 0, 0, 0.45) 100%)";
+
+// Admin credentials
+export const ADMIN_USERNAME = "admin";
+export const ADMIN_PASSWORD = "admin@123";

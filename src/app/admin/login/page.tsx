@@ -1,21 +1,25 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from "@/lib/constants";
 import {
-  TextInput,
-  PasswordInput,
-  Paper,
-  Title,
-  Container,
-  Button,
-  Stack,
-  Text,
   Alert,
   Box,
+  Button,
+  Container,
+  Paper,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+  useMantineTheme,
 } from "@mantine/core";
+import { useEffect, useState } from "react";
+
 import { IconAlertCircle } from "@/assets/icons";
 import { store } from "@/services/store";
+import { useRouter } from "next/navigation";
+import { useTheme } from "@/theme/use-theme";
 
 const AdminLoginPage = () => {
   const router = useRouter();
@@ -23,9 +27,18 @@ const AdminLoginPage = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  
+  const theme = useMantineTheme();
+  const { colors } = useTheme();
+
   // Use the store directly - this will automatically subscribe to changes
   const auth = store.auth();
+
+  // Handle redirect if already logged in
+  useEffect(() => {
+    if (auth?.isLoggedIn && auth?.isAdmin) {
+      router.push("/admin");
+    }
+  }, [auth?.isLoggedIn, auth?.isAdmin, router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,9 +46,8 @@ const AdminLoginPage = () => {
     setError("");
 
     try {
-      // For demo purposes, using hardcoded credentials
-      // In a real application, this would be an API call
-      if (username === "admin" && password === "admin123") {
+      // Use credentials from constants file
+      if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
         // Set auth state
         store.auth.set({
           user: { username, role: "admin" },
@@ -47,7 +59,7 @@ const AdminLoginPage = () => {
           lastLogin: new Date().toISOString(),
           // persist property is handled by the store internally
         });
-        
+
         // Redirect to admin dashboard
         router.push("/admin");
       } else {
@@ -61,10 +73,15 @@ const AdminLoginPage = () => {
     }
   };
 
-  // If already logged in and is admin, redirect to admin dashboard
+  // If the user is already logged in, show a loading state instead of the form
   if (auth?.isLoggedIn && auth?.isAdmin) {
-    router.push("/admin");
-    return null;
+    return (
+      <Box py="xl">
+        <Container size={420} my={40} ta="center">
+          <Text>Already logged in. Redirecting to dashboard...</Text>
+        </Container>
+      </Box>
+    );
   }
 
   return (
@@ -81,11 +98,11 @@ const AdminLoginPage = () => {
           <form onSubmit={handleLogin}>
             <Stack gap="md">
               {error && (
-                <Alert icon={<IconAlertCircle size={16} />} title="Error" color="red" variant="light">
+                <Alert icon={<IconAlertCircle size={16} />} title="Error" color={theme.colors.error[8]} variant="light">
                   {error}
                 </Alert>
               )}
-              
+
               <TextInput
                 label="Username"
                 placeholder="Your username"
@@ -93,7 +110,7 @@ const AdminLoginPage = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
               />
-              
+
               <PasswordInput
                 label="Password"
                 placeholder="Your password"
@@ -101,7 +118,7 @@ const AdminLoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              
+
               <Button type="submit" fullWidth mt="xl" loading={loading}>
                 Sign in
               </Button>

@@ -1,32 +1,39 @@
 "use client";
 
-import Link from "next/link";
 import {
+  ActionIcon,
   Box,
-  Container,
-  Group,
   Burger,
+  Button,
+  Container,
+  Divider,
   Drawer,
+  Group,
+  Image,
   Stack,
   Text,
-  Button,
-  rem,
   UnstyledButton,
-  Divider,
-  Image,
+  rem,
 } from "@mantine/core";
-import { logoLight, logoDark } from "@/assets/images";
-
+import { logoDark, logoLight } from "@/assets/images";
 // Import custom hook with header logic
-import { useHeader, navItems } from "./use-header";
+import { navItems, useHeader } from "./use-header";
+
+import { IconLogout } from "@/assets/icons";
+import Link from "next/link";
+import ThemeToggle from "@/theme/theme-toggle";
+import { store } from "@/services/store";
 import { useIsMobile } from "@/hooks";
 import { useTheme } from "@/theme/use-theme";
-import ThemeToggle from "@/theme/theme-toggle";
 
 const HEADER_HEIGHT = rem(80);
 const MOBILE_HEADER_HEIGHT = rem(60);
 
-const Header = () => {
+interface HeaderProps {
+  isAdmin?: boolean;
+}
+
+const Header = ({ isAdmin = false }: HeaderProps) => {
   const { opened, toggle, close, activeItem, shouldShowHeader, navigateTo } = useHeader();
   const { toggleTheme, themeMode, colors } = useTheme();
   const isMobile = useIsMobile();
@@ -35,6 +42,19 @@ const Header = () => {
   if (!shouldShowHeader) {
     return null;
   }
+
+  const handleLogout = () => {
+    store.auth.set({
+      user: {},
+      token: "",
+      isLoggedIn: false,
+      isAdmin: false,
+      forcePasswordReset: false,
+      forceLogout: false,
+      lastLogin: null,
+    });
+    navigateTo("/admin/login");
+  };
 
   const headerStyles = {
     backgroundColor: colors.background,
@@ -77,60 +97,103 @@ const Header = () => {
     >
       <Container size="lg" h="100%" px={isMobile ? "xs" : "md"}>
         <Group justify="space-between" h="100%" wrap="nowrap">
-          <Link href="/home" passHref>
+          <Link href={isAdmin ? "/home" : "/home"} passHref>
             <UnstyledButton>
-              <Image 
-                src={themeMode === 'dark' ? logoLight.src : logoDark.src} 
-                alt="Arodos Academy" 
-                height={isMobile ? 25 : 35} 
-                width="auto" 
-                fit="contain" 
+              <Image
+                src={themeMode === "dark" ? logoLight.src : logoDark.src}
+                alt="Arodos Academy"
+                height={isMobile ? 25 : 35}
+                width="auto"
+                fit="contain"
               />
             </UnstyledButton>
           </Link>
 
-          <Group gap="lg" visibleFrom="md">
-            {items}
-          </Group>
+          {!isAdmin && (
+            <Group gap="lg" visibleFrom="md">
+              {items}
+            </Group>
+          )}
 
           <Group visibleFrom="md">
             <ThemeToggle />
-            <Button onClick={() => navigateTo("/contact#reg-form")} size={isMobile ? "sm" : "md"}>
-              Apply Now
-            </Button>
+            {isAdmin ? (
+              <ActionIcon
+                onClick={handleLogout}
+                variant="light"
+                size="lg"
+                radius="md"
+                aria-label="Logout"
+                className="logoutIcon"
+                style={{
+                  transition: "transform 0.2s ease, opacity 0.2s ease",
+                }}
+                color="red"
+              >
+                <IconLogout size={20} stroke={1.5} />
+              </ActionIcon>
+            ) : (
+              <Button onClick={() => navigateTo("/contact#reg-form")} size={isMobile ? "sm" : "md"}>
+                Apply Now
+              </Button>
+            )}
           </Group>
 
           <Group hiddenFrom="md" gap={4} wrap="nowrap">
             <ThemeToggle />
-            <Burger opened={opened} onClick={toggle} size="sm" />
+            {isAdmin ? (
+              <ActionIcon
+                onClick={handleLogout}
+                variant="light"
+                size="lg"
+                radius="md"
+                aria-label="Logout"
+                className="logoutIcon"
+                style={{
+                  transition: "transform 0.2s ease, opacity 0.2s ease",
+                }}
+                color="red"
+              >
+                <IconLogout size={20} stroke={1.5} />
+              </ActionIcon>
+            ) : (
+              <Burger opened={opened} onClick={toggle} size="sm" />
+            )}
           </Group>
         </Group>
       </Container>
 
-      {/* Mobile drawer */}
-      <Drawer
-        opened={opened}
-        onClose={close}
-        size="100%"
-        padding="md"
-        title={
-          <Group justify="space-between" style={{ width: "100%" }}>
-            <Image src={themeMode === 'dark' ? logoLight.src : logoDark.src} alt="Arodos Academy" height={25} fit="contain" />
-            <Burger opened={opened} onClick={close} size="sm" aria-label="Close menu" />
-          </Group>
-        }
-        hiddenFrom="md"
-        zIndex={1000}
-      >
-        <Stack gap="xl" style={{ flex: 1 }}>
-          {items}
-          <Group>
-            <Button fullWidth size="lg" onClick={() => navigateTo("/contact#reg-form")}>
-              Apply Now
-            </Button>
-          </Group>
-        </Stack>
-      </Drawer>
+      {/* Mobile drawer - only for non-admin */}
+      {!isAdmin && (
+        <Drawer
+          opened={opened}
+          onClose={close}
+          size="100%"
+          padding="md"
+          title={
+            <Group justify="space-between" style={{ width: "100%" }}>
+              <Image
+                src={themeMode === "dark" ? logoLight.src : logoDark.src}
+                alt="Arodos Academy"
+                height={25}
+                fit="contain"
+              />
+              <Burger opened={opened} onClick={close} size="sm" aria-label="Close menu" />
+            </Group>
+          }
+          hiddenFrom="md"
+          zIndex={1000}
+        >
+          <Stack gap="xl" style={{ flex: 1 }}>
+            {items}
+            <Group>
+              <Button fullWidth size="lg" onClick={() => navigateTo("/contact#reg-form")}>
+                Apply Now
+              </Button>
+            </Group>
+          </Stack>
+        </Drawer>
+      )}
     </Box>
   );
 };

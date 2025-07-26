@@ -1,31 +1,40 @@
 "use client";
 
 import {
+  Badge,
   Box,
+  Button,
+  Card,
   Container,
+  Group,
+  Paper,
+  SimpleGrid,
   Stack,
   Text,
-  Group,
-  Button,
-  SimpleGrid,
   ThemeIcon,
-  Card,
   Title,
-  Badge,
-  Paper,
 } from "@mantine/core";
-import { IconClock, IconCurrencyRupee, IconCheck, IconCertificate, IconArrowLeft } from "@/assets/icons";
+import { IconArrowLeft, IconCertificate, IconCheck, IconClock, IconCurrencyRupee } from "@/assets/icons";
+
+import { useRouter } from "next/navigation";
+import { useTheme } from "@/theme/use-theme";
 
 interface CourseDetailsProps {
   course: any;
 }
 
-import { useTheme } from "@/theme/use-theme";
 
 export default function CourseDetails({ course }: CourseDetailsProps) {
   const { colors, mantineTheme, themeMode } = useTheme();
+  const router = useRouter();
+
   // Parse tags from course data
   const tags = course?.tags ? course.tags.split(",").map((tag: string) => tag.trim()) : [];
+
+  const handleEnrollClick = () => {
+    // Navigate to the contact page's registration form section
+    router.push("/contact#reg-form");
+  };
 
   return (
     <Box py={40} bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
@@ -145,7 +154,7 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
                     </Group>
                   </Stack>
 
-                  <Button size="lg" fullWidth mt="md" radius="md" color="primary">
+                  <Button size="lg" fullWidth mt="md" radius="md" color="primary" onClick={handleEnrollClick}>
                     Enroll Now
                   </Button>
                 </Stack>
