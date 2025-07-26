@@ -1,9 +1,9 @@
 "use client";
 
-import { Avatar, Box, Card, Container, Group, rem, SimpleGrid, Stack, Text, Title } from "@mantine/core";
-import { useMediaQuery } from "@mantine/hooks";
-
+import { Avatar, Box, Card, Container, Group, SimpleGrid, Stack, Text, Title, rem } from "@mantine/core";
 import { IconBrandLinkedin, IconBrandTwitter } from "@/assets/icons";
+
+import { useMediaQuery } from "@mantine/hooks";
 import { useTheme } from "@/theme/use-theme";
 
 const teamMembers = [
@@ -54,10 +54,17 @@ const OurTeam = () => {
     <Box py={100}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text style={{ color: colors.textSecondary }} c={themeMode === "dark" ? mantineTheme.colors.primary[2] : colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
+          <Text
+            style={{ color: colors.textSecondary }}
+            c={themeMode === "dark" ? mantineTheme.colors.primary[2] : colors.primary}
+            fw={700}
+            size="lg"
+            tt="uppercase"
+            ta="center"
+          >
             OUR TEAM
           </Text>
-          <Title style={{ color: colors.textPrimary }}
+          <Title
             order={2}
             style={{
               fontSize: getResponsiveValue(rem(28), rem(32), rem(36), rem(36)),
@@ -69,7 +76,14 @@ const OurTeam = () => {
           >
             Meet the Experts Behind Arodos Academy
           </Title>
-          <Text style={{ color: colors.textSecondary }} size="lg" ta="center" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"} maw={800} mx="auto">
+          <Text
+            style={{ color: colors.textSecondary }}
+            size="lg"
+            ta="center"
+            c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"}
+            maw={800}
+            mx="auto"
+          >
             Our team consists of industry professionals, educators, and tech enthusiasts who are passionate about
             sharing their knowledge and experience.
           </Text>

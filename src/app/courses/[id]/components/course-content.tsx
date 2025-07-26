@@ -16,9 +16,9 @@ import {
   ThemeIcon,
   Title,
 } from "@mantine/core";
-import { useTheme } from "@/theme/use-theme";
 
 import { IconCheck } from "@/assets/icons";
+import { useTheme } from "@/theme/use-theme";
 
 interface CourseContentProps {
   course: any;
@@ -100,7 +100,7 @@ export default function CourseContent({ course }: CourseContentProps) {
                 Course Curriculum
               </Title>
 
-              <Stack gap="md">
+              {/* <Stack gap="md">
                 {course?.modules &&
                   course.modules.map((module: any, i: number) => (
                     <Card key={i} withBorder radius="md" shadow="xs">
@@ -129,7 +129,7 @@ export default function CourseContent({ course }: CourseContentProps) {
                     Curriculum details will be available soon.
                   </Text>
                 )}
-              </Stack>
+              </Stack> */}
             </Paper>
           </Tabs.Panel>
 

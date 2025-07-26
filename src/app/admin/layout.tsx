@@ -13,7 +13,7 @@ import {
   Title,
   useMantineTheme,
 } from "@mantine/core";
-import { IconDashboard, IconLogout, IconUsers, IconX } from "@/assets/icons";
+import { IconBook, IconDashboard, IconLogout, IconUsers, IconX } from "@/assets/icons";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -42,6 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const getPageTitle = () => {
     if (pathname === "/admin") return "Admin Dashboard";
     if (pathname === "/admin/applications") return "Applications";
+    if (pathname === "/admin/courses") return "Course Management";
     return "Admin Panel";
   };
 
@@ -130,6 +131,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     onClick={closeMobile}
                   >
                     Applications
+                  </Button>
+                </Link>
+                <Link href="/admin/courses" style={{ textDecoration: "none" }}>
+                  <Button
+                    variant="subtle"
+                    fullWidth
+                    leftSection={<IconBook size={16} />}
+                    justify="left"
+                    onClick={closeMobile}
+                  >
+                    Courses
                   </Button>
                 </Link>
               </Stack>

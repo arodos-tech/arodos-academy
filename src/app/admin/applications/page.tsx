@@ -15,14 +15,19 @@ import {
   ScrollArea,
   Box,
   useMantineTheme,
+  Card,
+  SimpleGrid,
+  Divider,
+  rem,
 } from "@mantine/core";
 import { DataTable, type DataTableSortStatus } from "mantine-datatable";
 import sortBy from "lodash/sortBy";
-import { IconAlertCircle, IconSearch, IconEye } from "@/assets/icons";
+import { IconAlertCircle, IconSearch, IconEye, IconCalendar, IconMail, IconPhone, IconUsers } from "@/assets/icons";
 import { getApplications } from "@/actions/applications";
 import { getCourses } from "@/actions/courses";
 import { useTheme } from "@/theme/use-theme";
 import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mantine/hooks";
 
 interface Application {
   id: number;
@@ -54,6 +59,7 @@ const ApplicationsPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterCourse, setFilterCourse] = useState<string | null>(null);
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -133,6 +139,73 @@ const ApplicationsPage = () => {
     );
   }
 
+  // Render application as a card (for mobile view)
+  const renderApplicationCard = (application: Application, index: number) => (
+    <Card key={application.id} shadow="sm" p="md" radius="md" withBorder>
+      <Stack gap="md">
+        <Group justify="space-between">
+          <Group gap="xs">
+            <IconUsers size={18} stroke={1.5} />
+            <Text fw={700} size="lg">
+              {application.name}
+            </Text>
+          </Group>
+          <Badge size="sm">#{(page - 1) * PAGE_SIZE + index + 1}</Badge>
+        </Group>
+
+        <Group gap="xs">
+          <IconMail size={16} />
+          <Text size="sm" style={{ wordBreak: "break-all" }}>
+            {application.email}
+          </Text>
+        </Group>
+
+        <Group gap="xs">
+          <IconPhone size={16} />
+          <Text size="sm">{application.phone}</Text>
+        </Group>
+
+        <Group gap="xs">
+          <IconCalendar size={16} />
+          <Text size="sm">{new Date(application.created_at).toLocaleDateString()}</Text>
+        </Group>
+
+        <Box>
+          <Text fw={500} size="sm" mb="xs">
+            Course(s):
+          </Text>
+          <Group gap={4} wrap="wrap">
+            {application.courses?.map((course: string) => (
+              <Badge
+                key={course}
+                size="sm"
+                radius="sm"
+                style={{
+                  textTransform: "none",
+                  backgroundColor: colors.primaryLight,
+                  color: colors.primary,
+                  fontWeight: 600,
+                  padding: "4px 12px",
+                }}
+              >
+                {course}
+              </Badge>
+            ))}
+          </Group>
+        </Box>
+
+        <Button
+          variant="light"
+          fullWidth
+          leftSection={<IconEye size={16} />}
+          onClick={() => handleViewDetails(application)}
+        >
+          View Details
+        </Button>
+      </Stack>
+    </Card>
+  );
+
   return (
     <>
       <Box className="search-filters" mb="md">
@@ -156,82 +229,120 @@ const ApplicationsPage = () => {
         </Group>
       </Box>
 
-      <Paper shadow="xs" p="md" radius="md" withBorder>
-        <ScrollArea>
-          <DataTable
-            minHeight={300}
-            columns={[
-              {
-                accessor: "index",
-                title: "S.No",
-                width: 60,
-                render: (_, index) => (page - 1) * PAGE_SIZE + index + 1,
-              },
-              { accessor: "name", title: "Name", sortable: true },
-              { accessor: "email", title: "Email", sortable: true },
-              { accessor: "phone", title: "Phone" },
-              {
-                accessor: "courses",
-                title: "Course(s)",
-                render: (application) => (
-                  <Group gap={4}>
-                    {application.courses?.map((course: string) => (
-                      <Badge
-                        key={course}
-                        size="sm"
-                        radius="sm"
-                        style={{
-                          textTransform: "none",
-                          backgroundColor: colors.primaryLight,
-                          color: colors.primary,
-                          fontWeight: 600,
-                          padding: "4px 12px",
-                        }}
-                      >
-                        {course}
-                      </Badge>
-                    ))}
-                  </Group>
-                ),
-              },
-              {
-                accessor: "created_at",
-                title: "Date",
-                sortable: true,
-                render: (application) => new Date(application.created_at).toLocaleDateString(),
-              },
-              {
-                accessor: "actions",
-                title: "Actions",
-                textAlign: "center",
-                render: (application) => (
-                  <Button
-                    variant="light"
-                    size="xs"
-                    leftSection={<IconEye size={14} />}
-                    onClick={() => handleViewDetails(application)}
-                  >
-                    View
-                  </Button>
-                ),
-              },
-            ]}
-            records={paginatedApplications}
-            totalRecords={sortedApplications.length}
-            recordsPerPage={PAGE_SIZE}
-            page={page}
-            onPageChange={setPage}
-            withTableBorder
-            borderRadius="sm"
-            striped
-            highlightOnHover
-            noRecordsText="No applications found"
-            loadingText="Loading applications..."
-            sortStatus={sortStatus}
-            onSortStatusChange={setSortStatus}
-          />
-        </ScrollArea>
-      </Paper>
+      {!isMobile ? (
+        // Desktop view (table)
+        <Paper shadow="xs" p="md" radius="md" withBorder>
+          <ScrollArea>
+            <DataTable
+              minHeight={300}
+              columns={[
+                {
+                  accessor: "index",
+                  title: "#",
+                  width: 60,
+                  render: (_, index) => (page - 1) * PAGE_SIZE + index + 1,
+                },
+                { accessor: "name", title: "Name", sortable: true },
+                { accessor: "email", title: "Email", sortable: true },
+                { accessor: "phone", title: "Phone" },
+                {
+                  accessor: "courses",
+                  title: "Course(s)",
+                  render: (application) => (
+                    <Group gap={4}>
+                      {application.courses?.map((course: string) => (
+                        <Badge
+                          key={course}
+                          size="sm"
+                          radius="sm"
+                          style={{
+                            textTransform: "none",
+                            backgroundColor: colors.primaryLight,
+                            color: colors.primary,
+                            fontWeight: 600,
+                            padding: "4px 12px",
+                          }}
+                        >
+                          {course}
+                        </Badge>
+                      ))}
+                    </Group>
+                  ),
+                },
+                {
+                  accessor: "created_at",
+                  title: "Date",
+                  sortable: true,
+                  render: (application) => new Date(application.created_at).toLocaleDateString(),
+                },
+                {
+                  accessor: "actions",
+                  title: "Actions",
+                  textAlign: "center",
+                  render: (application) => (
+                    <Button
+                      variant="light"
+                      size="xs"
+                      leftSection={<IconEye size={14} />}
+                      onClick={() => handleViewDetails(application)}
+                    >
+                      View
+                    </Button>
+                  ),
+                },
+              ]}
+              records={paginatedApplications}
+              totalRecords={sortedApplications.length}
+              recordsPerPage={PAGE_SIZE}
+              page={page}
+              onPageChange={setPage}
+              withTableBorder
+              borderRadius="sm"
+              striped
+              highlightOnHover
+              noRecordsText="No applications found"
+              loadingText="Loading applications..."
+              sortStatus={sortStatus}
+              onSortStatusChange={setSortStatus}
+            />
+          </ScrollArea>
+        </Paper>
+      ) : (
+        // Mobile view (cards)
+        <Box>
+          {paginatedApplications.length > 0 ? (
+            <>
+              <SimpleGrid cols={1} spacing="md">
+                {paginatedApplications.map((application, index) => renderApplicationCard(application, index))}
+              </SimpleGrid>
+
+              <Group justify="center" mt="xl">
+                <Button
+                  disabled={page === 1}
+                  onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+                  variant="outline"
+                >
+                  Previous
+                </Button>
+                <Text>
+                  Page {page} of {Math.ceil(sortedApplications.length / PAGE_SIZE)}
+                </Text>
+                <Button
+                  disabled={page >= Math.ceil(sortedApplications.length / PAGE_SIZE)}
+                  onClick={() => setPage((prev) => prev + 1)}
+                  variant="outline"
+                >
+                  Next
+                </Button>
+              </Group>
+            </>
+          ) : (
+            <Paper shadow="xs" p="xl" radius="md" withBorder ta="center">
+              <Text c="dimmed">No applications found</Text>
+            </Paper>
+          )}
+        </Box>
+      )}
     </>
   );
 };

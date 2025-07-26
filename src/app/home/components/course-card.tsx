@@ -1,17 +1,18 @@
 "use client";
 
-import { Card, Text, Badge, Group, Button, Title, Stack, Box, rem } from "@mantine/core";
-import Link from "next/link";
-import { useTheme } from "@/theme/use-theme";
+import { Badge, Box, Button, Card, Group, Stack, Text, Title, rem } from "@mantine/core";
 import {
-  IconBook,
-  IconClock,
-  IconCurrencyRupee,
   IconArrowRight,
-  IconCode,
+  IconBook,
   IconCertificate,
+  IconClock,
+  IconCode,
+  IconCurrencyRupee,
   IconSeo,
 } from "@/assets/icons";
+
+import Link from "next/link";
+import { useTheme } from "@/theme/use-theme";
 
 interface CourseProps {
   course: {
@@ -88,24 +89,29 @@ const CourseCard = ({ course }: CourseProps) => {
           {course.description || "No description available"}
         </Text>
 
-        <Group gap="xs" mt="lg">
-          {course?.tags?.split(",").map((tag, i) => (
-            <Badge
-              key={i}
-              size="sm"
-              radius="sm"
-              style={{
-                textTransform: "none",
-                backgroundColor: colors.primaryLight,
-                color: colors.primary,
-                fontWeight: 600,
-                padding: "4px 12px",
-              }}
-            >
-              {tag?.trim()}
-            </Badge>
-          ))}
-        </Group>
+        {course?.tags && course.tags.trim() && (
+          <Group gap="xs" mt="lg">
+            {course.tags.split(",").map(
+              (tag, i) =>
+                tag.trim() && (
+                  <Badge
+                    key={i}
+                    size="sm"
+                    radius="sm"
+                    style={{
+                      textTransform: "none",
+                      backgroundColor: colors.primaryLight,
+                      color: colors.primary,
+                      fontWeight: 600,
+                      padding: "4px 12px",
+                    }}
+                  >
+                    {tag.trim()}
+                  </Badge>
+                )
+            )}
+          </Group>
+        )}
 
         <Group justify="space-between" mt="md">
           <Group gap="xs">
@@ -128,13 +134,15 @@ const CourseCard = ({ course }: CourseProps) => {
             variant="light"
             color={colors.primary}
             size="md"
-            rightSection={<IconArrowRight size={18} style={{ color: themeMode === 'dark' ? colors.textPrimary : undefined }} />}
+            rightSection={
+              <IconArrowRight size={18} style={{ color: themeMode === "dark" ? colors.textPrimary : undefined }} />
+            }
             component={Link}
             href={`/courses/${course?.id}`}
             styles={(theme) => ({
               root: {
-                color: themeMode === 'dark' ? colors.textPrimary : undefined,
-              }
+                color: themeMode === "dark" ? colors.textPrimary : undefined,
+              },
             })}
           >
             View

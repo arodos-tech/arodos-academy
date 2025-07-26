@@ -47,6 +47,9 @@ export {
   IconDashboard,
   IconLogout,
   IconDownload,
+  IconPlus,
+  IconEdit,
+  IconTrash,
 } from "@tabler/icons-react";
 
 // Re-export any custom icons here

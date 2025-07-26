@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Container, SimpleGrid, Stack, Text, Title, rem, Card } from "@mantine/core";
-import { useTheme } from "@/theme/use-theme";
+import { Box, Card, Container, SimpleGrid, Stack, Text, Title, rem } from "@mantine/core";
 import { IconAward, IconBulb, IconHeartHandshake, IconTargetArrow } from "@/assets/icons";
+
 import { useIsMobile } from "@/hooks";
+import { useTheme } from "@/theme/use-theme";
 
 const values = [
   {
@@ -15,7 +16,8 @@ const values = [
   {
     icon: IconHeartHandshake,
     title: "Integrity",
-    description: "We uphold the highest standards of honesty, transparency, and ethical conduct in all our interactions.",
+    description:
+      "We uphold the highest standards of honesty, transparency, and ethical conduct in all our interactions.",
     color: "var(--mantine-color-primary-6)",
   },
   {
@@ -37,13 +39,23 @@ const OurValues = () => {
   const { colors, mantineTheme, themeMode } = useTheme();
 
   return (
-    <Box py={80} style={{ backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0] }}>
+    <Box
+      py={80}
+      style={{ backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0] }}
+    >
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text style={{ color: colors.textSecondary }} c={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[5]} fw={700} size="lg" tt="uppercase" ta="center">
+          <Text
+            style={{ color: colors.textSecondary }}
+            c={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[5]}
+            fw={700}
+            size="lg"
+            tt="uppercase"
+            ta="center"
+          >
             OUR VALUES
           </Text>
-          <Title style={{ color: colors.textPrimary }}
+          <Title
             order={2}
             style={{
               fontSize: isMobile ? rem(28) : rem(36),
@@ -55,8 +67,16 @@ const OurValues = () => {
           >
             The Principles That Guide Us
           </Title>
-          <Text style={{ color: colors.textSecondary }} size="lg" ta="center" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"} maw={800} mx="auto">
-            Our core values shape everything we do at Arodos Academy, from curriculum development to student interactions.
+          <Text
+            style={{ color: colors.textSecondary }}
+            size="lg"
+            ta="center"
+            c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"}
+            maw={800}
+            mx="auto"
+          >
+            Our core values shape everything we do at Arodos Academy, from curriculum development to student
+            interactions.
           </Text>
         </Stack>
 
@@ -83,19 +103,28 @@ const OurValues = () => {
                   width: 60,
                   height: 60,
                   borderRadius: "50%",
-                  backgroundColor: themeMode === "dark" ? mantineTheme.colors.primary[8] : mantineTheme.colors.primary[0],
+                  backgroundColor:
+                    themeMode === "dark" ? mantineTheme.colors.primary[8] : mantineTheme.colors.primary[0],
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   marginBottom: rem(20),
                 }}
               >
-                <value.icon size={30} color={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[6]} />
+                <value.icon
+                  size={30}
+                  color={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[6]}
+                />
               </Box>
               <Title style={{ color: colors.textPrimary }} order={4} mb="sm">
                 {value.title}
               </Title>
-              <Text style={{ color: colors.textSecondary }} size="md" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : mantineTheme.colors.gray[6]} lh={1.6}>
+              <Text
+                style={{ color: colors.textSecondary }}
+                size="md"
+                c={themeMode === "dark" ? mantineTheme.colors.gray[3] : mantineTheme.colors.gray[6]}
+                lh={1.6}
+              >
                 {value.description}
               </Text>
             </Card>
