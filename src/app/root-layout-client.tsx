@@ -46,7 +46,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
     };
   }, []);
 
-  // Handle navigation events
+  // Handle navigation events and clean up admin classes
   useEffect(() => {
     // Create event listeners for navigation
     const handleRouteChangeStart = () => {
@@ -54,11 +54,20 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
     };
 
     const handleRouteChangeComplete = () => {
+      // Clean up admin-related classes when navigating away from admin pages
+      if (!isAdminPath(pathname || "")) {
+        document.body.classList.remove("admin-page");
+        document.body.classList.remove("admin-login-page");
+      }
+
       // Add a small delay to ensure content is loaded
       setTimeout(() => {
         showLoadingOverlay(false);
       }, 300);
     };
+
+    // Call once on initial load to ensure proper state
+    handleRouteChangeComplete();
 
     // Use a MutationObserver to detect navigation changes
     // This is a workaround since Next.js App Router doesn't expose navigation events directly
