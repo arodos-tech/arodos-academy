@@ -47,8 +47,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
   return (
     <div>
       <CourseDetails course={course} />
-      <CourseContent course={course} />
-      <CourseCTA courseName={course?.name} />
+      {/* <CourseContent course={course} /> */}
+      {/* <CourseCTA courseName={course?.name} /> */}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { contactHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const ContactHero = () => {
-  const { mantineTheme } = useTheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -28,6 +28,7 @@ const ContactHero = () => {
         height: "auto",
         minHeight: getResponsiveValue(rem(500), rem(550), rem(600), rem(600)),
         width: "100%",
+        backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0],
       }}
     >
       {/* Hero background image with overlay */}
@@ -41,7 +42,7 @@ const ContactHero = () => {
           backgroundImage: `url(${contactHero.src})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          filter: "brightness(0.4)",
+          filter: themeMode === "dark" ? "brightness(0.5)" : "brightness(0.4)",
           zIndex: 1,
         }}
       />
@@ -55,7 +56,7 @@ const ContactHero = () => {
           right: 0,
           bottom: 0,
           background: HERO_GRADIENT_OVERLAY,
-          opacity: 0.7,
+          opacity: themeMode === "dark" ? 0.85 : 0.7,
           zIndex: 2,
         }}
       />
@@ -64,12 +65,7 @@ const ContactHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: getResponsiveValue(
-            `${rem(40)} ${rem(20)}`,
-            `${rem(50)} ${rem(25)}`,
-            rem(60),
-            rem(80)
-          ),
+          padding: getResponsiveValue(`${rem(40)} ${rem(20)}`, `${rem(50)} ${rem(25)}`, rem(60), rem(80)),
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -78,13 +74,7 @@ const ContactHero = () => {
           textAlign: "center",
         }}
       >
-        <Stack
-          align="center"
-          justify="center"
-          gap="md"
-          w="100%"
-          style={{ maxWidth: rem(900) }}
-        >
+        <Stack align="center" justify="center" gap="md" w="100%" style={{ maxWidth: rem(900) }}>
           <Text
             fw={600}
             tt="uppercase"

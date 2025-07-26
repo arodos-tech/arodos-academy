@@ -78,7 +78,7 @@ const CourseCard = ({ course }: CourseProps) => {
         >
           {getIcon()}
         </Box>
-        <Title order={3} lineClamp={2} style={{ fontSize: rem(20) }}>
+        <Title order={3} lineClamp={2} style={{ fontSize: rem(20), color: colors.textPrimary }}>
           {course.name}
         </Title>
       </Group>

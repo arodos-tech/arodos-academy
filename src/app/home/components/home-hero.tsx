@@ -92,6 +92,7 @@ const HomeHero = () => {
             tt="uppercase"
             style={{
               fontSize: getResponsiveValue(rem(14), rem(15), rem(16), rem(18)),
+              color: mantineTheme.white,
             }}
           >
             Building Futures
@@ -103,6 +104,7 @@ const HomeHero = () => {
               fontSize: getResponsiveValue(rem(32), rem(40), rem(50), rem(64)),
               lineHeight: 1.1,
               fontWeight: 800,
+              color: mantineTheme.white,
             }}
           >
             Launch Your Tech Career with Arodos
@@ -115,6 +117,7 @@ const HomeHero = () => {
               maxWidth: rem(650),
               margin: `${rem(10)} auto 0`,
               lineHeight: 1.5,
+              color: mantineTheme.white,
             }}
           >
             High-quality, affordable courses designed to get you job-ready. Join

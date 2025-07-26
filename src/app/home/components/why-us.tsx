@@ -44,11 +44,12 @@ const WhyUs = () => {
             textAlign: "center",
             maxWidth: rem(700),
             margin: "0 auto",
+            color: colors.textPrimary,
           }}
         >
           Transform Your Career with Industry-Leading Education
         </Title>
-        <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto">
+        <Text size="lg" ta="center" style={{ color: colors.textSecondary }} maw={800} mx="auto">
           Our programs are designed to give you the skills, knowledge, and confidence to excel in today's competitive
           tech industry.
         </Text>
@@ -86,10 +87,10 @@ const WhyUs = () => {
             >
               <feature.icon size={30} color={colors.primary} />
             </Box>
-            <Title order={4} mb="sm">
+            <Title order={4} mb="sm" style={{ color: colors.textPrimary }}>
               {feature.title}
             </Title>
-            <Text size="md" c="dimmed" lh={1.6}>
+            <Text size="md" style={{ color: colors.textSecondary }} lh={1.6}>
               {feature.description}
             </Text>
           </Card>

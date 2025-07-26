@@ -28,13 +28,13 @@ const CTA = () => {
         >
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing={40}>
             <Stack gap="md" justify="center">
-              <Text fw={700} size="lg" tt="uppercase">
+              <Text fw={700} size="lg" tt="uppercase" style={{ color: mantineTheme.white }}>
                 JOIN OUR COMMUNITY
               </Text>
-              <Title order={2} style={{ fontSize: rem(36), lineHeight: 1.2 }}>
+              <Title order={2} style={{ fontSize: rem(36), lineHeight: 1.2, color: mantineTheme.white }}>
                 Ready to Launch Your Tech Career?
               </Title>
-              <Text size="lg" style={{ opacity: 0.9, lineHeight: 1.6 }}>
+              <Text size="lg" style={{ opacity: 0.9, lineHeight: 1.6, color: mantineTheme.white }}>
                 Join Arodos Academy today and take the first step towards a rewarding career in technology.
               </Text>
             </Stack>

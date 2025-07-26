@@ -15,9 +15,8 @@ import {
   Text,
   ThemeIcon,
   Title,
-  useMantineColorScheme,
-  useMantineTheme,
 } from "@mantine/core";
+import { useTheme } from "@/theme/use-theme";
 
 import { IconCheck } from "@/assets/icons";
 
@@ -26,8 +25,7 @@ interface CourseContentProps {
 }
 
 export default function CourseContent({ course }: CourseContentProps) {
-  const mantineTheme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
 
   // Learning objectives from course data
   const objectives = course?.objectives ? course.objectives.split(",").map((obj: string) => obj.trim()) : [];
@@ -36,7 +34,7 @@ export default function CourseContent({ course }: CourseContentProps) {
   const requirements = course?.requirements ? course.requirements.split(",").map((req: string) => req.trim()) : [];
 
   return (
-    <Box pb={40} bg={colorScheme === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
+    <Box pb={40} bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Tabs defaultValue="overview" radius="md" color="primary">
           <Tabs.List mb="xl">
@@ -55,7 +53,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
           <Tabs.Panel value="overview">
             <Paper withBorder p="xl" radius="md" shadow="sm">
-              <Title order={2} mb="xl">
+              <Title style={{ color: colors.textPrimary }} order={2} mb="xl">
                 About This Course
               </Title>
 
@@ -65,7 +63,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
               {objectives.length > 0 && (
                 <>
-                  <Title order={3} mb="md">
+                  <Title style={{ color: colors.textPrimary }} order={3} mb="md">
                     What You'll Learn
                   </Title>
                   <SimpleGrid cols={{ base: 1, sm: 2 }} mb="xl">
@@ -74,7 +72,7 @@ export default function CourseContent({ course }: CourseContentProps) {
                         <ThemeIcon color="primary" variant="light" size={24} radius="xl">
                           <IconCheck size={16} />
                         </ThemeIcon>
-                        <Text>{objective}</Text>
+                        <Text style={{ color: colors.textSecondary }}>{objective}</Text>
                       </Group>
                     ))}
                   </SimpleGrid>
@@ -83,7 +81,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
               {requirements.length > 0 && (
                 <>
-                  <Title order={3} mb="md">
+                  <Title style={{ color: colors.textPrimary }} order={3} mb="md">
                     Requirements
                   </Title>
                   <List withPadding>
@@ -98,7 +96,7 @@ export default function CourseContent({ course }: CourseContentProps) {
 
           <Tabs.Panel value="curriculum">
             <Paper withBorder p="xl" radius="md" shadow="sm">
-              <Title order={2} mb="xl">
+              <Title style={{ color: colors.textPrimary }} order={2} mb="xl">
                 Course Curriculum
               </Title>
 
@@ -109,21 +107,25 @@ export default function CourseContent({ course }: CourseContentProps) {
                       <Group justify="space-between" mb="xs">
                         <Group gap="md">
                           <ThemeIcon size={40} radius="md" color="primary" variant="light">
-                            <Text fw={700}>{i + 1}</Text>
+                            <Text style={{ color: colors.textSecondary }} fw={700}>
+                              {i + 1}
+                            </Text>
                           </ThemeIcon>
-                          <Title order={4}>{module.title}</Title>
+                          <Title style={{ color: colors.textPrimary }} order={4}>
+                            {module.title}
+                          </Title>
                         </Group>
                         <Badge size="lg" color="primary" variant="light">
                           {module.duration}
                         </Badge>
                       </Group>
-                      <Text c="dimmed" ml={56}>
+                      <Text style={{ color: colors.textSecondary }} c="dimmed" ml={56}>
                         {module.description}
                       </Text>
                     </Card>
                   ))}
                 {!course?.modules && (
-                  <Text c="dimmed" ta="center" py="xl">
+                  <Text style={{ color: colors.textSecondary }} c="dimmed" ta="center" py="xl">
                     Curriculum details will be available soon.
                   </Text>
                 )}
@@ -134,7 +136,7 @@ export default function CourseContent({ course }: CourseContentProps) {
           {course?.instructor && (
             <Tabs.Panel value="instructor">
               <Paper withBorder p="xl" radius="md" shadow="sm">
-                <Title order={2} mb="xl">
+                <Title style={{ color: colors.textPrimary }} order={2} mb="xl">
                   Meet Your Instructor
                 </Title>
 
@@ -144,8 +146,10 @@ export default function CourseContent({ course }: CourseContentProps) {
                   </Avatar>
 
                   <div>
-                    <Title order={3}>{course.instructor.name}</Title>
-                    <Text c="dimmed" mb="md">
+                    <Title style={{ color: colors.textPrimary }} order={3}>
+                      {course.instructor.name}
+                    </Title>
+                    <Text style={{ color: colors.textSecondary }} c="dimmed" mb="md">
                       {course.instructor.title}
                     </Text>
                     <Text style={{ lineHeight: 1.7 }} c="dimmed">

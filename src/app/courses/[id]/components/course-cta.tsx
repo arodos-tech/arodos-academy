@@ -1,6 +1,7 @@
 "use client";
 
-import { Box, Button, Container, Flex, Group, Paper, Stack, Text, ThemeIcon, Title, useMantineColorScheme, useMantineTheme } from "@mantine/core";
+import { Box, Button, Container, Flex, Group, Paper, Stack, Text, ThemeIcon, Title } from "@mantine/core";
+import { useTheme } from "@/theme/use-theme";
 import Link from "next/link";
 
 import { IconArrowRight, IconCertificate, IconSchool, IconStar } from "@/assets/icons";
@@ -10,13 +11,12 @@ interface CourseCTAProps {
 }
 
 export default function CourseCTA({ courseName }: CourseCTAProps) {
-  const mantineTheme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
 
-  const paperBg = colorScheme === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white;
+  const paperBg = themeMode === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white;
 
   return (
-    <Box pb={60} pt={20} bg={colorScheme === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
+    <Box pb={60} pt={20} bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Paper
           radius="md"
@@ -69,10 +69,10 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
                   <IconSchool size={30} />
                 </ThemeIcon>
                 <div>
-                  <Title order={2}>
+                  <Title style={{ color: colors.textPrimary }} order={2}>
                     Ready to Start Your Learning Journey?
                   </Title>
-                  <Text size="lg" c="dimmed">
+                  <Text style={{ color: colors.textSecondary }} size="lg" c="dimmed">
                     {courseName
                       ? `Enroll in ${courseName} today and take the first step towards advancing your career.`
                       : "Enroll in this course today and take the first step towards advancing your career."}
@@ -101,22 +101,32 @@ export default function CourseCTA({ courseName }: CourseCTAProps) {
 
           {/* Achievement icons */}
           <Group mt="xl" justify="center" style={{ position: "relative", zIndex: 1 }}>
-            <Paper p="md" radius="md" withBorder style={{ background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.7)' }}>
+            <Paper
+              p="md"
+              radius="md"
+              withBorder
+              style={{ background: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0] }}
+            >
               <Group gap="xs">
                 <ThemeIcon size="md" color="primary" variant="light" radius="xl">
                   <IconCertificate size={16} />
                 </ThemeIcon>
-                <Text size="sm" fw={500}>
+                <Text style={{ color: colors.textSecondary }} size="sm" fw={500}>
                   Certification Included
                 </Text>
               </Group>
             </Paper>
-            <Paper p="md" radius="md" withBorder style={{ background: colorScheme === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.7)' }}>
+            <Paper
+              p="md"
+              radius="md"
+              withBorder
+              style={{ background: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0] }}
+            >
               <Group gap="xs">
                 <ThemeIcon size="md" color="primary" variant="light" radius="xl">
                   <IconStar size={16} />
                 </ThemeIcon>
-                <Text size="sm" fw={500}>
+                <Text style={{ color: colors.textSecondary }} size="sm" fw={500}>
                   Expert Instructors
                 </Text>
               </Group>

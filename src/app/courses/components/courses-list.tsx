@@ -4,6 +4,7 @@ import { Box, Container, Stack, Text, Title, Grid, rem, TextInput, Select, Group
 import { useState } from "react";
 import { IconSearch } from "@/assets/icons";
 import CourseCard from "@/app/home/components/course-card";
+import { useTheme } from "@/theme/use-theme";
 
 interface CoursesListProps {
   courses: any[];
@@ -13,6 +14,7 @@ interface CoursesListProps {
 const CoursesList = ({ courses, error }: CoursesListProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<string | null>("priority");
+  const { mantineTheme, themeMode, colors } = useTheme();
 
   // Filter courses based on search query
   const filteredCourses =
@@ -42,7 +44,11 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
   });
 
   return (
-    <Box py={100} bg="var(--mantine-color-gray-0)" c="var(--mantine-color-dark-9)">
+    <Box
+      py={100}
+      bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}
+      c={themeMode === "dark" ? mantineTheme.colors.gray[0] : mantineTheme.colors.dark[9]}
+    >
       <Container size="lg">
         <Box mb={40}>
           <TextInput
@@ -53,12 +59,18 @@ const CoursesList = ({ courses, error }: CoursesListProps) => {
             size="lg"
             radius="md"
             mb={40}
-            styles={{ input: { fontSize: rem(16) } }}
+            styles={{
+              input: {
+                fontSize: rem(16),
+                background: themeMode === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white,
+                color: colors.textPrimary,
+              },
+            }}
           />
 
           {error ? (
             <Stack align="center" py={40}>
-              <Text size="lg" c="red">
+              <Text size="lg" c={mantineTheme.colors.error?.[6] || 'red'}>
                 {error}
               </Text>
             </Stack>

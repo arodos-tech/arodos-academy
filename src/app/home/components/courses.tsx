@@ -28,11 +28,12 @@ const Courses = ({ courses, error }: CourseSectionProps) => {
               textAlign: "center",
               maxWidth: rem(700),
               margin: "0 auto",
+              color: colors.textPrimary,
             }}
           >
             Master Skills That Matter in Today's Job Market
           </Title>
-          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto" style={{ color: mantineTheme.colors.gray[6] }}>
+          <Text size="lg" ta="center" style={{ color: colors.textSecondary }} maw={800} mx="auto">
             Choose from our range of programs designed to take you from beginner to job-ready professional.
           </Text>
         </Stack>

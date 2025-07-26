@@ -7,7 +7,7 @@ import { aboutHero } from "@/assets/images";
 import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 
 const AboutHero = () => {
-  const { mantineTheme } = useTheme();
+  const { colors, mantineTheme } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -63,12 +63,7 @@ const AboutHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: getResponsiveValue(
-            `${rem(40)} ${rem(20)}`,
-            `${rem(50)} ${rem(25)}`,
-            rem(60),
-            rem(80)
-          ),
+          padding: getResponsiveValue(`${rem(40)} ${rem(20)}`, `${rem(50)} ${rem(25)}`, rem(60), rem(80)),
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -77,11 +72,7 @@ const AboutHero = () => {
           textAlign: "center",
         }}
       >
-        <Stack
-          align="center"
-          justify="center"
-          gap={getResponsiveValue("xs", "sm", "md", "lg")}
-        >
+        <Stack align="center" justify="center" gap={getResponsiveValue("xs", "sm", "md", "lg")}>
           <Text
             fw={600}
             tt="uppercase"
@@ -116,58 +107,66 @@ const AboutHero = () => {
             }}
           >
             {getResponsiveValue(
-              <>A branch of <Text
-                component="a"
-                href="https://arodos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                span
-                c="white"
-                fw={600}
-                style={{ textDecoration: "underline" }}
-              >Arodos Technologies</Text>, bridging theory and practice.</>,
-              <>Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
-              <Text
-                component="a"
-                href="https://arodos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                span
-                c="white"
-                fw={600}
-                style={{ textDecoration: "underline" }}
-              >
-                Arodos Technologies
-              </Text>
-              , bridges the gap between theoretical knowledge and practical industry skills.</>,
-              <>Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
-              <Text
-                component="a"
-                href="https://arodos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                span
-                c="white"
-                fw={600}
-                style={{ textDecoration: "underline" }}
-              >
-                Arodos Technologies
-              </Text>
-              , bridges the gap between theoretical knowledge and practical industry skills.</>,
-              <>Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
-              <Text
-                component="a"
-                href="https://arodos.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                span
-                c="white"
-                fw={600}
-                style={{ textDecoration: "underline" }}
-              >
-                Arodos Technologies
-              </Text>
-              , bridges the gap between theoretical knowledge and practical industry skills.</>
+              <>
+                A branch of{" "}
+                <Text
+                  component="a"
+                  href="https://arodos.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  span
+                  style={{ color: mantineTheme.white, textDecoration: "underline" }}
+                  fw={600}
+                >
+                  Arodos Technologies
+                </Text>
+                , bridging theory and practice.
+              </>,
+              <>
+                Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
+                <Text
+                  component="a"
+                  href="https://arodos.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  span
+                  style={{ color: mantineTheme.white, textDecoration: "underline" }}
+                  fw={600}
+                >
+                  Arodos Technologies
+                </Text>
+                , bridges the gap between theoretical knowledge and practical industry skills.
+              </>,
+              <>
+                Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
+                <Text
+                  component="a"
+                  href="https://arodos.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  span
+                  style={{ color: mantineTheme.white, textDecoration: "underline" }}
+                  fw={600}
+                >
+                  Arodos Technologies
+                </Text>
+                , bridges the gap between theoretical knowledge and practical industry skills.
+              </>,
+              <>
+                Founded with a vision to transform tech education, Arodos Academy, a branch of{" "}
+                <Text
+                  component="a"
+                  href="https://arodos.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  span
+                  style={{ color: mantineTheme.white, textDecoration: "underline" }}
+                  fw={600}
+                >
+                  Arodos Technologies
+                </Text>
+                , bridges the gap between theoretical knowledge and practical industry skills.
+              </>
             )}
           </Text>
         </Stack>

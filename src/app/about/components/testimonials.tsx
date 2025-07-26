@@ -31,7 +31,7 @@ const testimonials = [
 ];
 
 const Testimonials = () => {
-  const { colors, mantineTheme } = useTheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -44,24 +44,25 @@ const Testimonials = () => {
   };
 
   return (
-    <Box py={100} bg={mantineTheme.colors.gray[0]}>
+    <Box py={100} bg={themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
+          <Text style={{ color: colors.textSecondary }} c={themeMode === "dark" ? mantineTheme.colors.primary[2] : colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
             TESTIMONIALS
           </Text>
-          <Title
+          <Title style={{ color: colors.textPrimary }}
             order={2}
             style={{
               fontSize: getResponsiveValue(rem(28), rem(32), rem(36), rem(36)),
               textAlign: "center",
               maxWidth: rem(700),
               margin: "0 auto",
+              color: themeMode === "dark" ? mantineTheme.white : mantineTheme.colors.dark[8],
             }}
           >
             What Our Alumni Say
           </Title>
-          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto">
+          <Text style={{ color: colors.textSecondary }} size="lg" ta="center" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"} maw={800} mx="auto">
             Hear from our graduates who have successfully transitioned into rewarding tech careers.
           </Text>
         </Stack>
@@ -87,18 +88,18 @@ const Testimonials = () => {
               <IconQuote 
                 size={40} 
                 style={{ 
-                  color: mantineTheme.colors.primary[2],
+                  color: themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[6],
                   marginBottom: rem(20),
                 }} 
               />
-              <Text size="md" c="dimmed" lh={1.6} mb="xl">
+              <Text style={{ color: colors.textSecondary }} size="md" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : mantineTheme.colors.gray[6]} lh={1.6} mb="xl">
                 {testimonial.quote}
               </Text>
               <Group gap="md" mt="auto">
                 <Avatar src={testimonial.image} radius="xl" size="lg" />
                 <Box>
-                  <Text fw={600}>{testimonial.name}</Text>
-                  <Text size="xs" c="dimmed">{testimonial.position}</Text>
+                  <Text style={{ color: colors.textSecondary }} fw={600} style={{ color: themeMode === "dark" ? mantineTheme.white : mantineTheme.colors.dark[8] }}>{testimonial.name}</Text>
+                  <Text style={{ color: colors.textSecondary }} size="xs" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : mantineTheme.colors.gray[6]}>{testimonial.position}</Text>
                 </Box>
               </Group>
               <Group gap={5} mt="md">
@@ -106,8 +107,8 @@ const Testimonials = () => {
                   <IconStar 
                     key={i} 
                     size={16} 
-                    fill={colors.primary} 
-                    color={colors.primary} 
+                    fill={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[6]} 
+                    color={themeMode === "dark" ? mantineTheme.colors.primary[2] : mantineTheme.colors.primary[6]} 
                   />
                 ))}
               </Group>

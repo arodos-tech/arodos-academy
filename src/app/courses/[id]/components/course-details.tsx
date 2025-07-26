@@ -20,12 +20,15 @@ interface CourseDetailsProps {
   course: any;
 }
 
+import { useTheme } from "@/theme/use-theme";
+
 export default function CourseDetails({ course }: CourseDetailsProps) {
+  const { colors, mantineTheme, themeMode } = useTheme();
   // Parse tags from course data
   const tags = course?.tags ? course.tags.split(",").map((tag: string) => tag.trim()) : [];
 
   return (
-    <Box py={40} bg="var(--mantine-color-gray-0)">
+    <Box py={40} bg={themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0]}>
       <Container size="lg">
         <Group mb="md">
           <Button
@@ -43,12 +46,22 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing={40}>
             <div>
               {/* Course name */}
-              <Title order={1} mb="md" style={{ lineHeight: 1.2 }} c="var(--mantine-color-dark-7)">
+              <Title
+                order={1}
+                mb="md"
+                style={{ lineHeight: 1.2 }}
+                c={themeMode === "dark" ? mantineTheme.colors.gray[0] : mantineTheme.colors.dark[7]}
+              >
                 {course?.name}
               </Title>
 
               {/* Course description */}
-              <Text size="lg" mb="xl" style={{ lineHeight: 1.6 }} c="var(--mantine-color-gray-7)">
+              <Text
+                size="lg"
+                mb="xl"
+                style={{ lineHeight: 1.6 }}
+                c={themeMode === "dark" ? mantineTheme.colors.gray[3] : mantineTheme.colors.gray[7]}
+              >
                 {course?.description}
               </Text>
 
@@ -68,14 +81,16 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
                   <ThemeIcon size="md" variant="light" color="primary">
                     <IconClock size={16} />
                   </ThemeIcon>
-                  <Text size="md">{course?.duration}</Text>
+                  <Text style={{ color: colors.textSecondary }} size="md">
+                    {course?.duration}
+                  </Text>
                 </Group>
 
                 <Group gap="xs">
                   <ThemeIcon size="md" variant="light" color="primary">
                     <IconCurrencyRupee size={16} />
                   </ThemeIcon>
-                  <Text size="md" fw={600}>
+                  <Text style={{ color: colors.textSecondary }} size="md">
                     {!isNaN(Number(course?.price)) && Number(course?.price) > 0
                       ? Number(course?.price).toLocaleString("en-IN")
                       : "Free"}
@@ -92,10 +107,10 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
                       <IconCertificate size={28} />
                     </ThemeIcon>
                     <div>
-                      <Text fw={700} size="lg">
+                      <Text style={{ color: colors.textSecondary }} fw={700} size="lg">
                         Course Highlights
                       </Text>
-                      <Text size="sm" c="var(--mantine-color-gray-6)">
+                      <Text style={{ color: colors.textSecondary }} size="sm" c="var(--mantine-color-gray-6)">
                         Everything you need to know
                       </Text>
                     </div>
@@ -107,20 +122,26 @@ export default function CourseDetails({ course }: CourseDetailsProps) {
                         <ThemeIcon color="primary" variant="light" size={24} radius="xl">
                           <IconCheck size={16} />
                         </ThemeIcon>
-                        <Text fw={500}>{course.duration} of expert instruction</Text>
+                        <Text style={{ color: colors.textSecondary }} fw={500}>
+                          {course.duration} of expert instruction
+                        </Text>
                       </Group>
                     )}
                     <Group gap="xs" align="flex-start">
                       <ThemeIcon color="primary" variant="light" size={24} radius="xl">
                         <IconCheck size={16} />
                       </ThemeIcon>
-                      <Text fw={500}>Hands-on training</Text>
+                      <Text style={{ color: colors.textSecondary }} fw={500}>
+                        Hands-on training
+                      </Text>
                     </Group>
                     <Group gap="xs" align="flex-start">
                       <ThemeIcon color="primary" variant="light" size={24} radius="xl">
                         <IconCheck size={16} />
                       </ThemeIcon>
-                      <Text fw={500}>Certificate of completion</Text>
+                      <Text style={{ color: colors.textSecondary }} fw={500}>
+                        Certificate of completion
+                      </Text>
                     </Group>
                   </Stack>
 

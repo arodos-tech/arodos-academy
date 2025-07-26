@@ -38,7 +38,7 @@ const teamMembers = [
 ];
 
 const OurTeam = () => {
-  const { colors, mantineTheme } = useTheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -54,21 +54,22 @@ const OurTeam = () => {
     <Box py={100}>
       <Container size="lg">
         <Stack align="center" gap="xl" mb={60}>
-          <Text c={colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
+          <Text style={{ color: colors.textSecondary }} c={themeMode === "dark" ? mantineTheme.colors.primary[2] : colors.primary} fw={700} size="lg" tt="uppercase" ta="center">
             OUR TEAM
           </Text>
-          <Title
+          <Title style={{ color: colors.textPrimary }}
             order={2}
             style={{
               fontSize: getResponsiveValue(rem(28), rem(32), rem(36), rem(36)),
               textAlign: "center",
               maxWidth: rem(700),
               margin: "0 auto",
+              color: themeMode === "dark" ? mantineTheme.white : mantineTheme.colors.dark[8],
             }}
           >
             Meet the Experts Behind Arodos Academy
           </Title>
-          <Text size="lg" ta="center" c="dimmed" maw={800} mx="auto">
+          <Text style={{ color: colors.textSecondary }} size="lg" ta="center" c={themeMode === "dark" ? mantineTheme.colors.gray[3] : "dimmed"} maw={800} mx="auto">
             Our team consists of industry professionals, educators, and tech enthusiasts who are passionate about
             sharing their knowledge and experience.
           </Text>
@@ -96,13 +97,13 @@ const OurTeam = () => {
                     border: `4px solid ${mantineTheme.colors.primary[2]}`,
                   }}
                 />
-                <Title order={4} ta="center" mt="md">
+                <Title style={{ color: colors.textPrimary }} order={4} ta="center" mt="md">
                   {member.name}
                 </Title>
-                <Text size="sm" c={colors.primary} fw={600} ta="center" mt={-5}>
+                <Text style={{ color: colors.textSecondary }} size="sm" c={colors.primary} fw={600} ta="center" mt={-5}>
                   {member.position}
                 </Text>
-                <Text size="sm" c="dimmed" ta="center" mt="xs">
+                <Text style={{ color: colors.textSecondary }} size="sm" c="dimmed" ta="center" mt="xs">
                   {member.bio}
                 </Text>
                 <Group gap="md" mt="md">

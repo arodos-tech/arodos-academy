@@ -9,7 +9,7 @@ import { HERO_GRADIENT_OVERLAY } from "@/lib/constants";
 import { useTheme } from "@/theme/use-theme";
 
 const CourseHero = () => {
-  const { mantineTheme } = useTheme();
+  const { colors, mantineTheme, themeMode } = useTheme();
   const isMdOrSmaller = useMediaQuery(`(max-width: ${rem(992)})`);
   const isSmOrSmaller = useMediaQuery(`(max-width: ${rem(768)})`);
   const isXs = useMediaQuery(`(max-width: ${rem(576)})`);
@@ -23,7 +23,7 @@ const CourseHero = () => {
 
   return (
     <Box
-      c="white"
+      // style={{ color: colors.textPrimary }}
       style={{
         position: "relative",
         overflow: "hidden",
@@ -66,12 +66,7 @@ const CourseHero = () => {
         style={{
           position: "relative",
           zIndex: 3,
-          padding: getResponsiveValue(
-            `${rem(40)} ${rem(20)}`,
-            `${rem(50)} ${rem(25)}`,
-            rem(60),
-            rem(80)
-          ),
+          padding: getResponsiveValue(`${rem(40)} ${rem(20)}`, `${rem(50)} ${rem(25)}`, rem(60), rem(80)),
           height: "100%",
           display: "flex",
           flexDirection: "column",
@@ -80,32 +75,32 @@ const CourseHero = () => {
           textAlign: isMdOrSmaller ? "center" : "left",
         }}
       >
-        <Stack
-          gap="md"
-          style={{ maxWidth: rem(700) }}
-          align={isMdOrSmaller ? "center" : "flex-start"}
-        >
+        <Stack gap="md" style={{ maxWidth: rem(700) }} align={isMdOrSmaller ? "center" : "flex-start"}>
           <Text
             fw={700}
             tt="uppercase"
             style={{
-              background: mantineTheme.colors.primary[5],
+              background: themeMode === "dark" ? mantineTheme.colors.primary[7] : mantineTheme.colors.primary[5],
+              color: mantineTheme.white,
               display: "inline-block",
               width: "fit-content",
               padding: `${rem(4)} ${rem(12)}`,
-              borderRadius: rem(20),
-              fontSize: getResponsiveValue(rem(12), rem(13), rem(14), rem(14)),
+              borderRadius: mantineTheme.radius.sm,
+              letterSpacing: 2,
+              fontSize: getResponsiveValue(rem(12), rem(13), rem(14), rem(16)),
             }}
           >
             OUR COURSES
           </Text>
 
           <Title
+            // style={{ color: colors.textPrimary }}
             order={1}
             style={{
               fontSize: getResponsiveValue(rem(28), rem(36), rem(44), rem(52)),
               fontWeight: 800,
               lineHeight: 1.2,
+              color: mantineTheme.white,
             }}
           >
             Explore Our Courses
@@ -113,21 +108,17 @@ const CourseHero = () => {
 
           <Text
             style={{
-              fontSize: getResponsiveValue(rem(16), rem(17), rem(18), rem(18)),
+              fontSize: getResponsiveValue(rem(16), rem(18), rem(20), rem(22)),
               lineHeight: 1.6,
               opacity: 0.9,
               maxWidth: rem(600),
+              color: mantineTheme.white,
             }}
           >
-            Find the perfect course to advance your career and skills in today's
-            competitive job market.
+            Find the perfect course to advance your career and skills in today's competitive job market.
           </Text>
 
-          <Group
-            mt="md"
-            gap="xl"
-            style={{ justifyContent: isMdOrSmaller ? "center" : "flex-start" }}
-          >
+          <Group mt="md" gap="xl" style={{ justifyContent: isMdOrSmaller ? "center" : "flex-start" }}>
             {[
               { icon: IconBook, text: "Quality Learning" },
               { icon: IconCertificate, text: "Certification" },
@@ -136,15 +127,13 @@ const CourseHero = () => {
               <Group key={i} gap="sm" align="center">
                 <ThemeIcon
                   variant="filled"
-                  color={mantineTheme.colors.primary[5]}
+                  color={themeMode === "dark" ? mantineTheme.colors.primary[7] : mantineTheme.colors.primary[5]}
                   size={getResponsiveValue("md", "md", "lg", "lg")}
                   radius="xl"
                 >
-                  <feature.icon
-                    size={getResponsiveValue(14, 16, 18, 18)}
-                  />
+                  <feature.icon size={getResponsiveValue(14, 16, 18, 18)} />
                 </ThemeIcon>
-                <Text fw={600} c="white" size={getResponsiveValue("sm", "md", "md", "md")}>
+                <Text fw={600} style={{ color: mantineTheme.white }} size={getResponsiveValue("sm", "md", "md", "md")}>
                   {feature.text}
                 </Text>
               </Group>

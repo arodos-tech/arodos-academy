@@ -20,6 +20,7 @@ import {
   MultiSelect,
   Loader,
 } from "@mantine/core";
+import { useTheme } from "@/theme/use-theme";
 import { useForm, zodResolver } from "@mantine/form";
 import { IconUpload, IconCheck, IconX, IconPhoto, IconPhone } from "@/assets/icons";
 import { useIsMobile } from "@/hooks";
@@ -65,6 +66,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const ContactForm = () => {
+  const { mantineTheme, themeMode } = useTheme();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [filePreview, setFilePreview] = useState<string | null>(null);
@@ -216,7 +218,7 @@ const ContactForm = () => {
   };
 
   return (
-    <Box py={rem(80)} style={{ backgroundColor: "white" }}>
+    <Box py={rem(80)} style={{ backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white }}>
       <Container size="lg" id="reg-form">
         <Box mb={rem(40)} ta="center">
           <Title
@@ -241,8 +243,8 @@ const ContactForm = () => {
               radius="md"
               shadow="md"
               style={{
-                borderLeft: "4px solid var(--mantine-color-primary-5)",
-                backgroundColor: "white",
+                borderLeft: `4px solid ${mantineTheme.colors.primary[5]}`,
+                backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white,
               }}
             >
               <Text fw={600} fz={rem(20)} mb={rem(20)} c="primary.5">
@@ -254,7 +256,7 @@ const ContactForm = () => {
                   style={{
                     width: rem(200),
                     height: rem(200),
-                    backgroundColor: "var(--mantine-color-gray-0)",
+                    backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[8] : mantineTheme.colors.gray[0],
                     border: "1px solid var(--mantine-color-gray-3)",
                     borderRadius: "var(--mantine-radius-md)",
                     display: "flex",
@@ -446,8 +448,8 @@ const ContactForm = () => {
                 radius="md"
                 shadow="md"
                 style={{
-                  backgroundColor: "white",
-                  borderTop: "4px solid var(--mantine-color-primary-5)",
+                  backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[6] : mantineTheme.white,
+                  borderTop: `4px solid ${mantineTheme.colors.primary[5]}`,
                 }}
               >
                 <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -572,19 +574,17 @@ const ContactForm = () => {
                     )}
 
                     <Box mb="md">
-                      <Text fw={500} size="sm" mb={5}>
-                        Payment Receipt
-                      </Text>
                       <Paper
                         withBorder
                         p="md"
                         radius="md"
                         style={{
-                          backgroundColor: "white",
-                          border: "1px dashed var(--mantine-color-primary-3)",
+                          backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white,
+                          border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]}`,
                         }}
                       >
                         <FileInput
+                          label="Payment Receipt"
                           placeholder="Upload payment receipt"
                           accept="image/png,image/jpeg,application/pdf"
                           required
@@ -615,12 +615,16 @@ const ContactForm = () => {
                               width: "100%",
                             },
                             input: {
-                              border: "1px dashed var(--mantine-color-primary-3)",
-                              backgroundColor: "var(--mantine-color-body)",
+                              border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[4]}`,
+                              backgroundColor: themeMode === "dark" ? mantineTheme.colors.dark[7] : mantineTheme.white,
+                              color: themeMode === "dark" ? mantineTheme.colors.gray[1] : mantineTheme.colors.gray[7],
+                              transition: 'border-color 0.2s',
+                              '&:focus': {
+                                borderColor: mantineTheme.colors.primary[5],
+                              },
                             },
                           }}
                         />
-
                         {form.values.receipt && (
                           <Group mt="md" gap="md">
                             <ThemeIcon color="primary.5" variant="light" size={rem(32)} radius="xl">
@@ -636,7 +640,6 @@ const ContactForm = () => {
                             </Box>
                           </Group>
                         )}
-
                         {filePreview && (
                           <Box mt="md" style={{ position: "relative" }}>
                             <Text size="sm" fw={500} mb={5}>
@@ -650,13 +653,12 @@ const ContactForm = () => {
                                 backgroundSize: "contain",
                                 backgroundPosition: "center",
                                 backgroundRepeat: "no-repeat",
-                                border: "1px solid var(--mantine-color-gray-3)",
-                                borderRadius: "var(--mantine-radius-md)",
+                                border: `1px solid ${themeMode === "dark" ? mantineTheme.colors.dark[4] : mantineTheme.colors.gray[3]}`,
+                                borderRadius: mantineTheme.radius.md,
                               }}
                             />
                           </Box>
                         )}
-
                         <Text size="xs" c="dimmed" mt="xs">
                           Accepted formats: PNG, JPEG, PDF. Max size: 5MB
                         </Text>
@@ -680,6 +682,26 @@ const ContactForm = () => {
                         disabled={!form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0}
                         style={{
                           fontWeight: 600,
+                          backgroundColor:
+                            !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
+                              ? (themeMode === "dark"
+                                  ? mantineTheme.colors.dark[4]
+                                  : mantineTheme.colors.gray[2])
+                              : undefined,
+                          color:
+                            !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
+                              ? (themeMode === "dark"
+                                  ? mantineTheme.colors.gray[2]
+                                  : mantineTheme.colors.gray[5])
+                              : undefined,
+                          cursor:
+                            !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
+                              ? "not-allowed"
+                              : undefined,
+                          opacity:
+                            !form.isValid() || !form.values.receipt || Object.keys(form.errors).length > 0
+                              ? 1
+                              : undefined,
                         }}
                       >
                         Submit Registration
